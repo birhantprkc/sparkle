@@ -161,6 +161,39 @@ function NvidiaProfileInspector() {
   })
 }
 
+export async function autoUnapplyHpet() {
+  try {
+    let states = {}
+    try {
+      await fs.access(tweaksStatePath)
+      const data = await fs.readFile(tweaksStatePath, "utf8")
+      states = JSON.parse(data)
+    } catch (error) {
+      if (error.code !== "ENOENT") {
+        console.error("Error loading tweak states:", error)
+        return
+      }
+    }
+
+    if (states["enable-hpet"]) {
+      console.log("Auto unapplying HPET tweak as it causes issues...")
+      const script = `try {
+    bcdedit /deletevalue useplatformclock
+    Write-Host "HPET setting removed"
+  } catch {
+    Write-Host "Failed to disable HPET"
+  }`
+      await executePowerShell(null, { script, name: "enable-hpet" })
+      states["enable-hpet"] = false
+      await fs.mkdir(path.dirname(tweaksStatePath), { recursive: true })
+      await fs.writeFile(tweaksStatePath, JSON.stringify(states), "utf8")
+      console.log("HPET tweak auto unapplied and state updated.")
+    }
+  } catch (error) {
+    console.error("Error in auto unapply HPET:", error)
+  }
+}
+
 export const setupTweaksHandlers = () => {
   ipcMain.handle("tweak-states:load", async () => {
     try {

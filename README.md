@@ -64,8 +64,8 @@ irm https://getsparkle.net/get | iex
 
   <h4>Adding New Tweaks</h4>
   <ul>
-    <li>Tweaks are located in <code>resources/tweaks/</code></li>
-    <li>More info in <code>resources/tweaks/readme.md</code></li>
+    <li>Tweaks are located in <code>/tweaks</code></li>
+    <li>More info in <code>/tweaks/readme.md</code></li>
   </ul>
 
 Refer to the <a href="https://docs.getsparkle.net">docs</a> for more info on how to add new tweaks

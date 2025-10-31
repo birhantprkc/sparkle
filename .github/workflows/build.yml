@@ -1,0 +1,36 @@
+name: Build and Publish Sparkle
+
+on:
+  push:
+    tags:
+      - 'v*
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Sparkle
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+          run_install: true
+
+      - name: Build Electron App
+        run: pnpm run build:electron
+
+      - name: Publish to GitHub Releases
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx electron-builder --win --publish always

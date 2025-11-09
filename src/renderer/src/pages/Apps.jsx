@@ -8,6 +8,7 @@ import Modal from "@/components/ui/modal"
 import { invoke } from "@/lib/electron"
 import { Download } from "lucide-react"
 import { Trash } from "lucide-react"
+import { ExternalLink } from "lucide-react"
 import { toast } from "react-toastify"
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
@@ -391,6 +392,25 @@ function Apps() {
                       {installedApps.includes(app.id) && (
                         <div className="text-xs font-semibold text-sparkle-text bg-sparkle-accent py-1 px-2 rounded-full">
                           Installed
+                        </div>
+                      )}
+                      {app.link && (
+                        <div onClick={(e) => e.stopPropagation()}>
+                          <button
+                            type="button"
+                            aria-label={`Open ${app.name} website`}
+                            className="ml-3 text-sparkle-primary hover:text-sparkle-text-secondary transition-opacity"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              try {
+                                window.open(app.link, "_blank")
+                              } catch (err) {
+                                console.error("Failed to open external link", err)
+                              }
+                            }}
+                          >
+                            <ExternalLink className="w-4 h-4" />
+                          </button>
                         </div>
                       )}
                     </div>

@@ -5,15 +5,23 @@
       "id": "Mozilla.Firefox",
       "category": "browsers",
       "info": "A fast, private and secure web browsers.",
-      "link": "https://www.mozilla.org/en-US/firefox/new/",
+      "link": "https://www.mozilla.org/en-US/firefox/new/?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Firefox_logo%2C_2019.svg/1024px-Firefox_logo%2C_2019.svg.png"
+    },
+    {
+      "name": "Firefox Nightly",
+      "id": "Mozilla.Firefox.MSIX.Nightly",
+      "category": "browsers",
+      "info": "A fast, private and secure web browsers. Nightly build.",
+      "link": "https://www.firefox.com/en-US/channel/desktop/?ref=sparkle",
+      "icon": "https://play-lh.googleusercontent.com/RTGC3Q_G-JzhwJDjqJzBQyi1J41LyAnvOFzzU9aYqld3F9Ad26-RFwcFCH6xUat3HITV"
     },
     {
       "name": "Google Chrome",
       "id": "Google.Chrome",
       "category": "browsers",
       "info": "The most popular web browsers.",
-      "link": "https://www.google.com/chrome/",
+      "link": "https://www.google.com/chrome/?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Google_Chrome_icon_%28February_2022%29.svg/2048px-Google_Chrome_icon_%28February_2022%29.svg.png"
     },
     {
@@ -21,7 +29,7 @@
       "id": "Discord.Discord",
       "category": "communication",
       "info": "Discord is a communication app that lets you chat with your friends.",
-      "link": "https://discord.com/",
+      "link": "https://discord.com/?ref=sparkle",
       "icon": "https://support.discord.com/hc/user_images/bbW4u80g7yIVxsphv9diNw.png"
     },
     {
@@ -30,7 +38,7 @@
       "warning": "This app may install properly as sparkle runs as admin. However Uninstalling will continue to work as normal.",
       "category": "multimedia",
       "info": "Listen to music and podcasts.",
-      "link": "https://www.spotify.com/",
+      "link": "https://www.spotify.com/?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Spotify_icon.svg/1982px-Spotify_icon.svg.png"
     },
     {
@@ -38,7 +46,7 @@
       "id": "Valve.Steam",
       "category": "games",
       "info": "A digital distribution platform for video games.",
-      "link": "https://store.steampowered.com/",
+      "link": "https://store.steampowered.com/?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Steam_icon_logo.svg/2048px-Steam_icon_logo.svg.png"
     },
     {
@@ -46,7 +54,7 @@
       "id": "EpicGames.EpicGamesLauncher",
       "category": "games",
       "info": "A Games Store",
-      "link": "https://www.epicgames.com/",
+      "link": "https://www.epicgames.com/?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Epic_Games_logo.svg/1200px-Epic_Games_logo.svg.png"
     },
     {
@@ -54,7 +62,7 @@
       "id": "ElectronicArts.EADesktop",
       "category": "games",
       "info": "A Games Store",
-      "link": "https://www.ea.com/",
+      "link": "https://www.ea.com/?ref=sparkle",
       "icon": "https://cdn2.steamgriddb.com/logo_thumb/a208b894ffe062914d0192bb4f663114.png"
     },
     {
@@ -62,15 +70,31 @@
       "id": "Blizzard.BattleNet",
       "category": "games",
       "info": "A Games Store",
-      "link": "https://us.shop.battle.net/",
+      "link": "https://us.shop.battle.net/?ref=sparkle",
       "icon": "https://cdn2.steamgriddb.com/icon/937ea3f7714dc0d01475da7bff33b596/32/128x128.png"
+    },
+    {
+      "name": "Minecraft Launcher",
+      "id": "Mojang.MinecraftLauncher",
+      "category": "games",
+      "info": "Minecraft game launcher.",
+      "link": "https://www.minecraft.net/en-us/download/?ref=sparkle",
+      "icon": "https://static.wikia.nocookie.net/logopedia/images/e/e3/Minecraft_Launcher.svg/revision/latest/scale-to-width-down/200?cb=20230616222246"
+    },
+    {
+      "name": "Modrinth",
+      "id": "Modrinth.ModrinthApp",
+      "category": "games",
+      "info": "Minecraft Modding Launcher",
+      "link": "https://modrinth.com/?ref=sparkle",
+      "icon": "https://media.beehiiv.com/cdn-cgi/image/fit=scale-down,format=auto,onerror=redirect,quality=80/uploads/publication/logo/a49f8e1b-3835-4ea1-a85b-118c6425ebc3/Modrinth_Dark_Logo.png"
     },
     {
       "name": "Visual Studio Code",
       "id": "Microsoft.VisualStudioCode",
       "category": "development",
       "info": "A code editor that runs on your computer.",
-      "link": "https://code.visualstudio.com/",
+      "link": "https://code.visualstudio.com/?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Visual_Studio_Code_1.35_icon.svg/2048px-Visual_Studio_Code_1.35_icon.svg.png"
     },
     {
@@ -78,7 +102,7 @@
       "id": "Microsoft.VisualStudioCode.Insiders",
       "category": "development",
       "info": "A code editor that runs on your computer.",
-      "link": "https://code.visualstudio.com/insiders/",
+      "link": "https://code.visualstudio.com/insiders/?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Visual_Studio_Code_Insiders_1.36_icon.svg/1200px-Visual_Studio_Code_Insiders_1.36_icon.svg.png"
     },
     {
@@ -86,15 +110,23 @@
       "id": "Microsoft.VisualStudio.2022",
       "category": "development",
       "info": "A code editor that runs on your computer.",
-      "link": "https://visualstudio.microsoft.com/",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Visual_Studio_Icon_2019.svg/1200px-Visual_Studio_Icon_2019.svg.png"
+      "link": "https://visualstudio.microsoft.com/?ref=sparkle",
+      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Arduino_IDE_logo.svg/2048px-Arduino_IDE_logo.svg.png"
+    },
+    {
+      "name": "Arduino IDE",
+      "id": "ArduinoSA.IDE.stable",
+      "category": "development",
+      "info": "Code Editor for Arduino Microcontrollers.",
+      "link": "https://www.arduino.cc/en/software/?ref=sparkle",
+      "icon": "https://www.arduino.cc/en/uploads/Main/Arduino_Logo.svg"
     },
     {
       "name": "Notepad++",
       "id": "Notepad++.Notepad++",
       "category": "development",
       "info": "A code editor that runs on your computer.",
-      "link": "https://notepad-plus-plus.org/",
+      "link": "https://notepad-plus-plus.org/?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Notepad%2B%2B_Logo.svg/2048px-Notepad%2B%2B_Logo.svg.png"
     },
     {
@@ -102,7 +134,7 @@
       "id": "Sublime.Text",
       "category": "development",
       "info": "A code editor that runs on your computer.",
-      "link": "https://www.sublimetext.com/",
+      "link": "https://www.sublimetext.com/?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Breezeicons-apps-48-sublime-text.svg/1200px-Breezeicons-apps-48-sublime-text.svg.png"
     },
     {
@@ -110,7 +142,7 @@
       "id": "Brave.Brave",
       "category": "browsers",
       "info": "A fast, private and secure web browsers.",
-      "link": "https://brave.com/",
+      "link": "https://brave.com/?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Brave_lion_icon.svg/1200px-Brave_lion_icon.svg.png"
     },
     {
@@ -118,7 +150,7 @@
       "id": "Opera.Opera",
       "category": "browsers",
       "info": "A fast, private and secure web browsers.",
-      "link": "https://www.opera.com/",
+      "link": "https://www.opera.com/?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Opera_2015_icon.svg/2048px-Opera_2015_icon.svg.png"
     },
     {
@@ -126,7 +158,7 @@
       "id": "Opera.OperaGX",
       "category": "browsers",
       "info": "A fast, private and secure web browser for gamers.",
-      "link": "https://www.opera.com/gx",
+      "link": "https://www.opera.com/gx?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Opera_GX_Icon.svg/2048px-Opera_GX_Icon.svg.png"
     },
     {
@@ -134,7 +166,7 @@
       "id": "Vivaldi.Vivaldi",
       "category": "browsers",
       "info": "A fast, private and secure web browsers.",
-      "link": "https://vivaldi.com/",
+      "link": "https://vivaldi.com/?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Vivaldi_web_browser_logo.svg/1200px-Vivaldi_web_browser_logo.svg.png"
     },
     {
@@ -142,7 +174,7 @@
       "id": "Zoom.Zoom",
       "category": "communication",
       "info": "A video conferencing app.",
-      "link": "https://zoom.us/",
+      "link": "https://zoom.us/?ref=sparkle",
       "icon": "https://static.vecteezy.com/system/resources/previews/012/871/376/non_2x/zoom-logo-in-blue-colors-meetings-app-logotype-illustration-free-png.png"
     },
     {
@@ -150,15 +182,15 @@
       "id": "Microsoft.Teams",
       "category": "communication",
       "info": "A Microsoft video conferencing app.",
-      "link": "https://www.microsoft.com/en-us/microsoft-teams/group-chat-software",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Microsoft_Office_Teams_%282018%E2%80%93present%29.svg/1200px-Microsoft_Office_Teams_%282018%E2%80%93present%29.svg.png"
+      "link": "https://www.microsoft.com/en-us/microsoft-teams/group-chat-software?ref=sparkle",
+      "icon": "https://winstall.app/assets/apps/teams.webp"
     },
     {
       "name": "Telegram Desktop",
       "id": "Telegram.TelegramDesktop",
       "category": "communication",
       "info": "A messaging app.",
-      "link": "https://telegram.org/",
+      "link": "https://telegram.org/?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/2048px-Telegram_logo.svg.png"
     },
     {
@@ -166,7 +198,7 @@
       "id": "7Zip.7Zip",
       "category": "utilities",
       "info": "A file archiver.",
-      "link": "https://www.7-zip.org/",
+      "link": "https://www.7-zip.org/?ref=sparkle",
       "icon": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjzfUrl9Bf9AbiHFNM7v4lp7iGHKRTPL8Sdw&s"
     },
     {
@@ -174,7 +206,7 @@
       "id": "Git.Git",
       "category": "development",
       "info": "A version control system.",
-      "link": "https://git-scm.com/",
+      "link": "https://git-scm.com/?ref=sparkle",
       "icon": "https://git-scm.com/images/logos/downloads/Git-Icon-1788C.png"
     },
     {
@@ -182,7 +214,7 @@
       "id": "GitHub.GitHubDesktop",
       "category": "development",
       "info": "A code editor that runs on your computer.",
-      "link": "https://desktop.github.com/",
+      "link": "https://desktop.github.com/?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Github-desktop-logo-symbol.svg/1200px-Github-desktop-logo-symbol.svg.png"
     },
     {
@@ -190,15 +222,31 @@
       "id": "Logitech.GHUB",
       "category": "peripherals",
       "info": "App to Manage your logitech peripherals.",
-      "link": "https://www.logitechg.com/en-us/software/ghub",
+      "link": "https://www.logitechg.com/en-us/software/ghub?ref=sparkle",
       "icon": "https://i.namu.wiki/i/Ir-1SJ90LXrO3e-1HxA91jVVUbU7LSStrb62bfwdndtnHwzENnyVNvJU2z8d8WYqPLcdA2f8zG-SHwHnzA9IrQ.webp"
+    },
+    {
+      "name": "Razer Synapse 4",
+      "id": "RazerInc.RazerInstaller.Synapse4",
+      "category": "peripherals",
+      "info": "App to Manage your Razer peripherals.",
+      "link": "https://www.razer.com/synapse-4?ref=sparkle",
+      "icon": "https://dl.razerzone.com/src2/13814/13814-1-en-v3.png"
+    },
+    {
+      "name": "SteelSeries GG",
+      "id": "SteelSeries.GG",
+      "category": "peripherals",
+      "info": "App to Manage your SteelSeries peripherals.",
+      "link": "https://steelseries.com/gg/?ref=sparkle",
+      "icon": "https://upload.wikimedia.org/wikipedia/en/7/7f/Steelseries-logo.png"
     },
     {
       "name": "Python 3.9",
       "id": "Python.Python.3.9",
       "category": "development",
       "info": "Programming language",
-      "link": "https://www.python.org",
+      "link": "https://www.python.org?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1869px-Python-logo-notext.svg.png"
     },
     {
@@ -206,7 +254,7 @@
       "id": "OpenJS.NodeJS",
       "category": "development",
       "info": "JavaScript runtime built on Chrome's V8 JavaScript engine.",
-      "link": "https://nodejs.org/",
+      "link": "https://nodejs.org/?ref=sparkle",
       "icon": "https://nodejs.org/static/images/favicons/favicon.png"
     },
     {
@@ -214,7 +262,7 @@
       "id": "Postman.Postman",
       "category": "development",
       "info": "API development environment.",
-      "link": "https://www.postman.com/",
+      "link": "https://www.postman.com/?ref=sparkle",
       "icon": "https://cdn.worldvectorlogo.com/logos/postman.svg"
     },
     {
@@ -222,7 +270,7 @@
       "id": "Docker.DockerDesktop",
       "category": "development",
       "info": "Containerized application development.",
-      "link": "https://www.docker.com/products/docker-desktop",
+      "link": "https://www.docker.com/products/docker-desktop?ref=sparkle",
       "icon": "https://www.docker.com/wp-content/uploads/2022/03/vertical-logo-monochromatic.png"
     },
     {
@@ -230,7 +278,7 @@
       "id": "SlackTechnologies.Slack",
       "category": "communication",
       "info": "Collaboration hub that connects your work with the people you work with.",
-      "link": "https://slack.com/",
+      "link": "https://slack.com/?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Slack_icon_2019.svg/2048px-Slack_icon_2019.svg.png"
     },
     {
@@ -238,8 +286,16 @@
       "id": "RustDesk.RustDesk",
       "category": "utilities",
       "info": "A remote desktop app.",
-      "link": "https://rustdesk.com/",
+      "link": "https://rustdesk.com/?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Rustdesk.svg/2048px-Rustdesk.svg.png"
+    },
+    {
+      "name": "Rufus",
+      "id": "Rufus.Rufus",
+      "category": "utilities",
+      "info": "A utility to create bootable USB drives.",
+      "link": "https://rufus.ie/?ref=sparkle",
+      "icon": "https://upload.wikimedia.org/wikipedia/commons/d/de/Rufus-logo.png"
     },
     {
       "name": "Everything Search",
@@ -253,7 +309,7 @@
       "id": "VideoLAN.VLC",
       "category": "multimedia",
       "info": "A free and open source media player.",
-      "link": "https://vlc.media/",
+      "link": "https://vlc.media/?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/VLC_Icon.svg/2048px-VLC_Icon.svg.png"
     },
     {
@@ -261,7 +317,7 @@
       "id": "Audacity.Audacity",
       "category": "multimedia",
       "info": "An audio editor.",
-      "link": "https://www.audacityteam.org/",
+      "link": "https://www.audacityteam.org/?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Audacity_Logo.svg/2048px-Audacity_Logo.svg.png"
     },
     {
@@ -269,7 +325,7 @@
       "id": "OBSProject.OBSStudio",
       "category": "multimedia",
       "info": "A free and open source software for video recording and live streaming.",
-      "link": "https://obsproject.com/",
+      "link": "https://obsproject.com/?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/OBS_Studio_Logo.svg/1200px-OBS_Studio_Logo.svg.png"
     },
     {
@@ -277,7 +333,7 @@
       "id": "Guru3D.Afterburner",
       "category": "utilities",
       "info": "A graphics card overclocking utility.",
-      "link": "https://www.msi.com/Landing/afterburner",
+      "link": "https://www.msi.com/Landing/afterburner?ref=sparkle",
       "icon": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/b1997507-606b-44bc-a6c8-dd0740cb1f88/d377tuc-d46dc60f-72a1-4389-8212-e212ec80b527.png/v1/fill/w_900,h_900/msi_afterburner_icon_2048_best_by_vuvuzelahero_d377tuc-fullview.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9OTAwIiwicGF0aCI6IlwvZlwvYjE5OTc1MDctNjA2Yi00NGJjLWE2YzgtZGQwNzQwY2IxZjg4XC9kMzc3dHVjLWQ0NmRjNjBmLTcyYTEtNDM4OS04MjEyLWUyMTJlYzgwYjUyNy5wbmciLCJ3aWR0aCI6Ijw9OTAwIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.ZG2StC-nHNdqju23CIkYfDYs2lx3cFbqUI4dgwhd05w"
     },
     {
@@ -285,7 +341,7 @@
       "id": "Rem0o.FanControl",
       "category": "utilities",
       "info": "A fan control utility.",
-      "link": "https://getfancontrol.com/",
+      "link": "https://getfancontrol.com/?ref=sparkle",
       "icon": "https://www.fileeagle.com/data/2023/03/Fan-Control.png"
     },
     {
@@ -293,7 +349,7 @@
       "id": "RARLab.WinRAR",
       "category": "utilities",
       "info": "A file archiver.",
-      "link": "https://www.win-rar.com/",
+      "link": "https://www.win-rar.com/?ref=sparkle",
       "icon": "https://keyoriginal.com/wp-content/uploads/2023/12/winrar-min.png"
     },
     {
@@ -301,7 +357,7 @@
       "id": "Parsec.Parsec",
       "category": "utilities",
       "info": "A remote desktop app.",
-      "link": "https://parsec.app/",
+      "link": "https://parsec.app/?ref=sparkle",
       "icon": "https://parsec.app/favicon.ico"
     },
     {
@@ -309,7 +365,7 @@
       "id": "OpenRGB.OpenRGB",
       "category": "utilities",
       "info": "An open source RGB lighting control software.",
-      "link": "https://openrgb.org/",
+      "link": "https://openrgb.org/?ref=sparkle",
       "icon": "https://openrgb.org/apple-touch-icon.5819aa8b.png"
     },
     {
@@ -317,7 +373,7 @@
       "id": "Rustlang.Rust.MSVC",
       "category": "development",
       "info": "A FAST programming language.",
-      "link": "https://www.rust-lang.org/",
+      "link": "https://www.rust-lang.org/?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Rust_programming_language_black_logo.svg/1200px-Rust_programming_language_black_logo.svg.png"
     },
     {
@@ -325,7 +381,7 @@
       "id": "Notion.Notion",
       "category": "productivity",
       "info": "All-in-one workspace for your notes, tasks, wikis, and databases.",
-      "link": "https://www.notion.so/",
+      "link": "https://www.notion.so/?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Notion-logo.svg/1200px-Notion-logo.svg.png"
     },
     {
@@ -333,7 +389,7 @@
       "id": "Dropbox.Dropbox",
       "category": "productivity",
       "info": "Organize all your team's content, tune out distractions, and get everyone coordinated with the world's first smart workspace.",
-      "link": "https://www.dropbox.com/",
+      "link": "https://www.dropbox.com/?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Dropbox_Icon.svg/1200px-Dropbox_Icon.svg.png"
     },
     {
@@ -341,79 +397,95 @@
       "id": "Microsoft.Office",
       "category": "productivity",
       "info": "All-in-one workspace for your notes, tasks, wikis, and databases.",
-      "link": "https://www.office.com/",
+      "link": "https://www.office.com/?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Microsoft_Office_logo_%282013%E2%80%932019%29.svg/1200px-Microsoft_Office_logo_%282013%E2%80%932019%29.svg.png"
     },
     {
       "name": "Surfshark VPN",
       "id": "Surfshark.Surfshark",
-      "category": "VPN",
+      "category": "Privacy & Security",
       "info": "A Great VPN service.",
-      "link": "https://surfshark.com/",
+      "link": "https://surfshark.com/?ref=sparkle",
       "icon": "https://static.wikia.nocookie.net/logopedia/images/a/a8/Surfshark_%28Icon%29_2023.svg"
+    },
+    {
+      "name": "Open VPN",
+      "id": "OpenVPNTechnologies.OpenVPN",
+      "category": "Privacy & Security",
+      "info": "Free Open-Source VPN Client",
+      "link": "https://openvpn.net?ref=sparkle",
+      "icon": "https://www-strapi.s3.us-west-1.amazonaws.com/openvpn_logo_feaa0a35e6.png"
     },
     {
       "name": "Windscribe",
       "id": "Windscribe.Windscribe",
-      "category": "VPN",
+      "category": "Privacy & Security",
       "info": "A Free VPN service.",
-      "link": "https://windscribe.com/",
+      "link": "https://windscribe.com/?ref=sparkle",
       "icon": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaKUVSGAUBm-WHTejyLTAj5knDQtAuPrwMBw&s"
     },
     {
       "name": "Proton VPN",
       "id": "Proton.ProtonVPN",
-      "category": "VPN",
+      "category": "Privacy & Security",
       "info": "A Free VPN service.",
-      "link": "https://protonvpn.com/",
+      "link": "https://protonvpn.com/?ref=sparkle",
       "icon": "https://seeklogo.com/images/P/proton-vpn-logo-A50452564D-seeklogo.com.png"
     },
     {
       "name": "Express VPN",
       "id": "ExpressVPN.ExpressVPN",
-      "category": "VPN",
+      "category": "Privacy & Security",
       "info": "A VPN service.",
-      "link": "https://www.expressvpn.com/",
+      "link": "https://www.expressvpn.com/?ref=sparkle",
       "icon": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjwaKqGXfkKnwU7wHh8FgobPoEictiwTQ9tQ&s"
     },
     {
       "name": "Private Internet Access",
       "id": "PrivateInternetAccess.PrivateInternetAccess",
-      "category": "VPN",
+      "category": "Privacy & Security",
       "info": "A VPN service.",
-      "link": "https://www.privateinternetaccess.com/",
+      "link": "https://www.privateinternetaccess.com/?ref=sparkle",
       "icon": "https://img.utdstc.com/icon/af1/606/af160626a38c9a3a2de814a31bc6ef98cabc30ba806949a9ddfb3a39e941bfc0:200"
     },
     {
       "name": "NordVPN",
       "id": "NordSecurity.NordVPN",
-      "category": "VPN",
+      "category": "Privacy & Security",
       "info": "A VPN service.",
-      "link": "https://nordvpn.com/cybersecurity-site/",
+      "link": "https://nordvpn.com/cybersecurity-site/?ref=sparkle",
       "icon": "https://m.media-amazon.com/images/I/31o0QB0R0sL.png"
     },
     {
       "name": "IPVanish",
       "id": "IPVanish.IPVanish",
-      "category": "VPN",
+      "category": "Privacy & Security",
       "info": "A VPN service.",
-      "link": "https://www.ipvanish.com/",
+      "link": "https://www.ipvanish.com/?ref=sparkle",
       "icon": "https://www.ipvanish.com/wp-content/uploads/2021/10/ipvanish-full-logo-white.jpg"
     },
     {
       "name": "Mullvad VPN",
       "id": "MullvadVPN.MullvadVPN",
-      "category": "VPN",
+      "category": "Privacy & Security",
       "info": "A Great Private VPN service.",
-      "link": "https://mullvad.net/",
+      "link": "https://mullvad.net/?ref=sparkle",
       "icon": "https://play-lh.googleusercontent.com/X3V8MJMnYasSOTLeFAN-EX8vKrckT2kxnPSeKRyGEU77pa-PVOjvKSvMdcOhnHX9aEg"
+    },
+    {
+      "name": "Malwarebytes",
+      "id": "Malwarebytes.Malwarebytes",
+      "category": "Privacy & Security",
+      "info": "A malware protection service.",
+      "link": "https://www.malwarebytes.com/mwb-download?ref=sparkle",
+      "icon": "https://upload.wikimedia.org/wikipedia/commons/4/47/Malwarebytes_Logo_Symbol.png "
     },
     {
       "name": "GPU-Z",
       "id": "TechPowerUp.GPU-Z",
       "category": "utilities",
       "info": "A GPU performance monitor.",
-      "link": "https://www.techpowerup.com/gpuz/",
+      "link": "https://www.techpowerup.com/gpuz/?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/en/8/82/GPU-Z_icon.png"
     },
     {
@@ -421,15 +493,23 @@
       "id": "CPUID.HWMonitor",
       "category": "utilities",
       "info": "A Hardware monitor.",
-      "link": "https://www.cpuid.com/softwares/hwmonitor.html",
+      "link": "https://www.cpuid.com/softwares/hwmonitor.html?ref=sparkle",
       "icon": "https://www.cpuid.com/medias/images/softwares/hwmonitor.svg"
+    },
+    {
+      "name": "Vim",
+      "id": "vim.vim.nightly",
+      "category": "development",
+      "info": "highly configurable text editor built to make creating and changing any kind of text very efficient.",
+      "link": "https://www.vim.org/?ref=sparkle",
+      "icon": "https://upload.wikimedia.org/wikipedia/commons/9/9f/Vimlogo.svg"
     },
     {
       "name": "Neovim",
       "id": "Neovim.Neovim",
       "category": "development",
       "info": "A Vim-fork focused on extensibility and agility.",
-      "link": "https://neovim.io/",
+      "link": "https://neovim.io/?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Neovim-mark.svg/1200px-Neovim-mark.svg.png"
     },
     {
@@ -437,7 +517,7 @@
       "id": "Microsoft.PowerToys",
       "category": "utilities",
       "info": "A set of utilities for power users to tune and streamline their Windows experience.",
-      "link": "https://learn.microsoft.com/en-us/windows/powertoys/",
+      "link": "https://learn.microsoft.com/en-us/windows/powertoys/?ref=sparkle",
       "icon": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzPf7vMthKRCgjSxB6bxmJTypARbHiPoFgFg&s"
     },
     {
@@ -445,7 +525,7 @@
       "id": "PuTTY.PuTTY",
       "category": "utilities",
       "info": "A free implementation of SSH and Telnet for Windows and Unix platforms.",
-      "link": "https://www.putty.org/",
+      "link": "https://www.putty.org/?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/PuTTY_Icon.svg/2048px-PuTTY_Icon.svg.png"
     },
     {
@@ -453,7 +533,7 @@
       "id": "VirtualDesktop.Streamer",
       "category": "games",
       "info": "Streams Your PC Games to Your Oculus Quest.",
-      "link": "https://www.vrdesktop.net/",
+      "link": "https://www.vrdesktop.net/?ref=sparkle",
       "icon": "https://cdn2.steamgriddb.com/icon/acac6e55a8890cb2666e7352729b18f1.ico"
     },
     {
@@ -461,7 +541,7 @@
       "id": "Cemu.Cemu",
       "category": "games",
       "info": "A Wii U emulator.",
-      "link": "https://cemu.info/",
+      "link": "https://cemu.info/?ref=sparkle",
       "icon": "https://external-preview.redd.it/770b9ca5I7WcAmAl8nE9hYWVbLgGqfrO9qaBKD_8h8M.jpg?auto=webp&s=32184e918495d73cc58bf8971c979314e6a8c3d6"
     },
     {
@@ -469,7 +549,7 @@
       "id": "TorProject.TorBrowser",
       "category": "browsers",
       "info": "A web browser that protects your privacy.",
-      "link": "https://www.torproject.org/",
+      "link": "https://www.torproject.org/?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Tor-logo-2011-flat.svg/2048px-Tor-logo-2011-flat.svg.png"
     },
     {
@@ -477,7 +557,7 @@
       "id": "Wagnardsoft.DisplayDriverUninstaller",
       "category": "utilities",
       "info": "A driver uninstaller.",
-      "link": "https://www.guru3d.com/download/display-driver-uninstaller-download/",
+      "link": "https://www.guru3d.com/download/display-driver-uninstaller-download/?ref=sparkle",
       "icon": "https://img.utdstc.com/icon/d9b/bb3/d9bbb3fecc888b09380d5d01e21b615dc5844e92236c90d6fd852116d294d944:200"
     },
     {
@@ -485,7 +565,7 @@
       "id": "WhirlwindFX.SignalRgb",
       "category": "utilities",
       "info": "A RGB lighting control software.",
-      "link": "https://signalrgb.com/",
+      "link": "https://signalrgb.com/?ref=sparkle",
       "icon": "https://mp-cdn.elgato.com/media/ab8fd021-8038-4b26-8192-191cce9c9e6b/3c114a0a-d42a-4a5a-8ca4-840f7ef07879/SignalRGB-Deck-app-icon-optimized-ba4f4aa2-85b6-4cc2-b448-eb20786ef85a.png"
     },
     {
@@ -493,7 +573,7 @@
       "id": "Flow-Launcher.Flow-Launcher",
       "category": "utilities",
       "info": "Keystroke launcher for Windows to search, and much more.",
-      "link": "https://www.flowlauncher.com/",
+      "link": "https://www.flowlauncher.com/?ref=sparkle",
       "icon": "https://styles.redditmedia.com/t5_5fx8y0/styles/communityIcon_lbbwa21m92w81.png"
     },
     {
@@ -501,7 +581,7 @@
       "id": "AnyDesk.AnyDesk",
       "category": "utilities",
       "info": "A remote desktop app.",
-      "link": "https://anydesk.com/en",
+      "link": "https://anydesk.com/en?ref=sparkle",
       "icon": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcidJhdaea8NW7PRqSElcdHhKtm8ftgffMvw&s"
     },
     {
@@ -509,7 +589,7 @@
       "id": "AntibodySoftware.WizTree",
       "category": "utilities",
       "info": "A disk space analyzer.",
-      "link": "https://diskanalyzer.com/",
+      "link": "https://diskanalyzer.com/?ref=sparkle",
       "icon": "https://antibodysoftware-17031.kxcdn.com/images/wiztree445x.png"
     },
     {
@@ -517,15 +597,15 @@
       "id": "qBittorrent.qBittorrent",
       "category": "utilities",
       "info": "A torrent client.",
-      "link": "https://www.qbittorrent.org/",
+      "link": "https://www.qbittorrent.org/?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/New_qBittorrent_Logo.svg/2048px-New_qBittorrent_Logo.svg.png"
     },
     {
       "name": "Bitwarden",
       "id": "Bitwarden.Bitwarden",
-      "category": "utilities",
+      "category": "Privacy & Security",
       "info": "A password manager.",
-      "link": "https://bitwarden.com/",
+      "link": "https://bitwarden.com/?ref=sparkle",
       "icon": "https://assets.wheelhouse.com/media/_solution_logo_11062023_5027381.png"
     },
     {
@@ -533,7 +613,7 @@
       "id": "WiresharkFoundation.Wireshark",
       "category": "utilities",
       "info": "A network protocol analyzer.",
-      "link": "https://www.wireshark.org/",
+      "link": "https://www.wireshark.org/?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/c/c6/Wireshark_icon_new.png"
     },
     {
@@ -541,7 +621,7 @@
       "id": "LizardByte.Sunshine",
       "category": "games",
       "info": "A self-hosted game streaming server.",
-      "link": "https://app.lizardbyte.dev/Sunshine/",
+      "link": "https://app.lizardbyte.dev/Sunshine/?ref=sparkle",
       "icon": "https://github.com/LizardByte/Sunshine/raw/master/sunshine.png"
     },
     {
@@ -549,7 +629,7 @@
       "id": "MoonlightGameStreamingProject.Moonlight",
       "category": "games",
       "info": "A game streaming client.",
-      "link": "https://moonlight-stream.org/",
+      "link": "https://moonlight-stream.org/?ref=sparkle",
       "icon": "https://play-lh.googleusercontent.com/QGBq_X2ewz_3HUR9AUI3NXcOjfVJd-Mf1l66-3D6zMzF-HN81f_KeZ-shqxRE633I3M"
     },
     {
@@ -557,7 +637,7 @@
       "id": "Playnite.Playnite",
       "category": "games",
       "info": "A video game library manager and launcher with support for 3rd party libraries.",
-      "link": "https://playnite.link/",
+      "link": "https://playnite.link/?ref=sparkle",
       "icon": "https://cdn2.steamgriddb.com/icon_thumb/f9ab9a0f7c56435e35dc4dadf0eb6945.png"
     },
     {
@@ -565,7 +645,7 @@
       "id": "pizzaboxer.Bloxstrap",
       "category": "games",
       "info": "A Alternative Roblox launcher.",
-      "link": "https://bloxstraplabs.com/",
+      "link": "https://bloxstraplabs.com/?ref=sparkle",
       "icon": "https://avatars.githubusercontent.com/u/147950331?s=48&v=4"
     },
     {
@@ -573,7 +653,7 @@
       "id": "GoLang.Go",
       "category": "development",
       "info": "A Fast programming language.",
-      "link": "https://go.dev/",
+      "link": "https://go.dev/?ref=sparkle",
       "icon": "https://go.dev/blog/go-brand/Go-Logo/PNG/Go-Logo_Blue.png"
     },
     {
@@ -581,7 +661,7 @@
       "id": "Klocman.BulkCrapUninstaller",
       "category": "utilities",
       "info": "A powerful uninstaller for Windows.",
-      "link": "https://www.bcuninstaller.com/",
+      "link": "https://www.bcuninstaller.com/?ref=sparkle",
       "icon": "https://raw.githubusercontent.com/Klocman/Bulk-Crap-Uninstaller/refs/heads/master/source/BulkCrapUninstaller/logo.ico"
     },
     {
@@ -589,7 +669,7 @@
       "id": "RamenSoftware.Windhawk",
       "category": "utilities",
       "info": "A powerful tool to customize Windows.",
-      "link": "https://windhawk.net/",
+      "link": "https://windhawk.net/?ref=sparkle",
       "icon": "https://windhawk.net/static/media/logo-white.07a58d84.svg"
     },
     {
@@ -597,7 +677,7 @@
       "id": "TGRMNSoftware.BulkRenameUtility",
       "category": "utilities",
       "info": "A powerful file renaming tool.",
-      "link": "https://www.bulkrenameutility.co.uk/",
+      "link": "https://www.bulkrenameutility.co.uk/?ref=sparkle",
       "icon": "https://www.bulkrenameutility.co.uk/favicon.ico"
     },
     {
@@ -605,7 +685,7 @@
       "id": "GIMP.GIMP.2",
       "category": "utilities",
       "info": "A free and open source image editor.",
-      "link": "https://www.gimp.org/",
+      "link": "https://www.gimp.org/?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/The_GIMP_icon_-_v3.0.svg/1200px-The_GIMP_icon_-_v3.0.svg.png"
     },
     {
@@ -613,7 +693,7 @@
       "id": "Guilded.Guilded",
       "category": "communication",
       "info": "A communication app for gamers.",
-      "link": "https://www.guilded.gg/",
+      "link": "https://www.guilded.gg/?ref=sparkle",
       "icon": "https://play-lh.googleusercontent.com/6So1NGvRZ1xLq5Y7gjth5jLv9yP_bMkeT4BYYaglZ9tM_oIgoDyEx79PenhceXLwBKpc"
     },
     {
@@ -621,7 +701,7 @@
       "id": "Zen-Team.Zen-Browser",
       "category": "browsers",
       "info": "A fast, private and secure web browser.",
-      "link": "https://zen-browser.app/",
+      "link": "https://zen-browser.app/?ref=sparkle",
       "icon": "https://avatars.githubusercontent.com/u/165225155"
     },
     {
@@ -629,7 +709,7 @@
       "id": "rocksdanister.LivelyWallpaper",
       "category": "utilities",
       "info": "A free and open source animated wallpaper app.",
-      "link": "https://rocksdanister.github.io/lively/",
+      "link": "https://rocksdanister.github.io/lively/?ref=sparkle",
       "icon": "https://www.rocksdanister.com/lively/assets/logo.webp"
     },
     {
@@ -637,7 +717,7 @@
       "id": "AdrienAllard.FileConverter",
       "category": "utilities",
       "info": "A simple file converter app.",
-      "link": "https://file-converter.io/",
+      "link": "https://file-converter.io/?ref=sparkle",
       "icon": "https://file-converter.io/images/application-icon.png"
     },
     {
@@ -645,7 +725,7 @@
       "id": "AppWork.JDownloader",
       "category": "utilities",
       "info": "A download manager.",
-      "link": "https://jdownloader.org/jdownloader2",
+      "link": "https://jdownloader.org/jdownloader2?ref=sparkle",
       "icon": "https://jdownloader.org/_media/knowledge/wiki/jdownloader.png?w=150"
     },
     {
@@ -653,7 +733,7 @@
       "id": "FilesCommunity.Files",
       "category": "utilities",
       "info": "A modern file manager for Windows.",
-      "link": "https://files.community/",
+      "link": "https://files.community/?ref=sparkle",
       "icon": "https://files.community/branding/logo-dark.svg"
     },
     {
@@ -661,15 +741,15 @@
       "id": "FxSound.FxSound",
       "category": "multimedia",
       "info": "An audio enhancer for Windows.",
-      "link": "https://www.fxsound.com/",
+      "link": "https://www.fxsound.com/?ref=sparkle",
       "icon": "https://avatars.githubusercontent.com/u/103012411?v=4"
     },
     {
       "name": "Blender",
       "id": "BlenderFoundation.Blender",
-      "category": "multimedia",
+      "category": "productivity",
       "info": "A free and open source 3D creation suite.",
-      "link": "https://www.blender.org/",
+      "link": "https://www.blender.org/?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/0/0c/Blender_logo_no_text.svg"
     },
     {
@@ -677,7 +757,7 @@
       "id": "NVIDIA.GeForceNOW",
       "category": "games",
       "info": "A cloud gaming service.",
-      "link": "https://www.nvidia.com/en-us/geforce-now/",
+      "link": "https://www.nvidia.com/en-us/geforce-now/?ref=sparkle",
       "icon": "https://cdn-1.webcatalog.io/catalog/nvidia-geforce-now/nvidia-geforce-now-icon-filled-256.png?v=1714775303603"
     },
     {
@@ -685,15 +765,55 @@
       "id": "xanderfrangos.twinkletray",
       "category": "utilities",
       "info": "A monitor brightness control app.",
-      "link": "https://twinkletray.com/?ref=sparkletweaks",
+      "link": "https://twinkletray.com/?ref=sparkle",
       "icon": "https://raw.githubusercontent.com/xanderfrangos/twinkle-tray/master/src/assets/logo.png"
+    },
+    {
+      "name": "Bambu Studio",
+      "id": "Bambulab.Bambustudio",
+      "category": "utilities",
+      "info": "A Slicer for Bambu Labs 3D Printers.",
+      "link": "https://bambulab.com//download/studio/?ref=sparkle",
+      "icon": "https://user-images.githubusercontent.com/106916061/179006347-497d24c0-9bd6-45b7-8c49-d5cc8ecfe5d7.png"
+    },
+    {
+      "name": "PursaSlicer",
+      "id": "Pursa3D.PursaSlicer",
+      "category": "utilities",
+      "info": "An Open Source 3D model slicer",
+      "link": "https://www.prusa3d.com/prusaslicer/?ref=sparkle",
+      "icon": "https://cdn.help.prusa3d.com/wp-content/uploads/PSlogo-1.jpg"
+    },
+    {
+      "name": "Creality Print",
+      "id": "Creality.CrealityPrint",
+      "category": "utilities",
+      "info": "A 3D printing software for Creality printers.",
+      "link": "https://www.creality.com/download?ref=sparkle",
+      "icon": "https://cdn.creality.com/blogs/fc05e3d3e33b67a2ec43f3926dfbad55.jpg"
+    },
+    {
+      "name": "OrcaSlicer",
+      "id": "SoftFever.OrcaSlicer",
+      "category": "utilities",
+      "info": "A 3D printing slicer software.",
+      "link": "https://orcaslicer.com/?ref=sparkle",
+      "icon": "https://orcaslicers.org/wp-content/uploads/2025/05/Orca-Slicer.png"
+    },
+    {
+      "name": "Ultimaker Cura",
+      "id": "Ultimaker.Cura",
+      "category": "utilities",
+      "info": "A 3D printing slicer software.",
+      "link": "https://ultimaker.com/software/ultimaker-cura?ref=sparkle",
+      "icon": "https://upload.wikimedia.org/wikipedia/commons/9/9b/Logo_for_Cura_Software.png"
     },
     {
       "name": "SuperF4",
       "id": "StefanSundin.Superf4",
       "category": "utilities",
       "info": "A utility to force close applications with a keyboard shortcut.",
-      "link": "https://stefansundin.github.io/superf4/",
+      "link": "https://stefansundin.github.io/superf4/?ref=sparkle",
       "icon": "https://stefansundin.github.io/superf4/img/icon128.png"
     },
     {
@@ -701,7 +821,7 @@
       "id": "RevoUninstaller.RevoUninstaller",
       "category": "utilities",
       "info": "A powerful uninstaller for Windows. (paid)",
-      "link": "https://www.revouninstaller.com/products/revo-uninstaller-free/?ref=sparkletweaks",
+      "link": "https://www.revouninstaller.com/products/revo-uninstaller-free/?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/8/83/Revouninstallerpro_icon.png"
     },
     {
@@ -709,7 +829,7 @@
       "id": "Unity.UnityHub",
       "category": "development",
       "info": "A hub for managing Unity projects and installations.",
-      "link": "https://unity.com/products/unity-hub",
+      "link": "https://unity.com/products/unity-hub?ref=sparkle",
       "icon": "https://i.redd.it/tu3gt6ysfxq71.png"
     },
     {
@@ -717,7 +837,7 @@
       "id": "JanDeDobbeleer.OhMyPosh",
       "category": "development",
       "info": "A prompt theme engine for any shell.",
-      "link": "https://ohmyposh.dev/",
+      "link": "https://ohmyposh.dev/?ref=sparkle",
       "icon": "https://ohmyposh.dev/img/logo-light.svg"
     },
     {
@@ -725,7 +845,7 @@
       "id": "Vencord.Vesktop",
       "category": "communication",
       "info": "A Modded Discord client for Windows.",
-      "link": "https://vencord.dev/",
+      "link": "https://vencord.dev/?ref=sparkle",
       "icon": "https://avatars.githubusercontent.com/u/113042587?s=300&v=4"
     },
     {
@@ -733,7 +853,7 @@
       "id": "PrismLauncher.PrismLauncher",
       "category": "games",
       "info": "A Minecraft launcher that supports multiple accounts and modpacks.",
-      "link": "https://prismlauncher.org/",
+      "link": "https://prismlauncher.org/?ref=sparkle",
       "icon": "https://raw.githubusercontent.com/PrismLauncher/PrismLauncher/refs/heads/develop/program_info/org.prismlauncher.PrismLauncher.svg"
     },
     {
@@ -741,7 +861,7 @@
       "id": "SoftDeluxe.FreeDownloadManager",
       "category": "utilities",
       "info": "An app to manage all of your downloads in one place",
-      "link": "https://www.freedownloadmanager.org/",
+      "link": "https://www.freedownloadmanager.org/?ref=sparkle",
       "icon": "https://user-images.githubusercontent.com/35652061/78561726-0c6b0d00-783a-11ea-9952-7be8b0858a73.png"
     },
     {
@@ -749,7 +869,7 @@
       "id": "Oracle.VirtualBox",
       "category": "utilities",
       "info": "A Virtual machine manager",
-      "link": "https://www.virtualbox.org/",
+      "link": "https://www.virtualbox.org/?ref=sparkle",
       "icon": "https://www.virtualbox.org/favicon.ico"
     },
     {
@@ -757,7 +877,7 @@
       "id": "TeamViewer.TeamViewer",
       "category": "utilities",
       "info": "A remote desktop app.",
-      "link": "https://www.teamviewer.com/en-ca/",
+      "link": "https://www.teamviewer.com/en-ca/?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/TeamViewer_Logo_Icon_Only.svg/1024px-TeamViewer_Logo_Icon_Only.svg.png"
     },
     {
@@ -765,7 +885,7 @@
       "id": "eloston.ungoogled-chromium",
       "category": "browsers",
       "info": "A Chromium web browser with out google features",
-      "link": "https://github.com/ungoogled-software/ungoogled-chromium",
+      "link": "https://github.com/ungoogled-software/ungoogled-chromium?ref=sparkle",
       "icon": "https://flathub.org/_next/image?url=https%3A%2F%2Fdl.flathub.org%2Fmedia%2Fio%2Fgithub%2Fungoogled_software.ungoogled_chromium%2F700e96614a13f9b7b5f196b962900420%2Ficons%2F128x128%2Fio.github.ungoogled_software.ungoogled_chromium.png&w=128&q=100"
     },
     {
@@ -773,7 +893,7 @@
       "id": "LibreWolf.LibreWolf",
       "category": "browsers",
       "info": "A privacy focused firefox fork",
-      "link": "https://librewolf.net/",
+      "link": "https://librewolf.net/?ref=sparkle",
       "icon": "https://librewolf.net/icon.svg"
     },
     {
@@ -781,7 +901,7 @@
       "id": "ShareX.ShareX",
       "category": "multimedia",
       "info": "Advanced Screenshot Tool",
-      "link": "https://github.com/ShareX/ShareX",
+      "link": "https://github.com/ShareX/ShareX?ref=sparkle",
       "icon": "https://getsharex.com/img/ShareX_Logo_512.png"
     },
     {
@@ -789,7 +909,7 @@
       "id": "Fastfetch-cli.Fastfetch",
       "category": "utilities",
       "info": "System Info Tool",
-      "link": "https://github.com/fastfetch-cli/fastfetch",
+      "link": "https://github.com/fastfetch-cli/fastfetch?ref=sparkle",
       "icon": "https://avatars.githubusercontent.com/u/136235211?s=200&v=4"
     },
     {
@@ -797,7 +917,7 @@
       "id": "ZeroTier.ZeroTierOne",
       "category": "utilities",
       "info": "A softwarethat allows you to virtual networks.",
-      "link": "https://www.zerotier.com/",
+      "link": "https://www.zerotier.com/?ref=sparkle",
       "icon": "https://avatars.githubusercontent.com/u/4173285?v=4"
     },
     {
@@ -805,7 +925,7 @@
       "id": "WinMerge.WinMerge",
       "category": "utilities",
       "info": "A software that allows you to compare and merge files.",
-      "link": "https://winmerge.org/",
+      "link": "https://winmerge.org/?ref=sparkle",
       "icon": "https://winmerge.org/apple-touch-icon-precomposed.png"
     },
     {
@@ -813,7 +933,7 @@
       "id": "AIMP.AIMP",
       "category": "multimedia",
       "info": "A music player for Windows",
-      "link": "https://www.aimp.ru/",
+      "link": "https://www.aimp.ru/?ref=sparkle",
       "icon": "https://www.aimp.ru/favicon.ico"
     },
     {
@@ -821,7 +941,7 @@
       "id": "hluk.copyq",
       "category": "utilities",
       "info": "A clipboard manager with advanced features.",
-      "link": "https://hluk.github.io/CopyQ/",
+      "link": "https://hluk.github.io/CopyQ/?ref=sparkle",
       "icon": "https://hluk.github.io/CopyQ/images/logo.png"
     },
     {
@@ -829,7 +949,7 @@
       "id": "KDE.Krita",
       "category": "multimedia",
       "info": "A free and open source digital painting application.",
-      "link": "https://krita.org/en/",
+      "link": "https://krita.org/en/?ref=sparkle",
       "icon": "https://krita.org/images/favicon.ico"
     },
     {
@@ -837,7 +957,7 @@
       "id": "dotPDN.PaintDotNet",
       "category": "multimedia",
       "info": "A free image and photo editing software for Windows.",
-      "link": "https://www.getpaint.net/",
+      "link": "https://www.getpaint.net/?ref=sparkle",
       "icon": "https://www.getpaint.net/favicon.ico"
     },
     {
@@ -845,7 +965,7 @@
       "id": "IrfanSkiljan.IrfanView",
       "category": "multimedia",
       "info": "A fast and compact image viewer/converter.",
-      "link": "https://www.irfanview.com/",
+      "link": "https://www.irfanview.com/?ref=sparkle",
       "icon": "https://www.irfanview.com/favicon.ico"
     },
     {
@@ -853,7 +973,7 @@
       "id": "ABDownloadManager.ABDownloadManager",
       "category": "utilities",
       "info": "A powerful download manager for Windows.",
-      "link": "https://abdownloadmanager.com/",
+      "link": "https://abdownloadmanager.com/?ref=sparkle",
       "icon": "https://abdownloadmanager.com/assets/app_icon_simple-DyQVbx7O.svg"
     },
     {
@@ -861,7 +981,7 @@
       "id": "Ghisler.TotalCommander",
       "category": "utilities",
       "info": "A file manager for Windows.",
-      "link": "https://www.ghisler.com/",
+      "link": "https://www.ghisler.com/?ref=sparkle",
       "icon": "https://www.ghisler.com/favicon.ico"
     },
     {
@@ -869,7 +989,7 @@
       "id": "Python.Python.3.10",
       "category": "development",
       "info": "Python 3.10 programming language.",
-      "link": "https://www.python.org",
+      "link": "https://www.python.org?ref=sparkle",
       "icon": "https://www.python.org/favicon.ico"
     },
     {
@@ -877,7 +997,7 @@
       "id": "Python.Python.3.11",
       "category": "development",
       "info": "Python 3.11 programming language.",
-      "link": "https://www.python.org",
+      "link": "https://www.python.org?ref=sparkle",
       "icon": "https://www.python.org/favicon.ico"
     },
     {
@@ -885,7 +1005,7 @@
       "id": "Python.Python.3.12",
       "category": "development",
       "info": "Python 3.12 programming language.",
-      "link": "https://www.python.org",
+      "link": "https://www.python.org?ref=sparkle",
       "icon": "https://www.python.org/favicon.ico"
     },
     {
@@ -893,7 +1013,7 @@
       "id": "Python.Python.3.13",
       "category": "development",
       "info": "Python 3.13 programming language.",
-      "link": "https://www.python.org",
+      "link": "https://www.python.org?ref=sparkle",
       "icon": "https://www.python.org/favicon.ico"
     }
   ]

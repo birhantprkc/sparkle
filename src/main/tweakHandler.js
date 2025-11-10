@@ -100,7 +100,7 @@ async function detectGPU() {
       return { hasGPU: false, isNvidia: false, model: null }
     }
 
-    const dedicatedGPU = graphicsData.controllers.find((controller) => {
+    const dedicatedControllers = graphicsData.controllers.filter((controller) => {
       const model = (controller.model || "").toLowerCase()
       return (
         (model.includes("nvidia") &&
@@ -117,10 +117,13 @@ async function detectGPU() {
             model.includes("rx") ||
             model.includes("vega") ||
             model.includes("firepro") ||
-            model.includes("instinct"))) ||
+            model.includes("instinct")) &&
+          !model.includes("graphics") &&
+          !model.includes("integrated")) ||
         (model.includes("intel") && model.includes("arc"))
       )
     })
+    const dedicatedGPU = dedicatedControllers.sort((a, b) => (b.vram || 0) - (a.vram || 0))[0]
 
     const hasGPU = !!dedicatedGPU
     const isNvidia = hasGPU && dedicatedGPU.model.toLowerCase().includes("nvidia")

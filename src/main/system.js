@@ -44,7 +44,7 @@ async function getSystemInfo() {
     let gpuInfo = { model: "GPU not found", vram: "N/A", hasGPU: false, isNvidia: false }
 
     if (graphicsData.controllers && graphicsData.controllers.length > 0) {
-      const dedicatedGPU = graphicsData.controllers.find((controller) => {
+      const dedicatedControllers = graphicsData.controllers.filter((controller) => {
         const model = (controller.model || "").toLowerCase()
         return (
           (model.includes("nvidia") &&
@@ -61,10 +61,13 @@ async function getSystemInfo() {
               model.includes("rx") ||
               model.includes("vega") ||
               model.includes("firepro") ||
-              model.includes("instinct"))) ||
+              model.includes("instinct")) &&
+            !model.includes("graphics") &&
+            !model.includes("integrated")) ||
           (model.includes("intel") && model.includes("arc"))
         )
       })
+      const dedicatedGPU = dedicatedControllers.sort((a, b) => (b.vram || 0) - (a.vram || 0))[0]
 
       if (dedicatedGPU) {
         const hasGPU = true

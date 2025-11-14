@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow, ipcMain, globalShortcut } from "electron"
+import { app, shell, BrowserWindow, ipcMain } from "electron"
 import path, { join } from "path"
 import { electronApp, optimizer, is } from "@electron-toolkit/utils"
 import * as Sentry from "@sentry/electron/main"
@@ -168,12 +168,6 @@ app.whenReady().then(() => {
     setupDNSHandlers()
     void autoUnapplyHpet()
   }, 0)
-
-  if (app.isPackaged) {
-    globalShortcut.register("CommandOrControl+R", () => {})
-    globalShortcut.register("F5", () => {})
-    globalShortcut.register("CommandOrControl+Shift+R", () => {})
-  }
 
   electronApp.setAppUserModelId("com.parcoil.sparkle")
 

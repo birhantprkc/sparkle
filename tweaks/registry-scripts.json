@@ -1,5 +1,5 @@
 {
-  "version": "2025-10-31T23:42:08.964Z",
+  "version": "2025-11-26T01:48:31.205Z",
   "tweaks": [
     {
       "id": "align-taskbar-left",
@@ -320,22 +320,6 @@
       "scripts": {
         "apply": "$regPath = \"HKLM:\\System\\CurrentControlSet\\Control\\GraphicsDrivers\"\r\n$keyName = \"HwSchMode\"\r\n$value = 2\r\n\r\nIf (-not (Test-Path $regPath)) {\r\n    New-Item -Path $regPath -Force | Out-Null\r\n}\r\n\r\nSet-ItemProperty -Path $regPath -Name $keyName -Value $value -Type DWord\r\n\r\nWrite-Host \"Hardware-Accelerated GPU Scheduling enabled. A restart may be required.\"\r\n",
         "unapply": "$regPath = \"HKLM:\\System\\CurrentControlSet\\Control\\GraphicsDrivers\"\r\n$keyName = \"HwSchMode\"\r\n$value = 1\r\n\r\nIf (Test-Path $regPath) {\r\n    Set-ItemProperty -Path $regPath -Name $keyName -Value $value -Type DWord\r\n    Write-Host \"Hardware-Accelerated GPU Scheduling disabled. A restart may be required.\"\r\n}\r\nelse {\r\n    Write-Host \"Registry path not found.\"\r\n}\r\n"
-      }
-    },
-    {
-      "id": "enable-hpet",
-      "title": "Enable HPET (High Precision Event Timer)",
-      "description": "Forces use of the High Precision Event Timer, which can reduce stuttering and improve timing accuracy on some hardware.",
-      "category": [
-        "Performance"
-      ],
-      "recommended": false,
-      "reversible": true,
-      "docsurl": "https://docs.getsparkle.net/tweaks/enable-hpet",
-      "source": "https://github.com/Parcoil/Sparkle/blob/v2/tweaks/enable-hpet/meta.json",
-      "scripts": {
-        "apply": "try {\r\n    bcdedit /set useplatformclock true\r\n    Write-Host \"HPET enabled successfully\"\r\n  } catch {\r\n    Write-Host \"Failed to enable HPET\"\r\n  }",
-        "unapply": "try {\r\n    bcdedit /deletevalue useplatformclock\r\n    Write-Host \"HPET setting removed\"\r\n  } catch {\r\n    Write-Host \"Failed to disable HPET\"\r\n  }"
       }
     },
     {

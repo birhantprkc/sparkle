@@ -1,13 +1,10 @@
 {
   "name": "sparkle",
-  "version": "2.9.2",
+  "version": "2.9.3",
   "description": "Sparkle",
   "main": "./out/main/index.js",
   "author": "The Parcoil Network",
   "homepage": "https://getsparkle.net",
-  "pnpm": {
-    "onlyBuiltDependenciesFile": "./trusted-dependencies-scripts.json"
-  },
   "scripts": {
     "format": "prettier --write .",
     "start": "electron-vite preview",
@@ -99,7 +96,7 @@
       "!images/*",
       "!electron.vite.config.{js,ts,mjs,cjs}",
       "!{.eslintignore,.eslintrc.cjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}",
-      "!{.env,.env.*,.npmrc,pnpm-lock.yaml}",
+      "!{.env,.env.*,.npmrc,pnpm-lock.yaml,yarn.lock}",
       "!docs/**",
       "!eslint.config.mjs",
       "!get.ps1",
@@ -127,5 +124,6 @@
       "createDesktopShortcut": "always"
     },
     "npmRebuild": false
-  }
+  },
+  "packageManager": "yarn@1.22.22"
 }

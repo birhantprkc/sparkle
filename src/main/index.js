@@ -12,7 +12,7 @@ import "./dnsHandler"
 import "./backup"
 import { executePowerShell } from "./powershell"
 import { createTray } from "./tray"
-import { setupTweaksHandlers, autoUnapplyHpet } from "./tweakHandler"
+import { setupTweaksHandlers } from "./tweakHandler"
 import { setupDNSHandlers } from "./dnsHandler"
 import Store from "electron-store"
 import { startDiscordRPC, stopDiscordRPC } from "./rpc"
@@ -166,7 +166,6 @@ app.whenReady().then(() => {
     void ensureWinget()
     setupTweaksHandlers()
     setupDNSHandlers()
-    void autoUnapplyHpet()
   }, 0)
 
   electronApp.setAppUserModelId("com.parcoil.sparkle")

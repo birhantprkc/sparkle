@@ -1,5 +1,5 @@
 {
-  "version": "2025-10-31T23:42:08.964Z",
+  "version": "2025-11-26T01:48:31.205Z",
   "tweaks": [
     {
       "id": "align-taskbar-left",
@@ -245,18 +245,6 @@
       "reversible": true,
       "docsurl": "https://docs.getsparkle.net/tweaks/enable-hags",
       "source": "https://github.com/Parcoil/Sparkle/blob/v2/tweaks/enable-hags/meta.json"
-    },
-    {
-      "id": "enable-hpet",
-      "title": "Enable HPET (High Precision Event Timer)",
-      "description": "Forces use of the High Precision Event Timer, which can reduce stuttering and improve timing accuracy on some hardware.",
-      "category": [
-        "Performance"
-      ],
-      "recommended": false,
-      "reversible": true,
-      "docsurl": "https://docs.getsparkle.net/tweaks/enable-hpet",
-      "source": "https://github.com/Parcoil/Sparkle/blob/v2/tweaks/enable-hpet/meta.json"
     },
     {
       "id": "enable-optimization-for-windowed-games",

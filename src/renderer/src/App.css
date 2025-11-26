@@ -97,18 +97,18 @@ layer(base);
   }
 
   .purple {
-    --color-sparkle-bg: #151122;
-    --color-sparkle-text: #dac9f5;
-    --color-sparkle-text-dark: #c6aef5;
-    --color-sparkle-text-darker: #b091e6;
-    --color-sparkle-text-secondary: #a48adf;
-    --color-sparkle-text-muted: #3c305a;
-    --color-sparkle-card: #1e1830;
-    --color-sparkle-border: #301a54;
-    --color-sparkle-border-secondary: #341d5a;
-    --color-sparkle-primary: #7c32cc;
-    --color-sparkle-secondary: #6a1cb4;
-    --color-sparkle-accent: #341a4c;
+    --color-sparkle-bg: #120f1c;
+    --color-sparkle-text: #e3d8ff;
+    --color-sparkle-text-dark: #cbb8ff;
+    --color-sparkle-text-darker: #b199ff;
+    --color-sparkle-text-secondary: #9a85e8;
+    --color-sparkle-text-muted: #4a3a6b;
+    --color-sparkle-card: #1a1430;
+    --color-sparkle-border: #2f1b60;
+    --color-sparkle-border-secondary: #3a2178;
+    --color-sparkle-primary: #8e44ff;
+    --color-sparkle-secondary: #3463ff;
+    --color-sparkle-accent: #3b1673;
   }
 
   .gray {
@@ -122,7 +122,7 @@ layer(base);
     --color-sparkle-border: #26272b;
     --color-sparkle-border-secondary: #232426;
     --color-sparkle-primary: #6366f1;
-    --color-sparkle-secondary: #818cf8;
+    --color-sparkle-secondary: #b981f8;
     --color-sparkle-accent: #232324;
   }
 

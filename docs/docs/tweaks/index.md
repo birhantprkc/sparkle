@@ -7,7 +7,7 @@ A collection of tweaks to customize and enhance your Windows experience using Sp
 
 _This page is auto-generated._
 
-## All Tweaks (34)
+## All Tweaks (33)
 - [align-taskbar-left](align-taskbar-left.md)
 - [debloat-windows](debloat-windows.md)
 - [detailed-bsod](detailed-bsod.md)
@@ -27,7 +27,7 @@ _This page is auto-generated._
 - [enable-end-task-right-click](enable-end-task-right-click.md)
 - [enable-game-mode](enable-game-mode.md)
 - [enable-hags](enable-hags.md)
-- [enable-hpet](enable-hpet.md)
+
 - [enable-optimization-for-windowed-games](enable-optimization-for-windowed-games.md)
 - [menu-show-delay-zero](menu-show-delay-zero.md)
 - [optimize-network-settings](optimize-network-settings.md)

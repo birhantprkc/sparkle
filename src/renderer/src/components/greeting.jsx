@@ -49,7 +49,10 @@ function Greeting() {
 
   return (
     <h1 className="text-2xl font-bold mb-4">
-      {randomGreeting}, <span className="text-sparkle-primary">{name || "friend"}</span>
+      {randomGreeting},{" "}
+      <span className="bg-linear-to-r from-sparkle-primary to-sparkle-secondary bg-clip-text text-transparent">
+        {name || "friend"}
+      </span>
     </h1>
   )
 }

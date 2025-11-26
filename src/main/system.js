@@ -205,7 +205,7 @@ function openLogFolder() {
 }
 
 const ensureWingetScript = `
-$TestMode = $false  # Set $true to force winget install for testing
+$TestMode = $true  # Set $true to force winget install for testing
 
 function Check-Winget {
     try {
@@ -255,69 +255,177 @@ function Show-InstallerGUI {
         [System.Windows.Forms.Application]::DoEvents()
     }
 
-    $timer = New-Object System.Windows.Forms.Timer
-    $timer.Interval = 100
-    $timer.Add_Tick({
-        $timer.Stop()
-        
-        Append-Output "Checking for Winget..."
-        $wingetInstalled = Check-Winget
+    # Create a runspace for background work
+    $runspace = [runspacefactory]::CreateRunspace()
+    $runspace.ApartmentState = "STA"
+    $runspace.ThreadOptions = "ReuseThread"
+    $runspace.Open()
+    $runspace.SessionStateProxy.SetVariable("TestMode", $TestMode)
 
-        if ($TestMode -or -not $wingetInstalled) {
-            Append-Output "Winget not found. Installing for Sparkle..."
-            
+    $powershell = [powershell]::Create()
+    $powershell.Runspace = $runspace
+
+    [void]$powershell.AddScript({
+        function Check-Winget {
             try {
-                Append-Output "Attempting to register App Installer..."
-                Add-AppxPackage -RegisterByFamilyName -MainPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe
-                Start-Sleep -Seconds 2
-                
-                if (Check-Winget) {
-                    Append-Output "Winget installed successfully!"
-                } else {
-                    throw "Registration completed but winget not found"
-                }
+                $null = winget --version 2>&1
+                return $LASTEXITCODE -eq 0
             } catch {
-                Append-Output "Registration method failed. Trying download method..."
+                return $false
+            }
+        }
+
+        $result = @{
+            Success = $false
+            Messages = @()
+        }
+
+        try {
+            $result.Messages += "Checking for Winget..."
+            $wingetInstalled = Check-Winget
+
+            if ($TestMode -or -not $wingetInstalled) {
+                $result.Messages += "Winget not found. Installing for Sparkle..."
                 
                 try {
-                    Append-Output "Downloading latest App Installer package..."
-                    $progressPreference = 'SilentlyContinue'
+                    $result.Messages += "Attempting to register App Installer..."
                     
-                    $releases = Invoke-RestMethod -Uri "https://api.github.com/repos/microsoft/winget-cli/releases/latest"
-                    $downloadUrl = ($releases.assets | Where-Object { $_.name -like "*.msixbundle" }).browser_download_url
+                    # Add timeout wrapper for AppX operations
+                    $job = Start-Job -ScriptBlock {
+                        Add-AppxPackage -RegisterByFamilyName -MainPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe
+                    }
                     
-                    $tempFile = Join-Path $env:TEMP "Microsoft.DesktopAppInstaller.msixbundle"
-                    Invoke-WebRequest -Uri $downloadUrl -OutFile $tempFile
+                    $completed = Wait-Job -Job $job -Timeout 60
+                    if ($completed) {
+                        Receive-Job -Job $job
+                        Remove-Job -Job $job
+                    } else {
+                        Remove-Job -Job $job -Force
+                        throw "Registration timed out after 60 seconds"
+                    }
                     
-                    Append-Output "Installing package..."
-                    Add-AppxPackage -Path $tempFile
-                    
-                    Remove-Item $tempFile -Force
                     Start-Sleep -Seconds 2
                     
                     if (Check-Winget) {
-                        Append-Output "Winget installed successfully!"
+                        $result.Messages += "Winget installed successfully!"
+                        $result.Success = $true
                     } else {
-                        Append-Output "WARNING: Installation completed but winget command not available yet."
-                        Append-Output "You may need to restart your terminal or computer."
+                        throw "Registration completed but winget not found"
                     }
                 } catch {
-                    Append-Output "ERROR: Failed to install Winget."
-                    Append-Output $_.Exception.Message
-                    Append-Output ""
-                    Append-Output "Manual installation: Visit https://aka.ms/getwinget"
+                    $result.Messages += "Registration method failed: $($_.Exception.Message)"
+                    $result.Messages += "Trying download method..."
+                    
+                    try {
+                        $result.Messages += "Downloading latest App Installer package..."
+                        $progressPreference = 'SilentlyContinue'
+                        
+                        # Add timeout to web requests
+                        $releases = Invoke-RestMethod -Uri "https://api.github.com/repos/microsoft/winget-cli/releases/latest" -TimeoutSec 30
+                        $downloadUrl = ($releases.assets | Where-Object { $_.name -like "*.msixbundle" }).browser_download_url
+                        
+                        if (-not $downloadUrl) {
+                            throw "Could not find download URL in GitHub release"
+                        }
+                        
+                        $tempFile = Join-Path $env:TEMP "Microsoft.DesktopAppInstaller.msixbundle"
+                        
+                        $result.Messages += "Downloading from GitHub..."
+                        Invoke-WebRequest -Uri $downloadUrl -OutFile $tempFile -TimeoutSec 120
+                        
+                        $result.Messages += "Installing package (this may take a minute)..."
+                        
+                        # Add timeout wrapper for installation
+                        $job = Start-Job -ScriptBlock {
+                            param($path)
+                            Add-AppxPackage -Path $path
+                        } -ArgumentList $tempFile
+                        
+                        $completed = Wait-Job -Job $job -Timeout 120
+                        if ($completed) {
+                            Receive-Job -Job $job
+                            Remove-Job -Job $job
+                        } else {
+                            Remove-Job -Job $job -Force
+                            throw "Installation timed out after 120 seconds"
+                        }
+                        
+                        # Clean up
+                        if (Test-Path $tempFile) {
+                            Remove-Item $tempFile -Force -ErrorAction SilentlyContinue
+                        }
+                        
+                        Start-Sleep -Seconds 2
+                        
+                        if (Check-Winget) {
+                            $result.Messages += "Winget installed successfully!"
+                            $result.Success = $true
+                        } else {
+                            $result.Messages += "WARNING: Installation completed but winget command not available yet."
+                            $result.Messages += "You may need to restart your terminal or computer."
+                            $result.Success = $false
+                        }
+                    } catch {
+                        $result.Messages += "ERROR: Failed to install Winget."
+                        $result.Messages += $_.Exception.Message
+                        $result.Messages += ""
+                        $result.Messages += "Manual installation: Visit https://aka.ms/getwinget"
+                        $result.Success = $false
+                    }
                 }
+            } else {
+                $result.Messages += "Winget is already installed. Sparkle is ready to install apps!"
+                $result.Success = $true
             }
-        } else {
-            Append-Output "Winget is already installed. Sparkle is ready to install apps!"
+        } catch {
+            $result.Messages += "ERROR: Unexpected error occurred."
+            $result.Messages += $_.Exception.Message
+            $result.Success = $false
         }
 
-        Append-Output ""
-        Append-Output "You can now close this window."
-        $closeButton.Enabled = $true
+        return $result
+    })
+
+    $handle = $powershell.BeginInvoke()
+
+    # Poll for completion
+    $timer = New-Object System.Windows.Forms.Timer
+    $timer.Interval = 500
+    $timer.Add_Tick({
+        if ($handle.IsCompleted) {
+            $timer.Stop()
+            
+            try {
+                $result = $powershell.EndInvoke($handle)
+                
+                foreach ($message in $result.Messages) {
+                    Append-Output $message
+                }
+                
+                Append-Output ""
+                Append-Output "You can now close this window."
+            } catch {
+                Append-Output "ERROR: Installation process failed."
+                Append-Output $_.Exception.Message
+            } finally {
+                $closeButton.Enabled = $true
+                $powershell.Dispose()
+                $runspace.Close()
+            }
+        }
     })
 
     $form.Add_Shown({ $timer.Start() })
+    
+    # Clean up on form close
+    $form.Add_FormClosing({
+        if (-not $handle.IsCompleted) {
+            $powershell.Stop()
+        }
+        $timer.Stop()
+        $powershell.Dispose()
+        $runspace.Close()
+    })
 
     [void]$form.ShowDialog()
 }
@@ -330,7 +438,7 @@ if ($TestMode -or -not (Check-Winget)) {
 }
 `
 
-export { ensureWinget }
+export { ensureWingetScript }
 
 function ensureWinget() {
   const result = executePowerShell(null, {
@@ -340,6 +448,7 @@ function ensureWinget() {
   return result
 }
 
+export { ensureWinget }
 ipcMain.handle("restart", restartSystem)
 ipcMain.handle("open-log-folder", openLogFolder)
 ipcMain.handle("clear-sparkle-cache", clearSparkleCache)

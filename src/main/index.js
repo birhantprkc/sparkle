@@ -32,13 +32,21 @@ async function Defender() {
   const Apppath = path.dirname(process.execPath)
   if (app.isPackaged) {
     const result = await executePowerShell(null, {
-      script: `Add-MpPreference -ExclusionPath ${Apppath}`,
+      script: `
+        if (Get-Command Add-MpPreference -ErrorAction SilentlyContinue) {
+          Add-MpPreference -ExclusionPath '${Apppath}'
+          Write-Output "Success"
+        } else {
+          Write-Output "Skipped"
+        }
+      `,
       name: "Add-MpPreference",
     })
-    if (result.success) {
-      console.log(logo, "Added Sparkle to Windows Defender Exclusions")
+
+    if (result.output && result.output.includes("Skipped")) {
+      console.log(logo, "Skipped Windows Defender exclusion (Defender not found)")
     } else {
-      console.error(logo, "Failed to add Sparkle to Windows Defender Exclusions", result.error)
+      console.log(logo, "Added Sparkle to Windows Defender Exclusions")
     }
   } else {
     console.log(logo, "Running in development mode, skipping Windows Defender exclusion")

@@ -95,6 +95,15 @@ function Settings({ onCheckForUpdates }) {
     setTrayLoading(false)
   }
 
+  const handleRestartExplorer = async () => {
+    try {
+      await invoke({ channel: "restart-explorer" })
+      toast.success("Explorer restarted successfully")
+    } catch (e) {
+      toast.error("Failed to restart explorer: " + String(e))
+    }
+  }
+
   return (
     <>
       <Modal open={deleteModalOpen} onClose={() => setDeleteModalOpen(false)}>
@@ -348,6 +357,24 @@ function Settings({ onCheckForUpdates }) {
                       {trayEnabled ? "Enabled" : "Disabled"}
                     </span>
                   </div>
+                </div>
+              </SettingCard>
+            </SettingSection>
+
+            <SettingSection title="Troubleshooting">
+              <SettingCard>
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <h3 className="text-base font-medium text-sparkle-text mb-1">
+                      Restart Explorer
+                    </h3>
+                    <p className="text-sm text-sparkle-text-secondary">
+                      Restarts Windows Explorer and Taskbar. Useful if the taskbar disappears.
+                    </p>
+                  </div>
+                  <Button variant="secondary" onClick={handleRestartExplorer}>
+                    Restart Explorer
+                  </Button>
                 </div>
               </SettingCard>
             </SettingSection>

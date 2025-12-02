@@ -124,6 +124,17 @@ function restartSystem() {
     throw error
   }
 }
+
+function restartExplorer() {
+  try {
+    exec("taskkill /f /im explorer.exe & start explorer.exe")
+    return { success: true }
+  } catch (error) {
+    console.error("Failed to restart explorer:", error)
+    return { success: false, error: error.message }
+  }
+}
+
 function getUserName() {
   return os.userInfo().username
 }
@@ -205,7 +216,7 @@ function openLogFolder() {
 }
 
 const ensureWingetScript = `
-$TestMode = $true  # Set $true to force winget install for testing
+$TestMode = $false  # Set $true to force winget install for testing
 
 function Check-Winget {
     try {
@@ -454,3 +465,4 @@ ipcMain.handle("open-log-folder", openLogFolder)
 ipcMain.handle("clear-sparkle-cache", clearSparkleCache)
 ipcMain.handle("get-system-info", getSystemInfo)
 ipcMain.handle("get-user-name", getUserName)
+ipcMain.handle("restart-explorer", restartExplorer)

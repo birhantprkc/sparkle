@@ -1,20 +1,25 @@
-import { Wrench, Folder, LayoutGrid, Icon } from "lucide-react"
+import { invoke } from "@/lib/electron"
 import { broom } from "@lucide/lab"
-import { useLocation, useNavigate } from "react-router-dom"
 import { clsx } from "clsx"
-import useRestartStore from "../store/restartState"
+import {
+  Box,
+  EthernetPort,
+  Folder,
+  Gauge,
+  Icon,
+  LayoutGrid,
+  RefreshCw,
+  Settings,
+  Wrench,
+} from "lucide-react"
+import { useEffect, useRef, useState } from "react"
+import { useLocation, useNavigate } from "react-router-dom"
 import info from "../../../../package.json"
+import useRestartStore from "../store/restartState"
+import DiscordIcon from "./discordicon"
+import GithubIcon from "./githubicon"
 import Button from "./ui/button"
 import Modal from "./ui/modal"
-import { invoke } from "@/lib/electron"
-import GithubIcon from "./githubicon"
-import DiscordIcon from "./discordicon"
-import { Box } from "lucide-react"
-import { Settings } from "lucide-react"
-import { RefreshCw } from "lucide-react"
-import { useRef, useEffect, useState } from "react"
-import { EthernetPort } from "lucide-react"
-import { Gauge } from "lucide-react"
 
 const tabIcons = {
   home: <Gauge size={20} />,
@@ -30,9 +35,9 @@ const tabIcons = {
 const tabs = {
   home: { label: "Dashboard", path: "/" },
   tweaks: { label: "Tweaks", path: "/tweaks" },
+  utilities: { label: "Utilities", path: "/utilities" },
   clean: { label: "Cleaner", path: "/clean" },
   backup: { label: "Restore Points", path: "/backup" },
-  utilities: { label: "Utilities", path: "/utilities" },
   dns: { label: "DNS Manager", path: "/dns" },
   apps: { label: "Apps", path: "/apps" },
   settings: { label: "Settings", path: "/settings" },
@@ -101,6 +106,11 @@ function Nav() {
           >
             <div>{tabIcons[id]}</div>
             <span className="text-sm">{label}</span>
+            {id === "utilities" && (
+              <span className="text-xs bg-sparkle-primary text-sparkle-bg px-1.5 py-0.5 rounded-full">
+                New
+              </span>
+            )}
           </Button>
         ))}
       </div>

@@ -1,254 +1,517 @@
-import { useState } from "react"
-import { invoke } from "@/lib/electron"
 import RootDiv from "@/components/rootdiv"
-import Modal from "@/components/ui/modal"
-import { toast } from "react-toastify"
 import Button from "@/components/ui/button"
+import Card from "@/components/ui/card"
 import Toggle from "@/components/ui/toggle"
-import log from "electron-log/renderer"
 import {
-  SquareTerminal,
-  Binary,
-  ChartColumn,
-  Settings,
+  GpuIcon,
   HardDrive,
-  Activity,
-  Shield,
-  Wrench,
   Monitor,
-  MonitorCog,
-  Printer,
-  Info,
-  CaseSensitive,
-  ScreenShare,
+  GlobeIcon,
+  Zap,
+  Computer,
+  Volume2Icon,
+  WifiIcon,
+  RefreshCwIcon,
 } from "lucide-react"
+import React, { useState, useEffect } from "react"
+import { invoke } from "@/lib/electron"
+import { toast } from "react-toastify"
+import log from "electron-log/renderer"
+import { Dropdown } from "@/components/ui/dropdown"
+import Modal from "@/components/ui/modal"
 
+/**
+ * Array of utility objects for the Utilities page.
+ * Each utility represents a system maintenance or information tool.
+ *
+ * @type {Array<Object>}
+ * @property {string} name - The display name of the utility
+ * @property {string} description - A brief description of what the utility does
+ * @property {boolean} state - The initial state/enabled status of the utility
+ * @property {React.ReactNode} icon - The icon component to display for the utility
+ * @property {string} type - The type of control: "button" or "toggle" or "dropdown"
+ * @property {string} [buttonText] - The text displayed on the button (required if type is "button")
+ * @property {Array<string>} [options] - Array of dropdown options (required if type is "dropdown")
+ * @property {string} [checkScript] - PowerShell script to check current state
+ * @property {string} [applyScript] - PowerShell script to apply/enable the setting
+ * @property {string} [unapplyScript] - PowerShell script to unapply/disable the setting
+ * @property {string} [runScript] - PowerShell script to run for button actions
+ *
+ * @example
+ * {
+ *   name: "Disk Cleaner",
+ *   description: "Free up space by removing unnecessary files.",
+ *   state: true,
+ *   icon: <HardDrive />,
+ *   type: "button",
+ *   buttonText: "Clean Now",
+ *   runScript: "cleanmgr /sagerun:1"
+ * }
+ */
 const utilities = [
   {
-    name: "System File Checker",
-    command: "sfc /scannow",
-    type: "System",
-    icon: <Shield className="w-5 h-5" />,
-    color: "text-blue-500",
+    name: "Disk Cleaner",
+    description: "Free up space by removing unnecessary files.",
+    state: true,
+    icon: <HardDrive />,
+    type: "button",
+    buttonText: "Clean Now",
+    runScript: "cleanmgr /sagerun:1",
   },
   {
-    name: "DISM Health Restore",
-    command: "DISM /Online /Cleanup-Image /RestoreHealth",
-    type: "System",
-    icon: <Activity className="w-5 h-5" />,
-    color: "text-green-500",
+    name: "Storage Sense",
+    description: "Automatically free up space by getting rid of files you don't need.",
+    state: true,
+    icon: <Computer />,
+    type: "toggle",
+    checkScript: `
+$path = "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\StorageSense\\Parameters\\StoragePolicy"
+if (Test-Path $path) {
+  $value = Get-ItemProperty -Path $path -Name "01" -ErrorAction SilentlyContinue
+  if ($value."01" -eq 1) { Write-Output "enabled" } else { Write-Output "disabled" }
+} else {
+  Write-Output "disabled"
+}`,
+    applyScript: `
+$path = "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\StorageSense\\Parameters\\StoragePolicy"
+if (-not (Test-Path $path)) {
+  New-Item -Path $path -Force | Out-Null
+}
+Set-ItemProperty -Path $path -Name "01" -Value 1`,
+    unapplyScript: `
+$path = "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\StorageSense\\Parameters\\StoragePolicy"
+if (Test-Path $path) {
+  Set-ItemProperty -Path $path -Name "01" -Value 0
+}`,
   },
   {
-    name: "Check Disk",
-    command: "chkdsk C: /f /r /x",
-    type: "System",
-    icon: <HardDrive className="w-5 h-5" />,
-    color: "text-yellow-500",
+    name: "System Information",
+    description: "View detailed information about your system.",
+    state: false,
+    icon: <Monitor />,
+    type: "button",
+    buttonText: "View Info",
+    runScript: "msinfo32",
   },
   {
-    name: "Show Power Plan",
-    type: "System",
-    command: "powercfg /getactivescheme",
-    icon: <Settings className="w-5 h-5" />,
-    color: "text-purple-500",
+    name: "Fast Startup",
+    description: "Improve boot times by optimizing startup settings.",
+    state: false,
+    icon: <Zap />,
+    type: "toggle",
+    checkScript: `
+$path = "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Power"
+if (Test-Path $path) {
+    $value = Get-ItemProperty -Path $path -Name "HiberbootEnabled" -ErrorAction SilentlyContinue
+    if ($value.HiberbootEnabled -eq 1) { Write-Output "enabled" } else { Write-Output "disabled" }
+} else {
+    Write-Output "disabled"
+}`,
+    applyScript: `
+powercfg /hibernate on
+$path = "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Power"
+if (!(Test-Path $path)) { New-Item -Path $path -Force | Out-Null }
+Set-ItemProperty -Path $path -Name "HiberbootEnabled" -Type DWord -Value 1
+`,
+    unapplyScript: `
+$path = "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Power"
+if (Test-Path $path) { Set-ItemProperty -Path $path -Name "HiberbootEnabled" -Type DWord -Value 0 }
+`,
   },
   {
-    name: "Reset IP Stack",
-    type: "Network",
-    command: "netsh int ip reset",
-    icon: <Wrench className="w-5 h-5" />,
-    color: "text-pink-500",
+    name: "Windows Updates",
+    description: "Control how Windows handles automatic updates.",
+    state: false,
+    icon: <RefreshCwIcon />,
+    type: "dropdown",
+    options: ["Default", "Manual", "Disabled"],
+    checkScript: `
+$service = Get-Service -Name wuauserv -ErrorAction SilentlyContinue
+if ($service.StartType -eq 'Automatic') { Write-Output 'Default' }
+elseif ($service.StartType -eq 'Manual') { Write-Output 'Manual' }
+elseif ($service.StartType -eq 'Disabled') { Write-Output 'Disabled' }
+else { Write-Output 'Unknown' }
+`,
+    applyScript: {
+      Default: `
+Set-Service -Name wuauserv -StartupType Automatic
+Start-Service -Name wuauserv -ErrorAction SilentlyContinue
+Write-Output "Windows Update set to Default (Automatic)."
+`,
+      Manual: `
+Set-Service -Name wuauserv -StartupType Manual
+Stop-Service -Name wuauserv -Force -ErrorAction SilentlyContinue
+Write-Output "Windows Update set to Manual."
+`,
+      Disabled: `
+Stop-Service -Name wuauserv -Force -ErrorAction SilentlyContinue
+Set-Service -Name wuauserv -StartupType Disabled
+Write-Output "Windows Update service disabled."
+`,
+    },
   },
   {
-    name: "Reset Winsock",
-    type: "Network",
-    command: "netsh winsock reset",
-    icon: <Wrench className="w-5 h-5" />,
-    color: "text-red-500",
+    name: "Graphics Driver",
+    description: "Restart your graphics driver to fix display issues.",
+    state: false,
+    icon: <GpuIcon />,
+    type: "button",
+    buttonText: "Restart",
+    runScript: `
+$gpus = Get-PnpDevice -Class Display -Status OK -ErrorAction SilentlyContinue
+if ($gpus) {
+    foreach ($gpu in $gpus) {
+        Write-Output "Restarting $($gpu.FriendlyName)..."
+        Disable-PnpDevice -InstanceId $gpu.InstanceId -Confirm:$false
+        Start-Sleep -Seconds 2
+        Enable-PnpDevice -InstanceId $gpu.InstanceId -Confirm:$false
+    }
+    Write-Output "Graphics driver restart completed."
+} else {
+    Write-Output "No active display devices found."
+}
+`,
+  },
+  {
+    name: "Power Plan",
+    description: "Choose how your computer manages power and performance.",
+    state: false,
+    icon: <Monitor />,
+    type: "dropdown",
+    options: ["Balanced", "High Performance", "Power Saver", "Ultimate Performance"],
+    checkScript: `
+$current = powercfg /getactivescheme
+if ($current -match "Power saver") { Write-Output "Power Saver" }
+elseif ($current -match "High performance") { Write-Output "High Performance" }
+elseif ($current -match "Ultimate Performance") { Write-Output "Ultimate Performance" }
+else { Write-Output "Balanced" }
+`,
+    applyScript: {
+      Balanced: `powercfg /setactive 381b4222-f694-41f0-9685-ff5bb260df2e`,
+      "High Performance": `powercfg /setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c`,
+      "Power Saver": `powercfg /setactive a1841308-3541-4fab-bc81-f71556f20b4a`,
+      "Ultimate Performance": `
+$ultimatePlan = powercfg -l | Select-String "Ultimate Performance"
+
+if (-not $ultimatePlan) {
+    Write-Host "Ultimate Performance plan not found. Creating..."
+    powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61
+} else {
+    Write-Host "Ultimate Performance plan already exists."
+}
+
+$ultimatePlanGUID = (powercfg -l | Select-String "Ultimate Performance").ToString().Split()[3]
+
+if ($ultimatePlanGUID) {
+    powercfg -setactive $ultimatePlanGUID 2>$null
+    Write-Host "Ultimate Performance power plan is now active."
+} else {
+    Write-Host "Failed to find Ultimate Performance plan GUID."
+}
+`,
+    },
   },
   {
     name: "Flush DNS Cache",
-    type: "Network",
-    command: "ipconfig /flushdns",
-    icon: <Wrench className="w-5 h-5" />,
-    color: "text-indigo-500",
+    description: "Fix connection issues by clearing DNS resolver cache.",
+    state: false,
+    icon: <GlobeIcon />,
+    type: "button",
+    buttonText: "Flush",
+    runScript: `
+ipconfig /flushdns
+Write-Output "DNS cache flushed."
+`,
   },
   {
-    name: "Disk Cleanup",
-    type: "System",
-    command: "cleanmgr.exe /sagerun:1",
-    icon: <HardDrive className="w-5 h-5" />,
-    color: "text-teal-500",
+    name: "Restart Audio Service",
+    description: "Fix sound issues by restarting Windows Audio.",
+    state: false,
+    icon: <Volume2Icon />,
+    type: "button",
+    buttonText: "Restart",
+    runScript: `
+Stop-Service -Name "Audiosrv" -Force -ErrorAction SilentlyContinue
+Start-Service -Name "Audiosrv" -ErrorAction SilentlyContinue
+Write-Output "Audio service restarted."
+`,
+  },
+  {
+    name: "Network Reset",
+    description: "Reset your network stack to fix connectivity problems.",
+    state: false,
+    icon: <WifiIcon />,
+    type: "button",
+    buttonText: "Reset",
+    runScript: `
+netsh winsock reset
+netsh int ip reset
+Write-Output "Network stack reset. Restart your PC to apply changes."
+`,
   },
 ]
 
-export default function UtilitiesPage() {
-  const [running, setRunning] = useState(false)
+function Utilities() {
+  const [dropdownValues, setDropdownValues] = useState({})
+  const [toggleStates, setToggleStates] = useState({})
+  const [loading, setLoading] = useState(true)
   const [modalOpen, setModalOpen] = useState(false)
-  const [selectedUtility, setSelectedUtility] = useState(null)
-  const [noExit, setNoExit] = useState(true)
 
-  const confirmAndRun = async () => {
-    if (!selectedUtility) return
-    setModalOpen(false)
-    setRunning(true)
-    const toastId = toast.loading(`Running ${selectedUtility.name}...`)
-    try {
-      await invoke({
-        channel: "run-powershell-window",
-        payload: { script: selectedUtility.command, name: selectedUtility.name, noExit: noExit },
-      })
-      toast.update(toastId, {
-        render: `${selectedUtility.name} completed!`,
-        type: "success",
-        isLoading: false,
-        autoClose: 3000,
-      })
-    } catch (error) {
-      log.error(`Error running utility ${selectedUtility.name}:`, error)
-      toast.update(toastId, {
-        render: `Failed to run ${selectedUtility.name}: ${error.message || error}`,
-        type: "error",
-        isLoading: false,
-        autoClose: 4000,
-      })
+  useEffect(() => {
+    if (localStorage.getItem("utilitiesModalShown") !== "true") {
+      setModalOpen(true)
     }
-    setRunning(false)
-    setSelectedUtility(null)
-  }
+  }, [])
 
-  const openConfirmationModal = (utility) => {
-    setSelectedUtility(utility)
-    setModalOpen(true)
-  }
+  useEffect(() => {
+    const checkAllStates = async () => {
+      for (const util of utilities) {
+        if (util.type === "toggle" && util.checkScript) {
+          try {
+            const result = await invoke({
+              channel: "run-powershell",
+              payload: {
+                script: util.checkScript,
+                name: `check-${util.name}`,
+              },
+            })
+            if (result.success) {
+              const isEnabled = result.output.trim().toLowerCase() === "enabled"
+              setToggleStates((prev) => ({ ...prev, [util.name]: isEnabled }))
+            }
+          } catch (error) {
+            console.error(`Failed to check ${util.name}:`, error)
+            log.error(`Failed to check ${util.name}:`, error)
+          }
+        } else if (util.type === "dropdown" && util.checkScript) {
+          try {
+            const result = await invoke({
+              channel: "run-powershell",
+              payload: {
+                script: util.checkScript,
+                name: `check-${util.name}`,
+              },
+            })
+            if (result.success) {
+              const value = result.output.trim()
+              setDropdownValues((prev) => ({ ...prev, [util.name]: value }))
+            }
+          } catch (error) {
+            console.error(`Failed to check ${util.name}:`, error)
+            log.error(`Failed to check ${util.name}:`, error)
+          }
+        }
+      }
+      setLoading(false)
+    }
 
-  const openQuickAccessTool = async (script) => {
-    try {
-      await invoke({
-        channel: "run-powershell",
-        payload: { script },
-      })
-    } catch (error) {
-      log.error("Error running quick access tool:", error)
+    checkAllStates()
+  }, [])
+
+  const handleToggleChange = async (util, newState) => {
+    const previousState = toggleStates[util.name]
+    setToggleStates((prev) => ({ ...prev, [util.name]: newState }))
+
+    const script = newState ? util.applyScript : util.unapplyScript
+    if (script) {
+      const loadingToastId = toast.loading(
+        `${newState ? "Applying" : "Unapplying"} ${util.name}...`,
+      )
+      try {
+        const result = await invoke({
+          channel: "run-powershell",
+          payload: {
+            script,
+            name: `${newState ? "apply" : "unapply"}-${util.name}`,
+          },
+        })
+        if (!result.success) {
+          throw new Error(result.error || "Failed to execute script")
+        }
+        toast.update(loadingToastId, {
+          render: `${newState ? "Applied" : "Unapplied"} ${util.name}`,
+          type: "success",
+          isLoading: false,
+          autoClose: 3000,
+        })
+      } catch (error) {
+        console.error(`Error toggling ${util.name}:`, error)
+        log.error(`Error toggling ${util.name}:`, error)
+        setToggleStates((prev) => ({ ...prev, [util.name]: previousState }))
+        toast.update(loadingToastId, {
+          render: `Failed to ${newState ? "apply" : "unapply"} ${util.name}`,
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+        })
+      }
     }
   }
 
-  const quickAccess = [
-    {
-      name: "Regedit",
-      command: "start regedit.exe",
-      icon: <Binary className="w-6 h-6 text-green-400" />,
-    },
-    {
-      name: "Task Manager",
-      command: "start taskmgr.exe",
-      icon: <ChartColumn className="w-6 h-6 text-blue-400" />,
-    },
-    {
-      name: "Disk Cleanup",
-      command: "start cleanmgr.exe",
-      icon: <HardDrive className="w-6 h-6 text-teal-400" />,
-    },
-    {
-      name: "Display Settings",
-      command: "start desk.cpl",
-      icon: <Monitor className="w-6 h-6 text-purple-400" />,
-    },
-    {
-      name: "System Information",
-      command: "start msinfo32.exe",
-      icon: <MonitorCog className="w-6 h-6 text-red-400" />,
-    },
-    {
-      name: "Device Manager",
-      command: "start devmgmt.msc",
-      icon: <Printer className="w-6 h-6 text-indigo-400" />,
-    },
-    {
-      name: "System Properties",
-      command: "start sysdm.cpl",
-      icon: <Info className="w-6 h-6 text-yellow-400" />,
-    },
-    {
-      name: "Character Map",
-      command: "start charmap.exe",
-      icon: <CaseSensitive className="w-6 h-6 text-pink-400" />,
-    },
-    {
-      name: "Remote Desktop",
-      command: "start mstsc.exe",
-      icon: <ScreenShare className="w-6 h-6 text-blue-400" />,
-    },
-  ]
+  const handleDropdownChange = async (util, value) => {
+    const previousValue = dropdownValues[util.name]
+    setDropdownValues((prev) => ({ ...prev, [util.name]: value }))
+
+    if (util.applyScript) {
+      const script =
+        typeof util.applyScript === "object" ? util.applyScript[value] : util.applyScript
+      if (script) {
+        const loadingToastId = toast.loading(`Applying ${util.name}: ${value}...`)
+        try {
+          const result = await invoke({
+            channel: "run-powershell",
+            payload: {
+              script,
+              name: `apply-${util.name}-${value}`,
+            },
+          })
+          if (!result.success) {
+            throw new Error(result.error || "Failed to execute script")
+          }
+          toast.update(loadingToastId, {
+            render: `Applied ${util.name}: ${value}`,
+            type: "success",
+            isLoading: false,
+            autoClose: 3000,
+          })
+        } catch (error) {
+          console.error(`Error applying ${util.name}:`, error)
+          log.error(`Error applying ${util.name}:`, error)
+          setDropdownValues((prev) => ({ ...prev, [util.name]: previousValue }))
+          toast.update(loadingToastId, {
+            render: `Failed to apply ${util.name}: ${value}`,
+            type: "error",
+            isLoading: false,
+            autoClose: 3000,
+          })
+        }
+      }
+    }
+  }
+
+  const handleButtonClick = async (util) => {
+    if (util.runScript) {
+      const loadingToastId = toast.loading(`Running ${util.name}...`)
+      try {
+        const result = await invoke({
+          channel: "run-powershell",
+          payload: {
+            script: util.runScript,
+            name: `run-${util.name}`,
+          },
+        })
+        if (!result.success) {
+          throw new Error(result.error || "Failed to execute script")
+        }
+        toast.update(loadingToastId, {
+          render: `${util.name} completed`,
+          type: "success",
+          isLoading: false,
+          autoClose: 3000,
+        })
+      } catch (error) {
+        console.error(`Error running ${util.name}:`, error)
+        log.error(`Error running ${util.name}:`, error)
+        toast.update(loadingToastId, {
+          render: `Failed to run ${util.name}`,
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+        })
+      }
+    }
+  }
+
+  if (loading) {
+    return (
+      <RootDiv>
+        <div className="flex items-center justify-center h-64 flex-col gap-4">
+          <div className="w-8 h-8 border-4 border-sparkle-border-secondary border-t-sparkle-primary rounded-full animate-spin" />
+          <p className="text-sparkle-text-secondary">Loading utilities... (Please Wait)</p>
+        </div>
+      </RootDiv>
+    )
+  }
 
   return (
     <>
       <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
-        <div className="bg-sparkle-card p-6 rounded-2xl border border-sparkle-border text-sparkle-text w-[90vw] max-w-md">
-          <h2 className="text-lg font-semibold mb-4">Confirm Action</h2>
-          {selectedUtility && (
-            <>
-              <p className="mb-4">
-                You are about to run{" "}
-                <span className={`${selectedUtility.color} underline  font-medium`}>
-                  {selectedUtility.name}
-                </span>
-                .
-              </p>
-              <div className="bg-sparkle-border-secondary border border-sparkle-border p-2 text-sm rounded-md text-sparkle-text-secondary">
-                {selectedUtility.command}
-              </div>
-            </>
-          )}
-          <div className="mt-6 flex justify-end gap-2">
-            <Button onClick={() => setModalOpen(false)} variant="secondary">
-              Cancel
+        <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-8 shadow-2xl max-w-lg w-full mx-4 flex flex-col items-center text-center">
+          <h1 className="text-3xl font-bold text-sparkle-text mb-4">
+            What's New in the Utilities Page
+          </h1>
+
+          <p className="text-sparkle-text-secondary mb-6">
+            We've redesigned the Utilities page to be more useful and powerful.
+          </p>
+
+          <p className="text-sparkle-text-secondary mb-4 text-sm">
+            - Each utility now shows detailed descriptions and has new controls like toggles,
+            buttons, or dropdowns.
+            <br />
+            <br />
+            - Utilities run or apply settings directly using PowerShell scripts behind the scenes.
+            <br />
+            <br />
+            - The settings sync with your Windows always reflecting your current configuration no
+            matter where you toggle these settings.
+            <br />
+            <br />
+            <p className="text-sparkle-primary">
+              - You can now manage Windows updates, restart graphics drivers, reset network, and
+              more.
+            </p>
+            <br /> <br />
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 w-full justify-center">
+            <Button
+              onClick={() => {
+                setModalOpen(false)
+                localStorage.setItem("utilitiesModalShown", "true")
+              }}
+            >
+              Got it
             </Button>
-            <Button onClick={confirmAndRun}>Run</Button>
           </div>
         </div>
       </Modal>
+
       <RootDiv>
-        <div className="pb-10">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {utilities.map((util) => (
-              <button
-                key={util.name}
-                onClick={() => openConfirmationModal(util)}
-                disabled={running}
-                className="bg-sparkle-card border border-sparkle-border p-4 rounded-2xl flex items-center gap-3 hover:border-sparkle-primary transition"
-              >
-                <div className={`${util.color}`}>{util.icon}</div>
-                <div className="text-left">
-                  <h2 className="font-semibold">Run {util.name}</h2>
-                  <p className="text-sm text-sparkle-text-secondary">Type: {util.type}</p>
+        <div className="flex gap-4 flex-col mb-10">
+          {utilities.map((util) => {
+            return (
+              <Card className="p-4 flex items-center gap-4" key={util.name}>
+                {util.icon}
+                <div>
+                  <h1>{util.name}</h1>
+                  <p className="text-sm  text-sparkle-text-secondary">{util.description}</p>
                 </div>
-              </button>
-            ))}
-          </div>
-          <div className="flex flex-row gap-2 mt-3">
-            <Toggle checked={noExit} onChange={() => setNoExit(!noExit)} id="noExitToggle" />
-            <p>Keep PowerShell window open after execution</p>
-          </div>
-
-          <div className="mt-8">
-            <h2 className="text-xl font-semibold mb-2 text-sparkle-text-secondary">Quick Access</h2>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-              {quickAccess.map((tool) => (
-                <button
-                  key={tool.name}
-                  onClick={() => openQuickAccessTool(tool.command)}
-                  className="inline-flex items-center gap-2 px-3 py-3.5 text-sm bg-sparkle-card border border-sparkle-border rounded-xl hover:border-sparkle-primary transition text-sparkle-text"
-                >
-                  {tool.icon}
-                  <span>Open {tool.name}</span>
-                </button>
-              ))}
-            </div>
-          </div>
+                <div className="flex justify-end ml-auto">
+                  {util.type === "toggle" && (
+                    <Toggle
+                      checked={toggleStates[util.name] || false}
+                      onChange={(e) => handleToggleChange(util, e.target.checked)}
+                    />
+                  )}
+                  {util.type === "button" && (
+                    <Button onClick={() => handleButtonClick(util)}>{util.buttonText}</Button>
+                  )}
+                  {util.type === "dropdown" && (
+                    <Dropdown
+                      options={util.options}
+                      value={dropdownValues[util.name] || util.options[0]}
+                      onChange={(value) => handleDropdownChange(util, value)}
+                    />
+                  )}
+                </div>
+              </Card>
+            )
+          })}
         </div>
       </RootDiv>
     </>
   )
 }
+
+export default Utilities

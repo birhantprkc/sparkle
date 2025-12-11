@@ -19,7 +19,7 @@ export function Dropdown({ options, value, onChange }) {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="px-4 py-2 rounded-lg border border-sparkle-border bg-sparkle-bg text-sparkle-text hover:bg-sparkle-bg-hover hover:border-sparkle-border-hover transition-all duration-200 flex items-center gap-2 min-w-[180px] justify-between shadow-sm hover:shadow"
+        className="px-4 py-2 rounded-lg border border-sparkle-border bg-sparkle-bg text-sparkle-text hover:border-sparkle-primary transition-all duration-200 flex items-center gap-2 min-w-[180px] justify-between shadow-sm hover:shadow"
       >
         <span>{value}</span>
         <ChevronDown

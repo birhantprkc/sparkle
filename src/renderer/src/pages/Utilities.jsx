@@ -254,7 +254,7 @@ Write-Output "Network stack reset. Restart your PC to apply changes."
 function Utilities() {
   const [dropdownValues, setDropdownValues] = useState({})
   const [toggleStates, setToggleStates] = useState({})
-  const [loading, setLoading] = useState(true)
+  const [loadingStates, setLoadingStates] = useState({})
   const [modalOpen, setModalOpen] = useState(false)
 
   useEffect(() => {
@@ -265,8 +265,9 @@ function Utilities() {
 
   useEffect(() => {
     const checkAllStates = async () => {
-      for (const util of utilities) {
+      const checkPromises = utilities.map(async (util) => {
         if (util.type === "toggle" && util.checkScript) {
+          setLoadingStates((prev) => ({ ...prev, [util.name]: true }))
           try {
             const result = await invoke({
               channel: "run-powershell",
@@ -282,8 +283,11 @@ function Utilities() {
           } catch (error) {
             console.error(`Failed to check ${util.name}:`, error)
             log.error(`Failed to check ${util.name}:`, error)
+          } finally {
+            setLoadingStates((prev) => ({ ...prev, [util.name]: false }))
           }
         } else if (util.type === "dropdown" && util.checkScript) {
+          setLoadingStates((prev) => ({ ...prev, [util.name]: true }))
           try {
             const result = await invoke({
               channel: "run-powershell",
@@ -299,10 +303,13 @@ function Utilities() {
           } catch (error) {
             console.error(`Failed to check ${util.name}:`, error)
             log.error(`Failed to check ${util.name}:`, error)
+          } finally {
+            setLoadingStates((prev) => ({ ...prev, [util.name]: false }))
           }
         }
-      }
-      setLoading(false)
+      })
+
+      await Promise.all(checkPromises)
     }
 
     checkAllStates()
@@ -422,17 +429,6 @@ function Utilities() {
     }
   }
 
-  if (loading) {
-    return (
-      <RootDiv>
-        <div className="flex items-center justify-center h-64 flex-col gap-4">
-          <div className="w-8 h-8 border-4 border-sparkle-border-secondary border-t-sparkle-primary rounded-full animate-spin" />
-          <p className="text-sparkle-text-secondary">Loading utilities... (Please Wait)</p>
-        </div>
-      </RootDiv>
-    )
-  }
-
   return (
     <>
       <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
@@ -488,22 +484,28 @@ function Utilities() {
                   <p className="text-sm  text-sparkle-text-secondary">{util.description}</p>
                 </div>
                 <div className="flex justify-end ml-auto">
-                  {util.type === "toggle" && (
-                    <Toggle
-                      checked={toggleStates[util.name] || false}
-                      onChange={(e) => handleToggleChange(util, e.target.checked)}
-                    />
-                  )}
+                  {util.type === "toggle" &&
+                    (loadingStates[util.name] ? (
+                      <div className="w-6 h-6 border-2 border-sparkle-border-secondary border-t-sparkle-primary rounded-full animate-spin" />
+                    ) : (
+                      <Toggle
+                        checked={toggleStates[util.name] || false}
+                        onChange={(e) => handleToggleChange(util, e.target.checked)}
+                      />
+                    ))}
                   {util.type === "button" && (
                     <Button onClick={() => handleButtonClick(util)}>{util.buttonText}</Button>
                   )}
-                  {util.type === "dropdown" && (
-                    <Dropdown
-                      options={util.options}
-                      value={dropdownValues[util.name] || util.options[0]}
-                      onChange={(value) => handleDropdownChange(util, value)}
-                    />
-                  )}
+                  {util.type === "dropdown" &&
+                    (loadingStates[util.name] ? (
+                      <div className="w-6 h-6 border-2 border-sparkle-border-secondary border-t-sparkle-primary rounded-full animate-spin" />
+                    ) : (
+                      <Dropdown
+                        options={util.options}
+                        value={dropdownValues[util.name] || util.options[0]}
+                        onChange={(value) => handleDropdownChange(util, value)}
+                      />
+                    ))}
                 </div>
               </Card>
             )

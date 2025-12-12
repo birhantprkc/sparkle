@@ -102,27 +102,25 @@ async function detectGPU() {
 
     const dedicatedControllers = graphicsData.controllers.filter((controller) => {
       const model = (controller.model || "").toLowerCase()
+      const isIntegrated =
+        model.includes("integrated") ||
+        (model.includes("intel") &&
+          (model.includes("hd") || model.includes("uhd") || model.includes("iris"))) ||
+        (model.includes("amd") && model.includes("radeon") && model.includes("graphics"))
+
       return (
-        (model.includes("nvidia") &&
-          (model.includes("gtx") ||
-            model.includes("rtx") ||
-            model.includes("titan") ||
-            model.includes("quadro") ||
-            model.includes("mx") ||
-            model.includes("tesla") ||
-            model.includes("a100") ||
-            model.includes("a40"))) ||
-        (model.includes("amd") &&
-          (model.includes("radeon") ||
-            model.includes("rx") ||
-            model.includes("vega") ||
-            model.includes("firepro") ||
-            model.includes("instinct")) &&
-          !model.includes("graphics") &&
-          !model.includes("integrated")) ||
-        (model.includes("intel") && model.includes("arc"))
+        !isIntegrated &&
+        (model.includes("nvidia") ||
+          (model.includes("amd") &&
+            (model.includes("radeon") ||
+              model.includes("rx") ||
+              model.includes("vega") ||
+              model.includes("firepro") ||
+              model.includes("instinct"))) ||
+          (model.includes("intel") && model.includes("arc")))
       )
     })
+
     const dedicatedGPU = dedicatedControllers.sort((a, b) => (b.vram || 0) - (a.vram || 0))[0]
 
     const hasGPU = !!dedicatedGPU
@@ -131,7 +129,7 @@ async function detectGPU() {
     return {
       hasGPU,
       isNvidia,
-      model: gpu?.model || null,
+      model: dedicatedGPU?.model || null,
     }
   } catch (error) {
     console.error("Error detecting GPU:", error)

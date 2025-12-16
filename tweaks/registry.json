@@ -1,6 +1,19 @@
 {
-  "version": "2025-11-26T01:48:31.205Z",
+  "version": "2025-12-16T01:07:17.534Z",
   "tweaks": [
+    {
+      "id": "24-hour-clock",
+      "title": "Set 24-Hour Clock",
+      "description": "Changes clock to display 24-hour format.",
+      "category": [
+        "General",
+        "Appearance"
+      ],
+      "recommended": false,
+      "reversible": true,
+      "docsurl": "https://docs.getsparkle.net/tweaks/24-hour-clock",
+      "source": "https://github.com/Parcoil/Sparkle/blob/v2/tweaks/24-hour-clock/meta.json"
+    },
     {
       "id": "align-taskbar-left",
       "title": "Align Taskbar Left",
@@ -261,6 +274,19 @@
       "source": "https://github.com/Parcoil/Sparkle/blob/v2/tweaks/enable-optimization-for-windowed-games/meta.json"
     },
     {
+      "id": "hide-taskview-and-widgets",
+      "title": "Hide Taskview and Widgets",
+      "description": "Hides the Taskview and Widgets buttons on the taskbar.",
+      "category": [
+        "General",
+        "Appearance"
+      ],
+      "recommended": false,
+      "reversible": true,
+      "docsurl": "https://docs.getsparkle.net/tweaks/hide-taskview-and-widgets",
+      "source": "https://github.com/Parcoil/Sparkle/blob/v2/tweaks/hide-taskview-and-widgets/meta.json"
+    },
+    {
       "id": "menu-show-delay-zero",
       "title": "Menu Show Delay Zero",
       "description": "Removes the delay when opening menus.",
@@ -315,6 +341,19 @@
       "source": "https://github.com/Parcoil/Sparkle/blob/v2/tweaks/remove-gaming-apps/meta.json"
     },
     {
+      "id": "remove-ms-bing-integration",
+      "title": "Remove Microsoft Bing Integration",
+      "description": "Removes Bing apps and disables Bing web search in Windows Search.",
+      "category": [
+        "Privacy",
+        "Performance"
+      ],
+      "recommended": false,
+      "reversible": true,
+      "docsurl": "https://docs.getsparkle.net/tweaks/remove-ms-bing-integration",
+      "source": "https://github.com/Parcoil/Sparkle/blob/v2/tweaks/remove-ms-bing-integration/meta.json"
+    },
+    {
       "id": "remove-onedrive",
       "title": "Remove OneDrive",
       "description": "Removes OneDrive from the system",
@@ -340,19 +379,6 @@
       "reversible": true,
       "docsurl": "https://docs.getsparkle.net/tweaks/revert-context-menu",
       "source": "https://github.com/Parcoil/Sparkle/blob/v2/tweaks/revert-context-menu/meta.json"
-    },
-    {
-      "id": "run-disk-cleanup",
-      "title": "Run Disk Cleanup",
-      "description": "Runs disk cleanup on your C: drive. also removes old windows update cache",
-      "category": [
-        "General",
-        "Performance"
-      ],
-      "recommended": false,
-      "reversible": true,
-      "docsurl": "https://docs.getsparkle.net/tweaks/run-disk-cleanup",
-      "source": "https://github.com/Parcoil/Sparkle/blob/v2/tweaks/run-disk-cleanup/meta.json"
     },
     {
       "id": "set-powershell7-default",

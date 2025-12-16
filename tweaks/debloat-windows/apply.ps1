@@ -27,6 +27,7 @@ $appDefinitions = @(
     @{ Package = "Microsoft.BingTranslator"; FriendlyName = "Bing Translator" },
     @{ Package = "Microsoft.BingTravel"; FriendlyName = "Bing Travel" },
     @{ Package = "Microsoft.BingWeather"; FriendlyName = "Bing Weather" },
+    @{ Package = "Microsoft.Windows.DevHome"; FriendlyName = "Dev Home" },
     @{ Package = "Microsoft.Copilot"; FriendlyName = "Microsoft Copilot" },
     @{ Package = "Microsoft.Getstarted"; FriendlyName = "Get Started (Tips)" },
     @{ Package = "Microsoft.Messaging"; FriendlyName = "Microsoft Messaging" },
@@ -34,6 +35,7 @@ $appDefinitions = @(
     @{ Package = "Microsoft.MicrosoftJournal"; FriendlyName = "Microsoft Journal" },
     @{ Package = "Microsoft.MicrosoftOfficeHub"; FriendlyName = "Office Hub" },
     @{ Package = "Microsoft.MicrosoftPowerBIForWindows"; FriendlyName = "Power BI" },
+    @{ Package = "Microsoft.PowerAutomateDesktop"; FriendlyName = "Power Automate" },
     @{ Package = "Microsoft.MicrosoftSolitaireCollection"; FriendlyName = "Solitaire Collection" },
     @{ Package = "Microsoft.MicrosoftStickyNotes"; FriendlyName = "Sticky Notes" },
     @{ Package = "Microsoft.MixedReality.Portal"; FriendlyName = "Mixed Reality Portal" },
@@ -116,31 +118,95 @@ function Show-ScriptSelectionDialog {
     [xml]$xaml = @"
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="(Sparkle) Debloat Script v$version" 
-        Height="220" Width="550" 
+        Title="Sparkle Debloat v$version" 
+        Height="300" Width="650" 
         WindowStartupLocation="CenterScreen"
         Topmost="True"
-        ResizeMode="NoResize">
-    <Grid Margin="15">
+        ResizeMode="NoResize"
+        Background="#f0f0f0">
+    <Window.Resources>
+        <Style TargetType="RadioButton">
+            <Setter Property="Foreground" Value="#1e293b"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="#3b82f6"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#f1f5f9"/>
+            <Setter Property="Foreground" Value="#1e293b"/>
+            <Setter Property="BorderBrush" Value="#d5dae2"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="18,8"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#3b82f6"/>
+                                <Setter Property="Foreground" Value="#ffffff"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#2563eb"/>
+                                <Setter Property="Foreground" Value="#ffffff"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    
+    <Grid Margin="24">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         
-        <TextBlock Grid.Row="0" Text="Choose your debloat approach:" 
-                   FontSize="14" FontWeight="Bold" Margin="0,0,0,15"/>
+        <TextBlock Grid.Row="0" 
+                   Text="Choose your debloat approach:" 
+                   FontSize="16" 
+                   FontWeight="SemiBold" 
+                   Foreground="#1e293b"
+                   Margin="0,0,0,20"/>
         
-        <StackPanel Grid.Row="1" Margin="10,0,0,0">
-            <RadioButton x:Name="RadioSparkle" Content="Sparkle Debloat Script (You can choose which apps to keep) (Recommended)" 
-                        Margin="0,0,0,10" IsChecked="True" FontSize="12"/>
-            <RadioButton x:Name="RadioRaphire" Content="Raphire's Win11Debloat Script (Comprehensive, read docs for details)" 
-                        FontSize="12"/>
-        </StackPanel>
+        <Border Grid.Row="1" 
+                Background="#ffffff" 
+                BorderBrush="#d5dae2" 
+                BorderThickness="1" 
+                CornerRadius="8"
+                Padding="20"
+                Margin="0,0,0,20">
+            <StackPanel>
+                <RadioButton x:Name="RadioSparkle" 
+                            Content="Sparkle Debloat (Choose which apps to keep) - Recommended" 
+                            Margin="0,0,0,16" 
+                            IsChecked="True"/>
+                <RadioButton x:Name="RadioRaphire" 
+                            Content="Raphire's Win11Debloat (Comprehensive - read docs for details)"/>
+            </StackPanel>
+        </Border>
         
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
-            <Button x:Name="BtnOK" Content="OK" Width="80" Height="28" Margin="0,0,10,0" IsDefault="True"/>
-            <Button x:Name="BtnCancel" Content="Cancel" Width="80" Height="28" IsCancel="True"/>
+        <StackPanel Grid.Row="2" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right" 
+                    Margin="0,20,0,0">
+            <Button x:Name="BtnOK" Content="Continue" Width="100" Margin="0,0,12,0" IsDefault="True"/>
+            <Button x:Name="BtnCancel" Content="Cancel" Width="100" IsCancel="True"/>
         </StackPanel>
     </Grid>
 </Window>
@@ -192,46 +258,122 @@ function Show-AppSelectionDialog {
     [xml]$xaml = @"
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="(Sparkle) Select Apps to Keep v$version" 
-    Height="650" Width="550" 
+    Title="Sparkle Debloat v$version" 
+    Height="750" Width="650" 
     WindowStartupLocation="CenterScreen"
-    ResizeMode="NoResize">
-    <Grid Margin="15">
-    <Grid.RowDefinitions>
-        <RowDefinition Height="Auto"/>   <!-- Title -->
-        <RowDefinition Height="Auto"/>   <!-- Warning -->
-        <RowDefinition Height="*"/>      <!-- List -->
-        <RowDefinition Height="Auto"/>   <!-- Select/Deselect -->
-        <RowDefinition Height="Auto"/>   <!-- OK/Cancel -->
-    </Grid.RowDefinitions>
+    ResizeMode="NoResize"
+    Background="#f0f0f0">
+    <Window.Resources>
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground" Value="#334155"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Padding" Value="8,5"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="#1e293b"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#f1f5f9"/>
+            <Setter Property="Foreground" Value="#1e293b"/>
+            <Setter Property="BorderBrush" Value="#d5dae2"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="16,8"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#3b82f6"/>
+                                <Setter Property="Foreground" Value="#ffffff"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#2563eb"/>
+                                <Setter Property="Foreground" Value="#ffffff"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="SecondaryButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Background" Value="#ffffff"/>
+        </Style>
+    </Window.Resources>
     
-    <TextBlock Grid.Row="0" Text="Select the apps you want to KEEP (uncheck to remove):" 
-           FontSize="14" FontWeight="Bold" Margin="0,0,0,10" TextWrapping="Wrap"/>
-    <TextBlock Grid.Row="1" Text="Ensure you have a restore point before proceeding." 
-           FontSize="12"  Margin="0,0,0,10"/>
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <TextBlock Grid.Row="0" 
+                   Text="Select apps to keep" 
+                   FontSize="18" 
+                   FontWeight="SemiBold" 
+                   Foreground="#1e293b"
+                   Margin="0,0,0,6"/>
+        
+        <TextBlock Grid.Row="1" 
+                   Text="Uncheck apps you want to remove. Ensure you have a restore point before proceeding." 
+                   FontSize="13" 
+                   Foreground="#64748b"
+                   TextWrapping="Wrap"
+                   Margin="0,0,0,12"/>
 
-    <Border Grid.Row="2" BorderBrush="#CCCCCC" BorderThickness="1" Margin="0,0,0,10">
-        <ScrollViewer VerticalScrollBarVisibility="Auto" >
-        <ItemsControl x:Name="AppsList" Margin="5">
-            <ItemsControl.ItemTemplate>
-            <DataTemplate>
-                <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}" 
-                     Margin="5,3" FontSize="11"/>
-            </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-        </ScrollViewer>
-    </Border>
-    
-    <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,0,0,10">
-        <Button x:Name="BtnSelectAll" Content="Select All" Width="100" Height="28" Margin="0,0,10,0"/>
-        <Button x:Name="BtnDeselectAll" Content="Deselect All" Width="100" Height="28"/>
-    </StackPanel>
-    
-    <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
-        <Button x:Name="BtnOK" Content="OK" Width="80" Height="28" Margin="0,0,10,0" IsDefault="True"/>
-        <Button x:Name="BtnCancel" Content="Cancel" Width="80" Height="28" IsCancel="True"/>
-    </StackPanel>
+        <Border Grid.Row="2" 
+                Background="#ffffff" 
+                BorderBrush="#d5dae2" 
+                BorderThickness="1" 
+                CornerRadius="8"
+                Margin="0,0,0,12">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ItemsControl x:Name="AppsList" Margin="12">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox Content="{Binding Name}" 
+                                     IsChecked="{Binding IsChecked}" 
+                                     Margin="4,3"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Border>
+        
+        <StackPanel Grid.Row="3" 
+                    Orientation="Horizontal" 
+                    Margin="0,0,0,12">
+            <Button x:Name="BtnSelectAll" 
+                    Content="Select All" 
+                    Width="110" 
+                    Margin="0,0,12,0"
+                    Style="{StaticResource SecondaryButton}"/>
+            <Button x:Name="BtnDeselectAll" 
+                    Content="Deselect All" 
+                    Width="110"
+                    Style="{StaticResource SecondaryButton}"/>
+        </StackPanel>
+        
+        <StackPanel Grid.Row="4" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right">
+            <Button x:Name="BtnOK" Content="Start Debloat" Width="120" Margin="0,0,12,0" IsDefault="True"/>
+            <Button x:Name="BtnCancel" Content="Cancel" Width="100" IsCancel="True"/>
+        </StackPanel>
     </Grid>
 </Window>
 "@
@@ -393,35 +535,73 @@ try {
     Write-Host "Debloat Script From https://getsparkle.net" -ForegroundColor Cyan
 
     if (-not (Get-Process -Name "Sparkle" -ErrorAction SilentlyContinue)) {
-        Add-Type -AssemblyName PresentationFramework
-        
         [xml]$xaml = @"
 <Window 
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="Sparkle - Debloat Complete" 
-    Height="150" 
-    Width="400"
-    WindowStartupLocation="CenterScreen">
-    <Grid>
+    Title="Sparkle Debloat" 
+    Height="200" 
+    Width="480"
+    WindowStartupLocation="CenterScreen"
+    Background="#f0f0f0"
+    ResizeMode="NoResize">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#3b82f6"/>
+            <Setter Property="Foreground" Value="#ffffff"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="24,10"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#60a5fa"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#2563eb"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    
+    <Grid Margin="30">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         
-        <TextBlock Grid.Row="0" 
-                  Text="Debloat completed successfully!" 
-                  FontSize="16"
-                  TextWrapping="Wrap"
-                  HorizontalAlignment="Center"
-                  VerticalAlignment="Center"
-                  TextAlignment="Center"/>
+        <StackPanel Grid.Row="0" VerticalAlignment="Center">
+            <TextBlock Text="Debloat Complete" 
+                      FontSize="20"
+                      FontWeight="SemiBold"
+                      Foreground="#2dac7d"
+                      HorizontalAlignment="Center"
+                      Margin="0,0,0,10"/>
+            <TextBlock Text="Your system has been successfully optimized." 
+                      FontSize="14"
+                      Foreground="#64748b"
+                      HorizontalAlignment="Center"
+                      TextAlignment="Center"
+                      TextWrapping="Wrap"
+                      Margin="0,0,0,5"/>
+        </StackPanel>
                   
         <Button Grid.Row="1" 
                x:Name="BtnOK" 
-               Content="OK" 
-               Width="80" 
-               Margin="15"
+               Content="Done" 
+               Width="100"
                HorizontalAlignment="Center"/>
     </Grid>
 </Window>

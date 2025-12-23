@@ -43,7 +43,7 @@ const tabs = {
   settings: { label: "Settings", path: "/settings" },
 }
 
-function Nav({ collapsed }) {
+function Nav() {
   const location = useLocation()
   const navigate = useNavigate()
   const { needsRestart } = useRestartStore()
@@ -81,9 +81,7 @@ function Nav({ collapsed }) {
   }, [activeTab])
 
   return (
-    <nav
-      className={`h-screen text-sparkle-text fixed left-0 top-0 flex flex-col py-6 z-40  transition-all duration-300 ${collapsed ? "w-16" : "w-52"}`}
-    >
+    <nav className="h-screen text-sparkle-text fixed left-0 top-0 flex flex-col py-6 z-40 w-52">
       <div className="flex-1 flex flex-col gap-2 px-3 mt-10 relative" ref={containerRef}>
         <div
           className="absolute left-0 w-1 bg-sparkle-primary rounded-sm transition-all duration-300"
@@ -100,15 +98,15 @@ function Nav({ collapsed }) {
             ref={(el) => (tabRefs.current[id] = el)}
             onClick={() => navigate(path)}
             className={clsx(
-              `flex items-center gap-3 py-2 rounded-lg transition-all duration-200 border relative ${collapsed ? "px-2 justify-center" : "px-3"}`,
+              "flex items-center gap-3 py-2 rounded-lg transition-all duration-200 border relative px-3",
               activeTab === id
                 ? "border-transparent text-sparkle-primary"
                 : "text-sparkle-text-secondary hover:bg-sparkle-border-secondary hover:text-sparkle-text border-transparent",
             )}
           >
             <div>{tabIcons[id]}</div>
-            {!collapsed && <span className="text-sm">{label}</span>}
-            {!collapsed && id === "utilities" && (
+            <span className="text-sm">{label}</span>
+            {id === "utilities" && (
               <span className="text-xs bg-sparkle-primary text-sparkle-bg px-1.5 py-0.5 rounded-full">
                 New
               </span>
@@ -125,10 +123,10 @@ function Nav({ collapsed }) {
           onClick={() => setShowRestartModal(true)}
         >
           <span
-            className={`flex text-center items-center gap-2 text-red-500 ${collapsed ? "justify-center" : ""}`}
+            className="flex text-center items-center gap-2 text-red-500"
             title="Restart Windows"
           >
-            <RefreshCw size={16} /> {!collapsed && "Restart Now"}
+            <RefreshCw size={16} /> Restart Now
           </span>
         </button>
       )}
@@ -152,9 +150,7 @@ function Nav({ collapsed }) {
           </div>
         </div>
       </Modal>
-      <div
-        className={`flex items-center justify-center gap-2 mt-4 mb-2 ${collapsed ? "flex-col" : ""}`}
-      >
+      <div className="flex items-center justify-center gap-2 mt-4 mb-2">
         <a href="https://github.com/parcoil/sparkle" target="_blank">
           <GithubIcon className="w-5 fill-sparkle-primary" />
         </a>

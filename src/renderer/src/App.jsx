@@ -17,9 +17,6 @@ import UpdateManager from "./components/updatemanager"
 
 function App() {
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "system")
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(
-    localStorage.getItem("sidebarCollapsed") === "true",
-  )
 
   useEffect(() => {
     const applyTheme = (theme) => {
@@ -62,21 +59,13 @@ function App() {
     }
   }, [theme])
 
-  const toggleSidebar = () => {
-    const newCollapsed = !sidebarCollapsed
-    setSidebarCollapsed(newCollapsed)
-    localStorage.setItem("sidebarCollapsed", newCollapsed.toString())
-  }
-
   return (
     <div className="flex flex-col h-screen bg-sparkle-bg text-sparkle-text overflow-hidden">
       <FirstTime />
-      <TitleBar onToggleSidebar={toggleSidebar} sidebarCollapsed={sidebarCollapsed} />
-      <Nav collapsed={sidebarCollapsed} />
+      <TitleBar />
+      <Nav />
       <div className="flex flex-1 pt-[50px] relative">
-        <main
-          className={`flex-1 p-6 rounded-tl-2xl border-t border-l border-sparkle-border transition-all duration-300 ${sidebarCollapsed ? "ml-16" : "ml-52"}`}
-        >
+        <main className="flex-1 p-6 rounded-tl-2xl border-t border-l border-sparkle-border ml-52">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/tweaks" element={<Tweaks />} />

@@ -15,7 +15,6 @@ This page describes how to structure and define tweaks for the application.
 All tweaks should follow this format:
 
 ```text
-resources/
 └── tweaks/
     └── example-tweak/
         ├── apply.ps1

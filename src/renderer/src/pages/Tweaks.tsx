@@ -30,12 +30,12 @@ import { Star } from "lucide-react"
 import { Tweak } from "@/types/index"
 
 function Tweaks() {
-  const [tweaks, setTweaks] = useState<any[]>([])
+  const [tweaks, setTweaks] = useState<Tweak[]>([])
   const [toggleStates, setToggleStates] = useState({})
   const [isLoading, setIsLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
   const [activeCategory, setActiveCategory] = useState("All")
-  const [modalContent, setModalContent] = useState(null)
+  const [modalContent, setModalContent] = useState<string | boolean | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedTweak, setSelectedTweak] = useState<Tweak | null>(null)
 
@@ -242,7 +242,7 @@ function Tweaks() {
   }
 
   const handleButtonClick = async (index) => {
-    const tweak: any = tweaks[index]
+    const tweak: Tweak = tweaks[index]
 
     if (tweak.modal) {
       setSelectedTweak(tweak)

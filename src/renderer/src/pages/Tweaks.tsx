@@ -509,16 +509,7 @@ function Tweaks() {
                                   >
                                     <Toggle
                                       checked={toggleStates[tweak.name] || false}
-                                      onChange={(e) => {
-                                        const willOpenModal =
-                                          !!tweak.modal && !toggleStates[tweak.name]
-                                        if (willOpenModal) {
-                                          ;(e as any)
-                                            .preventDefault()(e as any)
-                                            .stopPropagation()
-                                        }
-                                        handleToggle(originalIndex)
-                                      }}
+                                      onChange={() => handleToggle(originalIndex)}
                                       disabled={!compatibility.compatible}
                                     />
                                   </Tooltip>

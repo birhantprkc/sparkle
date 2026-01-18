@@ -10,14 +10,31 @@ console.warn = log.warn
 
 const clientId = "1188686354490609754"
 let rpcClient: discordRPC.Client | null = null
+let isInitializing = false
+let initRetryCount = 0
+const MAX_RETRIES = 3
 
 async function startDiscordRPC(): Promise<boolean> {
+  if (isInitializing || rpcClient) {
+    return false
+  }
+
+  if (initRetryCount >= MAX_RETRIES) {
+    console.warn("(rpc.js) ", "Max Discord RPC retries reached, giving up")
+    return false
+  }
+
+  isInitializing = true
+  initRetryCount++
+
   setTimeout(async () => {
     try {
       rpcClient = new discordRPC.Client({ transport: "ipc" })
 
       rpcClient.on("ready", () => {
         console.log("(rpc.js) ", logo, "Discord RPC connected")
+        isInitializing = false
+        initRetryCount = 0
 
         rpcClient!
           .setActivity({
@@ -39,15 +56,18 @@ async function startDiscordRPC(): Promise<boolean> {
 
       rpcClient.on("error", (error: Error) => {
         console.warn("(rpc.js) ", "Discord RPC error:", error.message)
+        isInitializing = false
         stopDiscordRPC()
       })
 
       await rpcClient.login({ clientId }).catch((error: Error) => {
         console.warn("(rpc.js) ", "Discord RPC login failed:", error.message)
+        isInitializing = false
         stopDiscordRPC()
       })
     } catch (error: any) {
       console.warn("(rpc.js) ", "Failed to initialize Discord RPC:", error.message)
+      isInitializing = false
       stopDiscordRPC()
     }
   }, 1000)
@@ -60,9 +80,9 @@ function stopDiscordRPC(): boolean {
     rpcClient.destroy()
     rpcClient = null
     console.log("(rpc.js) ", "Discord RPC disconnected")
-    return true
   }
-  return false
+  isInitializing = false
+  return true
 }
 
 ipcMain.handle("start-discord-rpc", () => {

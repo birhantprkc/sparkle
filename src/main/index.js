@@ -80,31 +80,36 @@ ipcMain.handle("tray:set", (event, value) => {
   return store.get("showTray")
 })
 
-const initDiscordRPC = async () => {
+const initDiscordRPC = () => {
   if (store.get("discord-rpc") === undefined) {
     store.set("discord-rpc", true)
     console.log("(main.js) ", logo, "Starting Discord RPC")
-    await startDiscordRPC()
+    startDiscordRPC().catch((err) => {
+      console.warn("(main.js) ", "Failed to initialize Discord RPC:", err.message)
+    })
   } else if (store.get("discord-rpc") === true) {
     console.log("(main.js) ", logo, "Starting Discord RPC (from settings)")
-    await startDiscordRPC()
+    startDiscordRPC().catch((err) => {
+      console.warn("(main.js) ", "Failed to initialize Discord RPC:", err.message)
+    })
   }
 }
 
-initDiscordRPC().catch((err) => {
-  console.warn("(main.js) ", "Failed to initialize Discord RPC:", err.message)
-})
+// Non-blocking initialization
+initDiscordRPC()
 
 ipcMain.handle("discord-rpc:toggle", async (event, value) => {
   try {
     if (value) {
       store.set("discord-rpc", true)
       console.log(logo, "Starting Discord RPC")
-      await startDiscordRPC()
+      startDiscordRPC().catch((err) => {
+        console.warn("(main.js) ", "Failed to start Discord RPC:", err.message)
+      })
     } else {
       store.set("discord-rpc", false)
       console.log(logo, "Stopping Discord RPC")
-      await stopDiscordRPC()
+      stopDiscordRPC()
     }
     return { success: true, enabled: store.get("discord-rpc") }
   } catch (error) {

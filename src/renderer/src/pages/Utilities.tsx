@@ -169,10 +169,14 @@ if ($gpus) {
     options: ["Balanced", "High Performance", "Power Saver", "Ultimate Performance"],
     checkScript: `
 $current = powercfg /getactivescheme
-if ($current -match "Power saver") { Write-Output "Power Saver" }
-elseif ($current -match "High performance") { Write-Output "High Performance" }
-elseif ($current -match "Ultimate Performance") { Write-Output "Ultimate Performance" }
-else { Write-Output "Balanced" }
+$currentGUID = ($current -split ' ')[3]
+
+switch ($currentGUID) {
+    "a1841308-3541-4fab-bc81-f71556f20b4a" { Write-Output "Power Saver" }
+    "8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c" { Write-Output "High Performance" }
+    "e9a42b02-d5df-448d-aa00-03f14749eb61" { Write-Output "Ultimate Performance" }
+    default { Write-Output "Balanced" }
+}
 `,
     applyScript: {
       Balanced: `powercfg /setactive 381b4222-f694-41f0-9685-ff5bb260df2e`,

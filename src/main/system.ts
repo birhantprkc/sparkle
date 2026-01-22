@@ -367,7 +367,7 @@ function Show-InstallerGUI {
                         $tempFile = Join-Path $env:TEMP "Microsoft.DesktopAppInstaller.msixbundle"
                         
                         $result.Messages += "Downloading from GitHub..."
-                        Invoke-WebRequest -Uri $downloadUrl -OutFile $tempFile -TimeoutSec 120
+                        Start-BitsTransfer -Source $downloadUrl -Destination $tempFile -TimeoutSec 120
                         
                         $result.Messages += "Installing package (this may take a minute)..."
                         
@@ -491,3 +491,30 @@ ipcMain.handle("clear-sparkle-cache", clearSparkleCache)
 ipcMain.handle("get-system-info", getSystemInfo)
 ipcMain.handle("get-user-name", getUserName)
 ipcMain.handle("restart-explorer", restartExplorer)
+ipcMain.handle("check-winget", async () => {
+  try {
+    const result = await executePowerShell(null, {
+      script: `
+        try {
+          $null = winget --version 2>&1
+          if ($LASTEXITCODE -eq 0) {
+            Write-Output "installed"
+          } else {
+            Write-Output "not-installed"
+          }
+        } catch {
+          Write-Output "not-installed"
+        }
+      `,
+      name: "Check-Winget",
+    })
+    return {
+      success: result.success,
+      installed: result.success && result.output && result.output.trim() === "installed",
+    }
+  } catch (error) {
+    console.error("Failed to check Winget:", error)
+    return { success: false, installed: false, error: error.message }
+  }
+})
+ipcMain.handle("install-winget", ensureWinget)

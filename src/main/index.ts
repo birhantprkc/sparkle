@@ -183,7 +183,6 @@ app.whenReady().then(() => {
 
   setTimeout(() => {
     void Defender()
-    void ensureWinget()
     setupTweaksHandlers()
     setupDNSHandlers()
   }, 0)

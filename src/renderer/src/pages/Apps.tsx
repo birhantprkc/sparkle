@@ -43,6 +43,9 @@ function Apps() {
   const [importedApps, setImportedApps] = useState<string[]>([])
   const [selectedImportedApps, setSelectedImportedApps] = useState<string[]>([])
   const [appsList, setAppsList] = useState<AppData[]>([])
+  const [wingetInstalled, setWingetInstalled] = useState<boolean>(true)
+  const [wingetChecking, setWingetChecking] = useState<boolean>(false)
+  const [wingetInstalling, setWingetInstalling] = useState<boolean>(false)
 
   const router = useNavigate()
 
@@ -102,9 +105,42 @@ function Apps() {
     })
   }
 
-  const toggleApp = (appId: string | string[]) => {
+  const checkWinget = async (): Promise<void> => {
+    setWingetChecking(true)
+    try {
+      const result = await invoke({ channel: "check-winget" })
+      if (result.success) {
+        setWingetInstalled(result.installed)
+      } else {
+        console.warn("Failed to check Winget status:", result.error)
+        setWingetInstalled(false)
+      }
+    } catch (error) {
+      console.error("Error checking Winget:", error)
+      setWingetInstalled(false)
+    } finally {
+      setWingetChecking(false)
+    }
+  }
+
+  const installWinget = async (): Promise<void> => {
+    setWingetInstalling(true)
+    try {
+      await invoke({ channel: "install-winget" })
+      toast.success("Winget installation completed!")
+      await checkWinget()
+    } catch (error) {
+      console.error("Error installing Winget:", error)
+      toast.error("Failed to install Winget. Please try again.")
+    } finally {
+      setWingetInstalling(false)
+    }
+  }
+
+  const toggleApp = (appId: string | string[]): void => {
     const id = Array.isArray(appId) ? appId[0] : appId
     setSelectedApps((prev) => (prev.includes(id) ? prev.filter((id) => id !== id) : [...prev, id]))
+  }
   }
 
   useEffect(() => {
@@ -141,6 +177,7 @@ function Apps() {
     })
 
     checkInstalledApps()
+    checkWinget()
 
     const listeners = {
       "install-progress": (_event: unknown, message: string) => {
@@ -303,6 +340,41 @@ function Apps() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
+
+        {!wingetInstalled && (
+          <Card className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-4 w-full mt-5 flex gap-4 items-center">
+            <div className="p-3 bg-amber-500/10 rounded-lg">
+              <Download className="text-amber-500" size={24} />
+            </div>
+            <div className="flex-1">
+              <h1 className="font-medium text-sparkle-text">Winget Not Installed</h1>
+              <p className="text-sparkle-text-secondary">
+                Winget is required to install and manage apps. Click the button to install it.
+              </p>
+            </div>
+            <div className="ml-auto">
+              <Button
+                variant="outline"
+                className="flex items-center gap-2 border-amber-500/20 hover:bg-amber-500/10"
+                onClick={installWinget}
+                disabled={wingetInstalling || wingetChecking}
+              >
+                {wingetInstalling ? (
+                  <>
+                    <div className="animate-spin inline-block w-4 h-4 border-[2px] border-current border-t-transparent rounded-full" />
+                    Installing...
+                  </>
+                ) : wingetChecking ? (
+                  <>Checking...</>
+                ) : (
+                  <>
+                    <Download size={18} /> Install Winget
+                  </>
+                )}
+              </Button>
+            </div>
+          </Card>
+        )}
 
         <div className="flex gap-3 mt-5 w-auto ml-1 mr-1">
           <Button

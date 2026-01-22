@@ -514,7 +514,7 @@ ipcMain.handle("check-winget", async () => {
     }
   } catch (error) {
     console.error("Failed to check Winget:", error)
-    return { success: false, installed: false, error: error.message }
+    return { success: false, installed: false, error: (error as any).message }
   }
 })
 ipcMain.handle("install-winget", ensureWinget)

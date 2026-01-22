@@ -17,7 +17,6 @@ import { setupDNSHandlers } from "./dnsHandler"
 import Store from "electron-store"
 import { startDiscordRPC, stopDiscordRPC } from "./rpc"
 import { initAutoUpdater, triggerAutoUpdateCheck } from "./updates.js"
-import { ensureWinget } from "./system"
 
 Sentry.init({
   dsn: "https://d1e8991c715dd717e6b7b44dbc5c43dd@o4509167771648000.ingest.us.sentry.io/4509167772958720",

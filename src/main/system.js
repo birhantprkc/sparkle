@@ -339,7 +339,7 @@ function Show-InstallerGUI {
                         $tempFile = Join-Path $env:TEMP "Microsoft.DesktopAppInstaller.msixbundle"
                         
                         $result.Messages += "Downloading from GitHub..."
-                        Invoke-WebRequest -Uri $downloadUrl -OutFile $tempFile -TimeoutSec 120
+                        Start-BitsTransfer -Source $downloadUrl -Destination $tempFile -TimeoutSec 120
                         
                         $result.Messages += "Installing package (this may take a minute)..."
                         

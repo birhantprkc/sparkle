@@ -57,7 +57,7 @@ Write-Host "[>] Downloading to: $downloadPath" -ForegroundColor Cyan
 
 # Download the installer
 try {
-    Invoke-WebRequest -Uri $asset.browser_download_url -OutFile $downloadPath -UseBasicParsing
+    Start-BitsTransfer -Source $asset.browser_download_url -Destination $downloadPath
     Write-Host "`n[✔] Download complete!" -ForegroundColor Green
 }
 catch {

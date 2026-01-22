@@ -1,5 +1,5 @@
 import { useState, useMemo, Suspense } from "react"
-import data from "../assets/apps.json"
+import * as data from "../assets/apps.json"
 import RootDiv from "@/components/rootdiv"
 import { Search } from "lucide-react"
 import Button from "@/components/ui/button"
@@ -148,7 +148,7 @@ function Apps() {
       try {
         let appsData: { apps: AppData[] }
         if (import.meta.env.DEV) {
-          appsData = data as { apps: AppData[] }
+          appsData = data.default as { apps: AppData[] }
         } else {
           const response = await fetch(
             "https://raw.githubusercontent.com/parcoil/sparkle/refs/heads/v2/src/renderer/src/assets/apps.json",
@@ -159,7 +159,7 @@ function Apps() {
       } catch (error) {
         console.error("Failed to load apps list", error)
         toast.error("Failed to fetch apps list (Using local apps.json)")
-        setAppsList((data as { apps: AppData[] }).apps || [])
+        setAppsList((data.default as { apps: AppData[] }).apps || [])
       }
     }
 

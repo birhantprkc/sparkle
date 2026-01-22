@@ -28,6 +28,9 @@ function Apps() {
   const [importedApps, setImportedApps] = useState([])
   const [selectedImportedApps, setSelectedImportedApps] = useState(importedApps)
   const [appsList, setAppsList] = useState([])
+  const [wingetInstalled, setWingetInstalled] = useState(true)
+  const [wingetChecking, setWingetChecking] = useState(false)
+  const [wingetInstalling, setWingetInstalling] = useState(false)
 
   // const appsList = data.apps
   const router = useNavigate()
@@ -86,6 +89,38 @@ function Apps() {
       },
     })
   }
+
+  const checkWinget = async () => {
+    setWingetChecking(true)
+    try {
+      const result = await invoke({ channel: "check-winget" })
+      if (result.success) {
+        setWingetInstalled(result.installed)
+      } else {
+        console.warn("Failed to check Winget status:", result.error)
+        setWingetInstalled(false)
+      }
+    } catch (error) {
+      console.error("Error checking Winget:", error)
+      setWingetInstalled(false)
+    } finally {
+      setWingetChecking(false)
+    }
+  }
+
+  const installWinget = async () => {
+    setWingetInstalling(true)
+    try {
+      await invoke({ channel: "install-winget" })
+      toast.success("Winget installation completed!")
+      await checkWinget()
+    } catch (error) {
+      console.error("Error installing Winget:", error)
+      toast.error("Failed to install Winget. Please try again.")
+    } finally {
+      setWingetInstalling(false)
+    }
+  }
   const toggleApp = (appId) => {
     setSelectedApps((prev) =>
       prev.includes(appId) ? prev.filter((id) => id !== appId) : [...prev, appId],
@@ -95,22 +130,24 @@ function Apps() {
   useEffect(() => {
     const loadApps = async () => {
       try {
-        let appsData;
+        let appsData
         if (import.meta.env.DEV) {
-          appsData = data;
+          appsData = data
         } else {
-          const response = await fetch("https://raw.githubusercontent.com/parcoil/sparkle/refs/heads/v2/src/renderer/src/assets/apps.json");
-          appsData = await response.json();
+          const response = await fetch(
+            "https://raw.githubusercontent.com/parcoil/sparkle/refs/heads/v2/src/renderer/src/assets/apps.json",
+          )
+          appsData = await response.json()
         }
-        setAppsList(appsData.apps || []);
+        setAppsList(appsData.apps || [])
       } catch (error) {
-        console.error("Failed to load apps list", error);
-        toast.error("Failed to fetch apps list (Using local apps.json)");
-        setAppsList(data.apps || []);
+        console.error("Failed to load apps list", error)
+        toast.error("Failed to fetch apps list (Using local apps.json)")
+        setAppsList(data.apps || [])
       }
-    };
+    }
 
-    loadApps();
+    loadApps()
 
     const idleHandle = requestIdleCallback(() => {
       try {
@@ -124,6 +161,7 @@ function Apps() {
     })
 
     checkInstalledApps()
+    checkWinget()
 
     const listeners = {
       "install-progress": (event, message) => {
@@ -200,8 +238,6 @@ function Apps() {
       log.error(`Error ${actionVerb.toLowerCase()} apps:`, error)
     }
   }
-
-
 
   return (
     <>
@@ -287,6 +323,41 @@ function Apps() {
           onChange={(e) => setSearch(e.target.value)}
         />
 
+        {!wingetInstalled && (
+          <Card className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-4 w-full mt-5 flex gap-4 items-center">
+            <div className="p-3 bg-amber-500/10 rounded-lg">
+              <Download className="text-amber-500" size={24} />
+            </div>
+            <div className="flex-1">
+              <h1 className="font-medium text-sparkle-text">Winget Not Installed</h1>
+              <p className="text-sparkle-text-secondary">
+                Winget is required to install and manage apps. Click the button to install it.
+              </p>
+            </div>
+            <div className="ml-auto">
+              <Button
+                variant="outline"
+                className="flex items-center gap-2 border-amber-500/20 hover:bg-amber-500/10"
+                onClick={installWinget}
+                disabled={wingetInstalling || wingetChecking}
+              >
+                {wingetInstalling ? (
+                  <>
+                    <div className="animate-spin inline-block w-4 h-4 border-[2px] border-current border-t-transparent rounded-full" />
+                    Installing...
+                  </>
+                ) : wingetChecking ? (
+                  <>Checking...</>
+                ) : (
+                  <>
+                    <Download size={18} /> Install Winget
+                  </>
+                )}
+              </Button>
+            </div>
+          </Card>
+        )}
+
         <div className="flex gap-3 mt-5 w-auto ml-1 mr-1">
           <Button
             className="text-sparkle-text flex gap-2"
@@ -315,7 +386,7 @@ function Apps() {
           </Button>
 
           <label className="flex gap-2 cursor-pointer bg-sparkle-border text-sparkle-text rounded-lg font-medium px-3 py-1.5 text-sm text-center items-center active:scale-90 hover:bg-sparkle-secondary transition-all duration-200">
-          <Upload className="w-5" />
+            <Upload className="w-5" />
             Import List
             <input
               type="file"
@@ -347,78 +418,76 @@ function Apps() {
           </p>
         )}
         <div className="space-y-10 mb-10">
-          <Suspense fallback={<div className="text-center text-sparkle-text-secondary">Loading...</div>}>
-          {Object.entries(appsByCategory).map(([category, apps]) => (
-            <div key={category} className="space-y-4">
-              <h2 className="text-2xl text-sparkle-primary font-bold capitalize">{category}</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-4 mr-4">
-                {apps.map((app) => (
-                  <Card
-                    key={app.id}
-                    onClick={() => toggleApp(app.id)}
-                    className="p-4"
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4">
-                        <div onClick={(e) => e.stopPropagation()}>
-                          <Checkbox
-                            checked={selectedApps.includes(app.id)}
-                            onChange={() => toggleApp(app.id)}
-                          />
-                        </div>
-                        <div className="min-w-10 max-w-10 max--h-10 min-h-10 rounded-lg overflow-hidden bg-sparkle-accent flex items-center justify-center">
-                          {app.icon ? (
-                            <img
-                              src={app.icon}
-                              alt={app.name}
-                              className="w-8 h-8 object-contain rounded-md"
+          <Suspense
+            fallback={<div className="text-center text-sparkle-text-secondary">Loading...</div>}
+          >
+            {Object.entries(appsByCategory).map(([category, apps]) => (
+              <div key={category} className="space-y-4">
+                <h2 className="text-2xl text-sparkle-primary font-bold capitalize">{category}</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-4 mr-4">
+                  {apps.map((app) => (
+                    <Card key={app.id} onClick={() => toggleApp(app.id)} className="p-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                          <div onClick={(e) => e.stopPropagation()}>
+                            <Checkbox
+                              checked={selectedApps.includes(app.id)}
+                              onChange={() => toggleApp(app.id)}
                             />
-                          ) : (
-                            <img src={sparkleLogo} alt="" className="w-6 h-6 opacity-50" />
-                          )}
+                          </div>
+                          <div className="min-w-10 max-w-10 max--h-10 min-h-10 rounded-lg overflow-hidden bg-sparkle-accent flex items-center justify-center">
+                            {app.icon ? (
+                              <img
+                                src={app.icon}
+                                alt={app.name}
+                                className="w-8 h-8 object-contain rounded-md"
+                              />
+                            ) : (
+                              <img src={sparkleLogo} alt="" className="w-6 h-6 opacity-50" />
+                            )}
+                          </div>
+                          <div>
+                            <h3 className="text-sparkle-text font-medium group-hover:text-sparkle-primary transition">
+                              {app.name}
+                            </h3>
+                            {app.info && (
+                              <p className="text-sm text-sparkle-text-secondary line-clamp-1 font-semibold">
+                                {app.info}
+                              </p>
+                            )}
+                            <p className="text-xs text-sparkle-text-secondary">ID: {app.id}</p>
+                          </div>
                         </div>
-                        <div>
-                          <h3 className="text-sparkle-text font-medium group-hover:text-sparkle-primary transition">
-                            {app.name}
-                          </h3>
-                          {app.info && (
-                            <p className="text-sm text-sparkle-text-secondary line-clamp-1 font-semibold">
-                              {app.info}
-                            </p>
-                          )}
-                          <p className="text-xs text-sparkle-text-secondary">ID: {app.id}</p>
-                        </div>
+                        {installedApps.includes(app.id) && (
+                          <div className="text-xs font-semibold text-sparkle-text bg-sparkle-accent py-1 px-2 rounded-full">
+                            Installed
+                          </div>
+                        )}
+                        {app.link && (
+                          <div onClick={(e) => e.stopPropagation()}>
+                            <button
+                              type="button"
+                              aria-label={`Open ${app.name} website`}
+                              className="ml-3 text-sparkle-primary hover:text-sparkle-text-secondary transition-opacity"
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                try {
+                                  window.open(app.link, "_blank")
+                                } catch (err) {
+                                  console.error("Failed to open external link", err)
+                                }
+                              }}
+                            >
+                              <ExternalLink className="w-4 h-4" />
+                            </button>
+                          </div>
+                        )}
                       </div>
-                      {installedApps.includes(app.id) && (
-                        <div className="text-xs font-semibold text-sparkle-text bg-sparkle-accent py-1 px-2 rounded-full">
-                          Installed
-                        </div>
-                      )}
-                      {app.link && (
-                        <div onClick={(e) => e.stopPropagation()}>
-                          <button
-                            type="button"
-                            aria-label={`Open ${app.name} website`}
-                            className="ml-3 text-sparkle-primary hover:text-sparkle-text-secondary transition-opacity"
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              try {
-                                window.open(app.link, "_blank")
-                              } catch (err) {
-                                console.error("Failed to open external link", err)
-                              }
-                            }}
-                          >
-                            <ExternalLink className="w-4 h-4" />
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  </Card>
-                ))}
+                    </Card>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
           </Suspense>
           <p className="text-center text-sparkle-text-muted">
             Request more apps or make a pull request on{" "}

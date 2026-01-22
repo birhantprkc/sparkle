@@ -11,6 +11,8 @@ import Greeting from "@/components/greeting"
 import { MonitorCog } from "lucide-react"
 import { Wrench } from "lucide-react"
 import Card from "@/components/ui/Card"
+import { Download } from "lucide-react"
+import { toast } from "react-toastify"
 function Home() {
   const systemInfo = useSystemStore((state) => state.systemInfo)
   const setSystemInfo = useSystemStore((state) => state.setSystemInfo)
@@ -34,6 +36,9 @@ function Home() {
       return []
     }
   })
+  const [wingetInstalled, setWingetInstalled] = useState(true)
+  const [wingetChecking, setWingetChecking] = useState(false)
+  const [wingetInstalling, setWingetInstalling] = useState(false)
 
   const goToTweaks = () => {
     router("tweaks")
@@ -107,6 +112,46 @@ function Home() {
   useEffect(() => {
     const idleHandle = requestIdleCallback(() => {
       fetchActiveTweaks()
+    })
+
+    return () => cancelIdleCallback(idleHandle)
+  }, [])
+
+  const checkWinget = async () => {
+    setWingetChecking(true)
+    try {
+      const result = await invoke({ channel: "check-winget" })
+      if (result.success) {
+        setWingetInstalled(result.installed)
+      } else {
+        console.warn("Failed to check Winget status:", result.error)
+        setWingetInstalled(false)
+      }
+    } catch (error) {
+      console.error("Error checking Winget:", error)
+      setWingetInstalled(false)
+    } finally {
+      setWingetChecking(false)
+    }
+  }
+
+  const installWinget = async () => {
+    setWingetInstalling(true)
+    try {
+      await invoke({ channel: "install-winget" })
+      toast.success("Winget installation completed!")
+      await checkWinget()
+    } catch (error) {
+      console.error("Error installing Winget:", error)
+      toast.error("Failed to install Winget. Please try again.")
+    } finally {
+      setWingetInstalling(false)
+    }
+  }
+
+  useEffect(() => {
+    const idleHandle = requestIdleCallback(() => {
+      checkWinget()
     })
 
     return () => cancelIdleCallback(idleHandle)
@@ -214,7 +259,42 @@ function Home() {
             ]}
           />
         </div>
-        <Card className="bg-sparkle-card backdrop-blur-xs rounded-xl border border-sparkle-border hover:shadow-xs overflow-hidden p-3 w-full mt-5 flex gap-4 items-center">
+        {!wingetInstalled && (
+          <Card className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-4 w-full mt-4 flex gap-4 items-center">
+            <div className="p-3 bg-amber-500/10 rounded-lg">
+              <Download className="text-amber-500" size={24} />
+            </div>
+            <div className="flex-1">
+              <h1 className="font-medium text-sparkle-text">Winget Not Installed</h1>
+              <p className="text-sparkle-text-secondary">
+                Winget is required to install apps from the Apps page. Click the button to install
+                it.
+              </p>
+            </div>
+            <div className="ml-auto">
+              <Button
+                variant="outline"
+                className="flex items-center gap-2 border-amber-500/20 hover:bg-amber-500/10"
+                onClick={installWinget}
+                disabled={wingetInstalling || wingetChecking}
+              >
+                {wingetInstalling ? (
+                  <>
+                    <div className="animate-spin inline-block w-4 h-4 border-[2px] border-current border-t-transparent rounded-full" />
+                    Installing...
+                  </>
+                ) : wingetChecking ? (
+                  <>Checking...</>
+                ) : (
+                  <>
+                    <Download size={18} /> Install Winget
+                  </>
+                )}
+              </Button>
+            </div>
+          </Card>
+        )}
+        <Card className="bg-sparkle-card backdrop-blur-xs rounded-xl border border-sparkle-border hover:shadow-xs overflow-hidden p-3 w-full mt-4 flex gap-4 items-center">
           <div className="p-3 bg-green-500/10 rounded-lg items-center justify-center text-center">
             <Wrench className="text-green-500" size={24} />
           </div>

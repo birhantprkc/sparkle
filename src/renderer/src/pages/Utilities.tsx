@@ -280,9 +280,9 @@ Write-Output "Network stack reset. Restart your PC to apply changes."
 ]
 
 function Utilities() {
-  const [dropdownValues, setDropdownValues] = useState({})
-  const [toggleStates, setToggleStates] = useState({})
-  const [loadingStates, setLoadingStates] = useState({})
+  const [dropdownValues, setDropdownValues] = useState<Record<string, string>>({})
+  const [toggleStates, setToggleStates] = useState<Record<string, boolean>>({})
+  const [loadingStates, setLoadingStates] = useState<Record<string, boolean>>({})
   const [modalOpen, setModalOpen] = useState(false)
 
   useEffect(() => {
@@ -343,7 +343,7 @@ function Utilities() {
     checkAllStates()
   }, [])
 
-  const handleToggleChange = async (util, newState) => {
+  const handleToggleChange = async (util: Utility, newState: boolean) => {
     const previousState = toggleStates[util.name]
     setToggleStates((prev) => ({ ...prev, [util.name]: newState }))
 
@@ -383,7 +383,7 @@ function Utilities() {
     }
   }
 
-  const handleDropdownChange = async (util, value) => {
+  const handleDropdownChange = async (util: Utility, value: string) => {
     const previousValue = dropdownValues[util.name]
     setDropdownValues((prev) => ({ ...prev, [util.name]: value }))
 
@@ -424,7 +424,7 @@ function Utilities() {
     }
   }
 
-  const handleButtonClick = async (util) => {
+  const handleButtonClick = async (util: Utility) => {
     if (util.runScript) {
       const loadingToastId = toast.loading(`Running ${util.name}...`)
       try {

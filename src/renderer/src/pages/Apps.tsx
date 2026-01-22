@@ -1,5 +1,5 @@
 import { useState, useMemo, Suspense } from "react"
-import * as data from "../assets/apps.json"
+import data from "../assets/apps.json"
 import RootDiv from "@/components/rootdiv"
 import { Search } from "lucide-react"
 import Button from "@/components/ui/button"
@@ -29,6 +29,18 @@ interface AppData {
 
 interface AppsByCategory {
   [key: string]: AppData[]
+}
+
+interface InvokeResult {
+  success: boolean
+  installed?: boolean
+  error?: string
+}
+
+interface InstalledAppsResult {
+  success: boolean
+  installed: string[]
+  error?: string
 }
 
 function Apps() {
@@ -108,9 +120,9 @@ function Apps() {
   const checkWinget = async (): Promise<void> => {
     setWingetChecking(true)
     try {
-      const result = await invoke({ channel: "check-winget" })
+      const result = (await invoke({ channel: "check-winget" })) as InvokeResult
       if (result.success) {
-        setWingetInstalled(result.installed)
+        setWingetInstalled(result.installed ?? false)
       } else {
         console.warn("Failed to check Winget status:", result.error)
         setWingetInstalled(false)
@@ -139,8 +151,9 @@ function Apps() {
 
   const toggleApp = (appId: string | string[]): void => {
     const id = Array.isArray(appId) ? appId[0] : appId
-    setSelectedApps((prev) => (prev.includes(id) ? prev.filter((id) => id !== id) : [...prev, id]))
-  }
+    setSelectedApps((prev) =>
+      prev.includes(id) ? prev.filter((selectedId) => selectedId !== id) : [...prev, id],
+    )
   }
 
   useEffect(() => {
@@ -148,7 +161,7 @@ function Apps() {
       try {
         let appsData: { apps: AppData[] }
         if (import.meta.env.DEV) {
-          appsData = data.default as { apps: AppData[] }
+          appsData = data as { apps: AppData[] }
         } else {
           const response = await fetch(
             "https://raw.githubusercontent.com/parcoil/sparkle/refs/heads/v2/src/renderer/src/assets/apps.json",
@@ -159,7 +172,7 @@ function Apps() {
       } catch (error) {
         console.error("Failed to load apps list", error)
         toast.error("Failed to fetch apps list (Using local apps.json)")
-        setAppsList((data.default as { apps: AppData[] }).apps || [])
+        setAppsList((data as { apps: AppData[] }).apps || [])
       }
     }
 
@@ -200,7 +213,7 @@ function Apps() {
       },
       "installed-apps-checked": (
         _event: unknown,
-        { success, installed, error }: { success: boolean; installed: string[]; error?: string },
+        { success, installed, error }: InstalledAppsResult,
       ) => {
         if (success) {
           setInstalledApps(installed)
@@ -275,8 +288,7 @@ function Apps() {
                     <li key={id} className="flex items-center gap-2 text-sparkle-text">
                       <Checkbox
                         checked={selectedImportedApps.includes(id)}
-                        onChange={(e: any) => {
-                          const checked = e.target.checked
+                        onChange={(checked: boolean) => {
                           setSelectedImportedApps((prev) => {
                             if (checked) {
                               return prev.includes(id) ? prev : [...prev, id]
@@ -319,7 +331,7 @@ function Apps() {
         <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-6 shadow-xl">
           <div className="flex items-center gap-4">
             <div className="relative">
-              <div className="w-10 h-10 border-4  rounded-full animate-spin border-t-sparkle-primary border-sparkle-accent"></div>
+              <div className="w-10 h-10 border-4 rounded-full animate-spin border-t-sparkle-primary border-sparkle-accent"></div>
             </div>
             <div>
               <h3 className="text-lg font-medium text-sparkle-text">
@@ -361,7 +373,7 @@ function Apps() {
               >
                 {wingetInstalling ? (
                   <>
-                    <div className="animate-spin inline-block w-4 h-4 border-[2px] border-current border-t-transparent rounded-full" />
+                    <div className="animate-spin inline-block w-4 h-4 border-2 border-current border-t-transparent rounded-full" />
                     Installing...
                   </>
                 ) : wingetChecking ? (

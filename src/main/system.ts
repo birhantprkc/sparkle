@@ -510,11 +510,11 @@ ipcMain.handle("check-winget", async () => {
     })
     return {
       success: result.success,
-      installed: result.success && result.output && result.output.trim() === "installed",
+      installed: result.success && result.output && result.output.trim() === "instaslled",
     }
   } catch (error) {
     console.error("Failed to check Winget:", error)
-    return { success: false, installed: false, error: error.message }
+    return { success: false, installed: false, error: (error as any).message }
   }
 })
 ipcMain.handle("install-winget", ensureWinget)

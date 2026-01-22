@@ -12,6 +12,7 @@ import { MonitorCog } from "lucide-react"
 import { Wrench } from "lucide-react"
 import Card from "@/components/ui/Card"
 import { Download } from "lucide-react"
+import { X } from "lucide-react"
 import { toast } from "react-toastify"
 function Home() {
   const systemInfo = useSystemStore((state) => state.systemInfo)
@@ -39,6 +40,13 @@ function Home() {
   const [wingetInstalled, setWingetInstalled] = useState(true)
   const [wingetChecking, setWingetChecking] = useState(false)
   const [wingetInstalling, setWingetInstalling] = useState(false)
+  const [wingetWarningDismissed, setWingetWarningDismissed] = useState(() => {
+    try {
+      return localStorage.getItem("sparkle:winget-warning-dismissed") === "true"
+    } catch {
+      return false
+    }
+  })
 
   const goToTweaks = () => {
     router("tweaks")
@@ -146,6 +154,15 @@ function Home() {
       toast.error("Failed to install Winget. Please try again.")
     } finally {
       setWingetInstalling(false)
+    }
+  }
+
+  const dismissWingetWarning = () => {
+    setWingetWarningDismissed(true)
+    try {
+      localStorage.setItem("sparkle:winget-warning-dismissed", "true")
+    } catch (error) {
+      console.error("Failed to save winget warning dismissal:", error)
     }
   }
 
@@ -259,8 +276,8 @@ function Home() {
             ]}
           />
         </div>
-        {!wingetInstalled && (
-          <Card className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-4 w-full mt-4 flex gap-4 items-center">
+        {!wingetInstalled && !wingetWarningDismissed && (
+          <Card className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-4 w-full mt-4 flex gap-4 items-center relative">
             <div className="p-3 bg-amber-500/10 rounded-lg">
               <Download className="text-amber-500" size={24} />
             </div>
@@ -271,7 +288,7 @@ function Home() {
                 it.
               </p>
             </div>
-            <div className="ml-auto">
+            <div className="ml-auto flex gap-2 items-center">
               <Button
                 variant="outline"
                 className="flex items-center gap-2 border-amber-500/20 hover:bg-amber-500/10"
@@ -291,6 +308,13 @@ function Home() {
                   </>
                 )}
               </Button>
+              <button
+                onClick={dismissWingetWarning}
+                className="p-1 text-sparkle-text-secondary hover:text-sparkle-text transition-colors"
+                aria-label="Dismiss warning"
+              >
+                <X size={16} />
+              </button>
             </div>
           </Card>
         )}

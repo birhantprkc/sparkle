@@ -65,7 +65,6 @@ irm https://raw.githubusercontent.com/Parcoil/Sparkle/v2/get.ps1 | iex
   <h4>Adding New Tweaks</h4>
   <ul>
     <li>Tweaks are located in <code>/tweaks</code></li>
-    <li>More info in <code>/tweaks/readme.md</code></li>
   </ul>
 
 Refer to the <a href="https://docs.getsparkle.net">docs</a> for more info on how to add new tweaks
@@ -87,6 +86,18 @@ Refer to the <a href="https://docs.getsparkle.net">docs</a> for more info on how
   <li><b>Yarn</b></li>
   <li><b>Windows 10/11</b></li>
 </ul>
+
+<details>
+  <summary><h2>🤧 What if I’m allergic to Electron?</h2></summary>
+
+  That’s totally fine, this project probably isn’t for you.  
+  You might want to check out [CTT WinUtil](https://github.com/ChrisTitusTech/winutil),  
+  A PowerShell based alternative that keeps things nice and lightweight. 
+
+  this message is inspired by [this](https://github.com/nukeop/nuclear/blob/master/docs/electron.md)
+</details>
+
+---
 
 </div>
 

@@ -232,12 +232,13 @@ export default function RestorePointManager() {
                         <td className="px-14 py-4 text-center">
                           <Button
                             variant="outline"
-                            className="p-2! hover:bg-sparkle-accent"
+                            className="p-2! gap-2"
                             onClick={() => handleRestore(rp)}
                             disabled={processing}
                             title="Restore System"
                           >
-                            <RotateCcw size={16} className="text-sparkle-primary" />
+                            <RotateCcw size={16} />
+                            Restore
                           </Button>
                         </td>
                       </tr>

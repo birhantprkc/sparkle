@@ -6,51 +6,36 @@ hide:
 
 # Utilities Page
 
-!!! note "New and Updated Utilities Page"
+!!! note "Comprehensive System Utilities"
 
-    The Utilities page has been completely redesigned and updated with new features and controls for better usability and functionality.
+    The Utilities page provides direct access to system maintenance tools and settings management with intuitive controls. All utilities run PowerShell scripts behind the scenes and sync with your Windows configuration.
 
 ## Overview
 
-The new Utilities page provides direct access to system maintenance tools and settings management with intuitive controls like toggles, buttons, and dropdowns. All utilities run PowerShell scripts behind the scenes and sync with your Windows configuration.
+The Utilities page offers 14 different system utilities. Each utility automatically detects your current system settings and provides appropriate controls - toggles, buttons, or dropdowns - to manage Windows features and perform maintenance tasks.
 
 ## Available Utilities
-
-### Disk Management
 
 | Utility | Description | Control Type |
 |---------|-------------|--------------|
 | **Disk Cleaner** | Free up space by removing unnecessary files. | Button - "Clean Now" |
 | **Storage Sense** | Automatically free up space by getting rid of files you don't need. | Toggle |
-
-### System Information & Diagnostics
-
-| Utility | Description | Control Type |
-|---------|-------------|--------------|
 | **System Information** | View detailed information about your system. | Button - "View Info" |
-| **Graphics Driver** | Restart your graphics driver to fix display issues. | Button - "Restart" |
-
-### Performance & Power
-
-| Utility | Description | Control Type |
-|---------|-------------|--------------|
 | **Fast Startup** | Improve boot times by optimizing startup settings. | Toggle |
+| **Windows Updates** | Control how Windows handles automatic updates. | Dropdown - [Default, Manual, Disabled] |
+| **Graphics Driver** | Restart your graphics driver to fix display issues. | Button - "Restart" |
 | **Power Plan** | Choose how your computer manages power and performance. | Dropdown - [Balanced, High Performance, Power Saver, Ultimate Performance] |
-
-### Network & Connectivity
-
-| Utility | Description | Control Type |
-|---------|-------------|--------------|
 | **Flush DNS Cache** | Fix connection issues by clearing DNS resolver cache. | Button - "Flush" |
+| **System File Checker** | Repair corrupted system files to improve stability. | Button - "Repair" |
+| **DISM Health Restore** | Use DISM to repair the Windows image and fix system issues. | Button - "Repair" |
+| **Check Disk** | Check and fix disk errors on your system. | Button - "Check" |
+| **Restart Audio Service** | Fix sound issues by restarting Windows Audio. | Button - "Restart" |
 | **Network Reset** | Reset your network stack to fix connectivity problems. | Button - "Reset" |
 
-### Audio & Updates
+## How It Works
 
-| Utility | Description | Control Type |
-|---------|-------------|--------------|
-| **Restart Audio Service** | Fix sound issues by restarting Windows Audio. | Button - "Restart" |
-| **Windows Updates** | Control how Windows handles automatic updates. | Dropdown - [Default, Manual, Disabled] |
+- **Toggle**: Enable/disable features with a switch. Automatically detects current state.
+- **Button**: Execute one-time actions like cleaning, repairing, or restarting services.
+- **Dropdown**: Choose from multiple options for settings with more than two states.
 
-!!! info
-
-    All utilities automatically detect and display your current system settings. Changes are applied instantly using PowerShell scripts, and you'll see toast notifications for success or failure.
+All utilities automatically check your current system settings on page load and show toast notifications for success/failure. PowerShell scripts run in the background to apply changes.

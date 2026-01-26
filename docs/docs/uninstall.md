@@ -5,7 +5,7 @@ hide:
 ---
 
 # Restore Points
-If you would like to restore your system to a point before you installed, you can use a restore point either one created by Sparkle or one you created yourself, whether it’s in Sparkle or in Windows.
+If you would like to restore your system to a point before you used tweaks inside of Sparkle, you can use a restore point either one created by Sparkle or one you created yourself, whether it’s in Sparkle or in Windows.
 
 
 ![Sparkle Screenshot showing the user how to restore](images/sparklerestore.png)

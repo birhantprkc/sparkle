@@ -16,10 +16,12 @@ import log from "electron-log/renderer"
 import { Upload } from "lucide-react"
 import Card from "@/components/ui/Card"
 import { LargeInput } from "@/components/ui/input"
+import { Dropdown } from "@/components/ui/dropdown"
 
 interface AppData {
   name: string
   id: string | string[]
+  chocolatey?: string
   category: string
   info: string
   link?: string
@@ -58,12 +60,26 @@ function Apps() {
   const [wingetInstalled, setWingetInstalled] = useState<boolean>(true)
   const [wingetChecking, setWingetChecking] = useState<boolean>(false)
   const [wingetInstalling, setWingetInstalling] = useState<boolean>(false)
+  const [source, setSource] = useState<string>("Winget")
 
   const router = useNavigate()
 
-  const filteredApps = appsList.filter((app: AppData) =>
-    app.name.toLowerCase().includes(search.toLowerCase()),
-  )
+  const filteredApps = appsList
+    .filter((app: AppData) => app.name.toLowerCase().includes(search.toLowerCase()))
+    .filter((app: AppData) => {
+      if (source === "Chocolatey") {
+        return (app as any).chocolatey !== undefined
+      }
+      return true
+    })
+
+  // Helper function to get the app ID based on current source
+  const getAppIdForSource = (app: AppData): string => {
+    if (source === "Chocolatey" && app.chocolatey) {
+      return app.chocolatey
+    }
+    return Array.isArray(app.id) ? app.id[0] : app.id
+  }
 
   const exportSelectedApps = () => {
     const blob = new Blob([JSON.stringify(selectedApps, null, 2)], { type: "application/json" })
@@ -149,10 +165,9 @@ function Apps() {
     }
   }
 
-  const toggleApp = (appId: string | string[]): void => {
-    const id = Array.isArray(appId) ? appId[0] : appId
+  const toggleApp = (appId: string): void => {
     setSelectedApps((prev) =>
-      prev.includes(id) ? prev.filter((selectedId) => selectedId !== id) : [...prev, id],
+      prev.includes(appId) ? prev.filter((selectedId) => selectedId !== appId) : [...prev, appId],
     )
   }
 
@@ -241,25 +256,23 @@ function Apps() {
     }
   }, [])
 
+  useEffect(() => {
+    setSelectedApps([]) // reset selections when switching sources
+  }, [source])
+
   const handleAppAction = async (type: string, appsToUse = selectedApps) => {
     const actionVerb = type === "install" ? "Installing" : "Uninstalling"
     setLoading(type)
 
     try {
-      const commands = appsToUse.flatMap((appId) => {
-        const app = appsList.find(
-          (a) => a.id === appId || (Array.isArray(a.id) && a.id.includes(appId)),
-        )
-        return app
-      })
-
-      if (commands.length === 0) return
+      if (appsToUse.length === 0) return
 
       invoke({
         channel: "handle-apps",
         payload: {
           action: type,
           apps: appsToUse,
+          source: source,
         },
       })
 
@@ -348,7 +361,7 @@ function Apps() {
       <RootDiv>
         <LargeInput
           icon={Search}
-          placeholder={`Search for ${appsList.length} apps...`}
+          placeholder={`Search for ${filteredApps.length} apps...`}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -442,11 +455,22 @@ function Apps() {
             Tweaks
           </a>
         </p>
-        {import.meta.env.DEV && (
-          <p className=" text-red-500 font-medium">
-            You are in development mode, using local apps.json
-          </p>
-        )}
+
+        <div className="flex flex-row gap-2 items-center">
+          {import.meta.env.DEV && (
+            <p className=" text-red-500 text-xs">
+              You are in development mode, using local apps.json
+            </p>
+          )}
+          <div className="ml-auto flex gap-2 items-center">
+            <p className="text-sparkle-text-muted">Select Source:</p>
+            <Dropdown
+              options={["Winget", "Chocolatey"]}
+              value={source || "Winget"}
+              onChange={setSource}
+            />
+          </div>
+        </div>
         <div className="space-y-10 mb-10">
           <Suspense
             fallback={<div className="text-center text-sparkle-text-secondary">Loading...</div>}
@@ -455,74 +479,69 @@ function Apps() {
               <div key={category} className="space-y-4">
                 <h2 className="text-2xl text-sparkle-primary font-bold capitalize">{category}</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-4 mr-4">
-                  {apps.map((app) => (
-                    <Card
-                      key={Array.isArray(app.id) ? app.id[0] : app.id}
-                      onClick={() => toggleApp(app.id)}
-                      className="p-4"
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-4">
-                          <div onClick={(e) => e.stopPropagation()}>
-                            <Checkbox
-                              checked={selectedApps.includes(
-                                Array.isArray(app.id) ? app.id[0] : app.id,
-                              )}
-                              onChange={() => toggleApp(app.id)}
-                            />
-                          </div>
-                          <div className="min-w-10 max-w-10 max--h-10 min-h-10 rounded-lg overflow-hidden bg-sparkle-accent flex items-center justify-center">
-                            {app.icon ? (
-                              <img
-                                src={app.icon}
-                                alt={app.name}
-                                className="w-8 h-8 object-contain rounded-md"
+                  {apps.map((app) => {
+                    const appId = getAppIdForSource(app)
+                    return (
+                      <Card key={appId} onClick={() => toggleApp(appId)} className="p-4">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-4">
+                            <div onClick={(e) => e.stopPropagation()}>
+                              <Checkbox
+                                checked={selectedApps.includes(appId)}
+                                onChange={() => toggleApp(appId)}
                               />
-                            ) : (
-                              <img src="" alt="" className="w-6 h-6 opacity-50" />
-                            )}
+                            </div>
+                            <div className="min-w-10 max-w-10 max--h-10 min-h-10 rounded-lg overflow-hidden bg-sparkle-accent flex items-center justify-center">
+                              {app.icon ? (
+                                <img
+                                  src={app.icon}
+                                  alt={app.name}
+                                  className="w-8 h-8 object-contain rounded-md"
+                                />
+                              ) : (
+                                <img src="" alt="" className="w-6 h-6 opacity-50" />
+                              )}
+                            </div>
+                            <div>
+                              <h3 className="text-sparkle-text font-medium group-hover:text-sparkle-primary transition">
+                                {app.name}
+                              </h3>
+                              {app.info && (
+                                <p className="text-sm text-sparkle-text-secondary line-clamp-1 font-semibold">
+                                  {app.info}
+                                </p>
+                              )}
+                              <p className="text-xs text-sparkle-text-secondary">ID: {appId}</p>
+                            </div>
                           </div>
-                          <div>
-                            <h3 className="text-sparkle-text font-medium group-hover:text-sparkle-primary transition">
-                              {app.name}
-                            </h3>
-                            {app.info && (
-                              <p className="text-sm text-sparkle-text-secondary line-clamp-1 font-semibold">
-                                {app.info}
-                              </p>
-                            )}
-                            <p className="text-xs text-sparkle-text-secondary">
-                              ID: {Array.isArray(app.id) ? app.id.join(", ") : app.id}
-                            </p>
-                          </div>
+                          {installedApps.includes(Array.isArray(app.id) ? app.id[0] : app.id) && (
+                            <div className="text-xs font-semibold text-sparkle-text bg-sparkle-accent py-1 px-2 rounded-full">
+                              Installed
+                            </div>
+                          )}
+                          {app.link && (
+                            <div onClick={(e) => e.stopPropagation()}>
+                              <button
+                                type="button"
+                                aria-label={`Open ${app.name} website`}
+                                className="ml-3 text-sparkle-primary hover:text-sparkle-text-secondary transition-opacity"
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  try {
+                                    window.open(app.link, "_blank")
+                                  } catch (err) {
+                                    console.error("Failed to open external link", err)
+                                  }
+                                }}
+                              >
+                                <ExternalLink className="w-4 h-4" />
+                              </button>
+                            </div>
+                          )}
                         </div>
-                        {installedApps.includes(Array.isArray(app.id) ? app.id[0] : app.id) && (
-                          <div className="text-xs font-semibold text-sparkle-text bg-sparkle-accent py-1 px-2 rounded-full">
-                            Installed
-                          </div>
-                        )}
-                        {app.link && (
-                          <div onClick={(e) => e.stopPropagation()}>
-                            <button
-                              type="button"
-                              aria-label={`Open ${app.name} website`}
-                              className="ml-3 text-sparkle-primary hover:text-sparkle-text-secondary transition-opacity"
-                              onClick={(e) => {
-                                e.stopPropagation()
-                                try {
-                                  window.open(app.link, "_blank")
-                                } catch (err) {
-                                  console.error("Failed to open external link", err)
-                                }
-                              }}
-                            >
-                              <ExternalLink className="w-4 h-4" />
-                            </button>
-                          </div>
-                        )}
-                      </div>
-                    </Card>
-                  ))}
+                      </Card>
+                    )
+                  })}
                 </div>
               </div>
             ))}

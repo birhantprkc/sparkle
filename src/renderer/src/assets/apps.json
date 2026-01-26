@@ -3,6 +3,7 @@
     {
       "name": "Firefox",
       "id": "Mozilla.Firefox",
+      "chocolatey": "firefox",
       "category": "browsers",
       "info": "A fast, private and secure web browsers.",
       "link": "https://www.mozilla.org/en-US/firefox/new/?ref=sparkle",
@@ -11,6 +12,7 @@
     {
       "name": "Firefox Nightly",
       "id": "Mozilla.Firefox.MSIX.Nightly",
+      "chocolatey": "firefox-nightly",
       "category": "browsers",
       "info": "A fast, private and secure web browsers. Nightly build.",
       "link": "https://www.firefox.com/en-US/channel/desktop/?ref=sparkle",
@@ -19,6 +21,7 @@
     {
       "name": "Google Chrome",
       "id": "Google.Chrome",
+      "chocolatey": "googlechrome",
       "category": "browsers",
       "info": "The most popular web browsers.",
       "link": "https://www.google.com/chrome/?ref=sparkle",
@@ -27,6 +30,7 @@
     {
       "name": "Discord",
       "id": "Discord.Discord",
+      "chocolatey": "discord",
       "category": "communication",
       "info": "Discord is a communication app that lets you chat with your friends.",
       "link": "https://discord.com/?ref=sparkle",
@@ -35,6 +39,7 @@
     {
       "name": "Spotify (may not work)",
       "id": "Spotify.Spotify",
+      "chocolatey": "spotify",
       "warning": "This app may install properly as sparkle runs as admin. However Uninstalling will continue to work as normal.",
       "category": "multimedia",
       "info": "Listen to music and podcasts.",
@@ -44,6 +49,7 @@
     {
       "name": "Steam",
       "id": "Valve.Steam",
+      "chocolatey": "steam",
       "category": "games",
       "info": "A digital distribution platform for video games.",
       "link": "https://store.steampowered.com/?ref=sparkle",
@@ -52,6 +58,7 @@
     {
       "name": "Epic Games Launcher",
       "id": "EpicGames.EpicGamesLauncher",
+      "chocolatey": "epicgameslauncher", 
       "category": "games",
       "info": "A Games Store",
       "link": "https://www.epicgames.com/?ref=sparkle",
@@ -60,6 +67,7 @@
     {
       "name": "EA App",
       "id": "ElectronicArts.EADesktop",
+      "chocolatey": "ea-app",
       "category": "games",
       "info": "A Games Store",
       "link": "https://www.ea.com/?ref=sparkle",
@@ -76,6 +84,7 @@
     {
       "name": "Minecraft Launcher",
       "id": "Mojang.MinecraftLauncher",
+      "chocolatey": "minecraft-launcher",
       "category": "games",
       "info": "Minecraft game launcher.",
       "link": "https://www.minecraft.net/en-us/download/?ref=sparkle",
@@ -84,6 +93,7 @@
     {
       "name": "Modrinth",
       "id": "Modrinth.ModrinthApp",
+      "chocolatey": "modrinth-app",
       "category": "games",
       "info": "Minecraft Modding Launcher",
       "link": "https://modrinth.com/?ref=sparkle",
@@ -92,6 +102,7 @@
     {
       "name": "Visual Studio Code",
       "id": "Microsoft.VisualStudioCode",
+      "chocolatey": "vscode",
       "category": "development",
       "info": "A code editor that runs on your computer.",
       "link": "https://code.visualstudio.com/?ref=sparkle",
@@ -100,6 +111,7 @@
     {
       "name": "Visual Studio Code Insiders",
       "id": "Microsoft.VisualStudioCode.Insiders",
+      "chocolatey": "vscode-insiders",
       "category": "development",
       "info": "A code editor that runs on your computer.",
       "link": "https://code.visualstudio.com/insiders/?ref=sparkle",
@@ -113,9 +125,18 @@
       "link": "https://visualstudio.microsoft.com/?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Visual_Studio_Icon_2019.svg/2060px-Visual_Studio_Icon_2019.svg.png"
     },
+        {
+      "name": "Visual Studio Installer",
+      "chocolatey": "visualstudio-installer",
+      "category": "development",
+      "info": "A code editor that runs on your computer.",
+      "link": "https://visualstudio.microsoft.com/?ref=sparkle",
+      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Visual_Studio_Icon_2019.svg/2060px-Visual_Studio_Icon_2019.svg.png"
+    },
     {
       "name": "Arduino IDE",
       "id": "ArduinoSA.IDE.stable",
+      "chocolatey": "arduino",
       "category": "development",
       "info": "Code Editor for Arduino Microcontrollers.",
       "link": "https://www.arduino.cc/en/software/?ref=sparkle",
@@ -124,6 +145,7 @@
     {
       "name": "Notepad++",
       "id": "Notepad++.Notepad++",
+      "chocolatey": "notepadplusplus.install",
       "category": "development",
       "info": "A code editor that runs on your computer.",
       "link": "https://notepad-plus-plus.org/?ref=sparkle",
@@ -132,6 +154,7 @@
     {
       "name": "Sublime Text",
       "id": "Sublime.Text",
+      "chocolatey": "sublimetext3",
       "category": "development",
       "info": "A code editor that runs on your computer.",
       "link": "https://www.sublimetext.com/?ref=sparkle",
@@ -140,14 +163,25 @@
     {
       "name": "Brave",
       "id": "Brave.Brave",
+      "chocolatey": "brave",
       "category": "browsers",
       "info": "A fast, private and secure web browsers.",
       "link": "https://brave.com/?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Brave_lion_icon.svg/1200px-Brave_lion_icon.svg.png"
     },
+        {
+      "name": "Brave Nightly",
+      "id": "Brave.Brave.Nightly",
+      "chocolatey": "brave-nightly",
+      "category": "browsers",
+      "info": "A fast, private and secure web browsers.",
+      "link": "https://brave.com/?ref=sparkle",
+      "icon": "https://brave.com/static-assets/images/brave-nightly-badge.png"
+    },
     {
       "name": "Opera",
       "id": "Opera.Opera",
+      "chocolatey": "opera",
       "category": "browsers",
       "info": "A fast, private and secure web browsers.",
       "link": "https://www.opera.com/?ref=sparkle",
@@ -156,6 +190,7 @@
     {
       "name": "Opera GX",
       "id": "Opera.OperaGX",
+      "chocolatey": "opera-gx",
       "category": "browsers",
       "info": "A fast, private and secure web browser for gamers.",
       "link": "https://www.opera.com/gx?ref=sparkle",
@@ -164,6 +199,7 @@
     {
       "name": "Vivaldi",
       "id": "Vivaldi.Vivaldi",
+      "chocolatey": "vivaldi",
       "category": "browsers",
       "info": "A fast, private and secure web browsers.",
       "link": "https://vivaldi.com/?ref=sparkle",
@@ -172,6 +208,7 @@
     {
       "name": "Zoom",
       "id": "Zoom.Zoom",
+      "chocolatey": "zoom",
       "category": "communication",
       "info": "A video conferencing app.",
       "link": "https://zoom.us/?ref=sparkle",
@@ -188,6 +225,7 @@
     {
       "name": "Telegram Desktop",
       "id": "Telegram.TelegramDesktop",
+      "chocolatey": "telegram.install",
       "category": "communication",
       "info": "A messaging app.",
       "link": "https://telegram.org/?ref=sparkle",
@@ -196,6 +234,7 @@
     {
       "name": "7-Zip",
       "id": "7Zip.7Zip",
+      "chocolatey": "7zip.install",
       "category": "utilities",
       "info": "A file archiver.",
       "link": "https://www.7-zip.org/?ref=sparkle",
@@ -204,6 +243,7 @@
     {
       "name": "Git",
       "id": "Git.Git",
+      "chocolatey": "git.install",
       "category": "development",
       "info": "A version control system.",
       "link": "https://git-scm.com/?ref=sparkle",
@@ -212,6 +252,7 @@
     {
       "name": "GitHub Desktop",
       "id": "GitHub.GitHubDesktop",
+      "chocolatey": "github-desktop",
       "category": "development",
       "info": "A code editor that runs on your computer.",
       "link": "https://desktop.github.com/?ref=sparkle",
@@ -228,6 +269,7 @@
     {
       "name": "Razer Synapse 4",
       "id": "RazerInc.RazerInstaller.Synapse4",
+      "chocolatey": "razer-synapse-4",
       "category": "peripherals",
       "info": "App to Manage your Razer peripherals.",
       "link": "https://www.razer.com/synapse-4?ref=sparkle",
@@ -252,6 +294,7 @@
     {
       "name": "Node.js",
       "id": "OpenJS.NodeJS",
+      "chocolatey": "nodejs.install",
       "category": "development",
       "info": "JavaScript runtime built on Chrome's V8 JavaScript engine.",
       "link": "https://nodejs.org/?ref=sparkle",
@@ -260,6 +303,7 @@
     {
       "name": "Postman",
       "id": "Postman.Postman",
+      "chocolatey": "postman",
       "category": "development",
       "info": "API development environment.",
       "link": "https://www.postman.com/?ref=sparkle",
@@ -268,6 +312,7 @@
     {
       "name": "Docker Desktop",
       "id": "Docker.DockerDesktop",
+      "chocolatey": "docker-desktop",
       "category": "development",
       "info": "Containerized application development.",
       "link": "https://www.docker.com/products/docker-desktop?ref=sparkle",
@@ -276,6 +321,7 @@
     {
       "name": "Slack",
       "id": "SlackTechnologies.Slack",
+      "chocolatey": "slack",
       "category": "communication",
       "info": "Collaboration hub that connects your work with the people you work with.",
       "link": "https://slack.com/?ref=sparkle",
@@ -284,6 +330,7 @@
     {
       "name": "RustDesk",
       "id": "RustDesk.RustDesk",
+      "chocolatey": "rustdesk.install",
       "category": "utilities",
       "info": "A remote desktop app.",
       "link": "https://rustdesk.com/?ref=sparkle",
@@ -292,6 +339,7 @@
     {
       "name": "Rufus",
       "id": "Rufus.Rufus",
+      "chocolatey": "rufus",
       "category": "utilities",
       "info": "A utility to create bootable USB drives.",
       "link": "https://rufus.ie/?ref=sparkle",
@@ -300,6 +348,7 @@
     {
       "name": "Everything Search",
       "id": "voidtools.Everything",
+      "chocolatey": "everything",
       "category": "utilities",
       "info": "A file search engine.",
       "icon": "https://images.dwncdn.net/images/t_app-icon-l/p/518883d1-148e-46b6-9935-3f300ee5eb94/2700159425/2379_4-10890746-imgingest-1136771509381280571.png"
@@ -307,6 +356,7 @@
     {
       "name": "VLC",
       "id": "VideoLAN.VLC",
+      "chocolatey": "vlc",
       "category": "multimedia",
       "info": "A free and open source media player.",
       "link": "https://vlc.media/?ref=sparkle",
@@ -315,6 +365,7 @@
     {
       "name": "Audacity",
       "id": "Audacity.Audacity",
+      "chocolatey": "audacity",
       "category": "multimedia",
       "info": "An audio editor.",
       "link": "https://www.audacityteam.org/?ref=sparkle",
@@ -323,6 +374,7 @@
     {
       "name": "OBS Studio",
       "id": "OBSProject.OBSStudio",
+      "chocolatey": "obs-studio.install",
       "category": "multimedia",
       "info": "A free and open source software for video recording and live streaming.",
       "link": "https://obsproject.com/?ref=sparkle",
@@ -331,6 +383,7 @@
     {
       "name": "MSI Afterburner",
       "id": "Guru3D.Afterburner",
+      "chocolatey": "msiafterburner",
       "category": "utilities",
       "info": "A graphics card overclocking utility.",
       "link": "https://www.msi.com/Landing/afterburner?ref=sparkle",
@@ -347,6 +400,7 @@
     {
       "name": "WinRAR",
       "id": "RARLab.WinRAR",
+      "chocolatey": "winrar",
       "category": "utilities",
       "info": "A file archiver.",
       "link": "https://www.win-rar.com/?ref=sparkle",
@@ -355,6 +409,7 @@
     {
       "name": "Parsec",
       "id": "Parsec.Parsec",
+      "chocolatey": "parsec",
       "category": "utilities",
       "info": "A remote desktop app.",
       "link": "https://parsec.app/?ref=sparkle",
@@ -363,6 +418,7 @@
     {
       "name": "OpenRGB",
       "id": "OpenRGB.OpenRGB",
+      "chocolatey": "openrgb",
       "category": "utilities",
       "info": "An open source RGB lighting control software.",
       "link": "https://openrgb.org/?ref=sparkle",
@@ -371,6 +427,7 @@
     {
       "name": "Rust",
       "id": "Rustlang.Rust.MSVC",
+      "chocolatey": "rust",
       "category": "development",
       "info": "A FAST programming language.",
       "link": "https://www.rust-lang.org/?ref=sparkle",
@@ -379,6 +436,7 @@
     {
       "name": "Notion",
       "id": "Notion.Notion",
+      "chocolatey": "notion",
       "category": "productivity",
       "info": "All-in-one workspace for your notes, tasks, wikis, and databases.",
       "link": "https://www.notion.so/?ref=sparkle",
@@ -387,6 +445,7 @@
     {
       "name": "Dropbox",
       "id": "Dropbox.Dropbox",
+      "chocolatey": "dropbox",
       "category": "productivity",
       "info": "Organize all your team's content, tune out distractions, and get everyone coordinated with the world's first smart workspace.",
       "link": "https://www.dropbox.com/?ref=sparkle",
@@ -395,6 +454,7 @@
     {
       "name": "Microsoft Office",
       "id": "Microsoft.Office",
+      "chocolatey": "office365business",
       "category": "productivity",
       "info": "All-in-one workspace for your notes, tasks, wikis, and databases.",
       "link": "https://www.office.com/?ref=sparkle",
@@ -411,6 +471,7 @@
     {
       "name": "Open VPN",
       "id": "OpenVPNTechnologies.OpenVPN",
+      "chocolatey": "openvpn",
       "category": "Privacy & Security",
       "info": "Free Open-Source VPN Client",
       "link": "https://openvpn.net?ref=sparkle",
@@ -419,6 +480,7 @@
     {
       "name": "Tailscale",
       "id": "Tailscale.Tailscale",
+      "chocolatey": "tailscale",
       "category": "Privacy & Security",
       "info": "Tailscale is a WireGuard based mesh VPN",
       "link": "https://tailscale.com/download?ref=sparkle",
@@ -427,6 +489,7 @@
     {
       "name": "Windscribe",
       "id": "Windscribe.Windscribe",
+      "chocolatey": "windscribe",
       "category": "Privacy & Security",
       "info": "A Free VPN service.",
       "link": "https://windscribe.com/?ref=sparkle",
@@ -435,6 +498,7 @@
     {
       "name": "Proton VPN",
       "id": "Proton.ProtonVPN",
+      "chocolatey": "protonvpn",
       "category": "Privacy & Security",
       "info": "A Free VPN service.",
       "link": "https://protonvpn.com/?ref=sparkle",
@@ -443,6 +507,7 @@
     {
       "name": "Express VPN",
       "id": "ExpressVPN.ExpressVPN",
+      "chocolatey": "expressvpn",
       "category": "Privacy & Security",
       "info": "A VPN service.",
       "link": "https://www.expressvpn.com/?ref=sparkle",
@@ -451,6 +516,7 @@
     {
       "name": "Private Internet Access",
       "id": "PrivateInternetAccess.PrivateInternetAccess",
+      "chocolatey": "pia",
       "category": "Privacy & Security",
       "info": "A VPN service.",
       "link": "https://www.privateinternetaccess.com/?ref=sparkle",
@@ -459,6 +525,7 @@
     {
       "name": "NordVPN",
       "id": "NordSecurity.NordVPN",
+      "chocolatey": "nordvpn",
       "category": "Privacy & Security",
       "info": "A VPN service.",
       "link": "https://nordvpn.com/cybersecurity-site/?ref=sparkle",
@@ -467,6 +534,7 @@
     {
       "name": "IPVanish",
       "id": "IPVanish.IPVanish",
+      "chocolatey": "ipvanish",
       "category": "Privacy & Security",
       "info": "A VPN service.",
       "link": "https://www.ipvanish.com/?ref=sparkle",
@@ -475,6 +543,7 @@
     {
       "name": "Mullvad VPN",
       "id": "MullvadVPN.MullvadVPN",
+      "chocolatey": "mullvad-app",
       "category": "Privacy & Security",
       "info": "A Great Private VPN service.",
       "link": "https://mullvad.net/?ref=sparkle",
@@ -483,6 +552,7 @@
     {
       "name": "Malwarebytes",
       "id": "Malwarebytes.Malwarebytes",
+      "chocolatey": "malwarebytes",
       "category": "Privacy & Security",
       "info": "A malware protection service.",
       "link": "https://www.malwarebytes.com/mwb-download?ref=sparkle",
@@ -491,6 +561,7 @@
     {
       "name": "GPU-Z",
       "id": "TechPowerUp.GPU-Z",
+      "chocolatey": "gpu-z",
       "category": "utilities",
       "info": "A GPU performance monitor.",
       "link": "https://www.techpowerup.com/gpuz/?ref=sparkle",
@@ -499,6 +570,7 @@
     {
       "name": "HWMonitor",
       "id": "CPUID.HWMonitor",
+      "chocolatey": "hwmonitor",
       "category": "utilities",
       "info": "A Hardware monitor.",
       "link": "https://www.cpuid.com/softwares/hwmonitor.html?ref=sparkle",
@@ -507,6 +579,7 @@
     {
       "name": "Vim",
       "id": "vim.vim.nightly",
+      "chocolatey": "vim",
       "category": "development",
       "info": "highly configurable text editor built to make creating and changing any kind of text very efficient.",
       "link": "https://www.vim.org/?ref=sparkle",
@@ -515,6 +588,7 @@
     {
       "name": "Neovim",
       "id": "Neovim.Neovim",
+      "chocolatey": "neovim",
       "category": "development",
       "info": "A Vim-fork focused on extensibility and agility.",
       "link": "https://neovim.io/?ref=sparkle",
@@ -523,6 +597,7 @@
     {
       "name": "PowerToys",
       "id": "Microsoft.PowerToys",
+      "chocolatey": "powertoys",  
       "category": "utilities",
       "info": "A set of utilities for power users to tune and streamline their Windows experience.",
       "link": "https://learn.microsoft.com/en-us/windows/powertoys/?ref=sparkle",
@@ -531,6 +606,7 @@
     {
       "name": "PuTTY",
       "id": "PuTTY.PuTTY",
+      "chocolatey": "putty.install",
       "category": "utilities",
       "info": "A free implementation of SSH and Telnet for Windows and Unix platforms.",
       "link": "https://www.putty.org/?ref=sparkle",
@@ -547,6 +623,7 @@
     {
       "name": "Cemu",
       "id": "Cemu.Cemu",
+      "chocolatey": "cemu",
       "category": "games",
       "info": "A Wii U emulator.",
       "link": "https://cemu.info/?ref=sparkle",
@@ -555,6 +632,7 @@
     {
       "name": "Tor Browser",
       "id": "TorProject.TorBrowser",
+      "chocolatey": "tor-browser",
       "category": "browsers",
       "info": "A web browser that protects your privacy.",
       "link": "https://www.torproject.org/?ref=sparkle",
@@ -563,6 +641,7 @@
     {
       "name": "Display Driver Uninstaller",
       "id": "Wagnardsoft.DisplayDriverUninstaller",
+      "chocolatey": "ddu",
       "category": "utilities",
       "info": "A driver uninstaller.",
       "link": "https://www.guru3d.com/download/display-driver-uninstaller-download/?ref=sparkle",
@@ -579,6 +658,7 @@
     {
       "name": "Flow Launcher",
       "id": "Flow-Launcher.Flow-Launcher",
+      "chocolatey": "flow-launcher",
       "category": "utilities",
       "info": "Keystroke launcher for Windows to search, and much more.",
       "link": "https://www.flowlauncher.com/?ref=sparkle",
@@ -587,6 +667,7 @@
     {
       "name": "AnyDesk",
       "id": "AnyDesk.AnyDesk",
+      "chocolatey": "anydesk",
       "category": "utilities",
       "info": "A remote desktop app.",
       "link": "https://anydesk.com/en?ref=sparkle",
@@ -595,6 +676,7 @@
     {
       "name": "WizTree",
       "id": "AntibodySoftware.WizTree",
+      "chocolatey": "wiztree",
       "category": "utilities",
       "info": "A disk space analyzer.",
       "link": "https://diskanalyzer.com/?ref=sparkle",
@@ -603,6 +685,7 @@
     {
       "name": "qBittorrent",
       "id": "qBittorrent.qBittorrent",
+      "chocolatey": "qbittorrent",
       "category": "utilities",
       "info": "A torrent client.",
       "link": "https://www.qbittorrent.org/?ref=sparkle",
@@ -611,6 +694,7 @@
     {
       "name": "Bitwarden",
       "id": "Bitwarden.Bitwarden",
+      "chocolatey": "bitwarden",
       "category": "Privacy & Security",
       "info": "A password manager.",
       "link": "https://bitwarden.com/?ref=sparkle",
@@ -619,6 +703,7 @@
     {
       "name": "Wireshark",
       "id": "WiresharkFoundation.Wireshark",
+      "chocolatey": "wireshark",
       "category": "utilities",
       "info": "A network protocol analyzer.",
       "link": "https://www.wireshark.org/?ref=sparkle",
@@ -627,6 +712,7 @@
     {
       "name": "Sunshine",
       "id": "LizardByte.Sunshine",
+      "chocolatey": "sunshine",
       "category": "games",
       "info": "A self-hosted game streaming server.",
       "link": "https://app.lizardbyte.dev/Sunshine/?ref=sparkle",
@@ -635,6 +721,7 @@
     {
       "name": "Moonlight",
       "id": "MoonlightGameStreamingProject.Moonlight",
+      "chocolatey": "moonlight-qt.install",
       "category": "games",
       "info": "A game streaming client.",
       "link": "https://moonlight-stream.org/?ref=sparkle",
@@ -643,6 +730,7 @@
     {
       "name": "Playnite",
       "id": "Playnite.Playnite",
+      "chocolatey": "playnite",
       "category": "games",
       "info": "A video game library manager and launcher with support for 3rd party libraries.",
       "link": "https://playnite.link/?ref=sparkle",
@@ -659,6 +747,7 @@
     {
       "name": "Go",
       "id": "GoLang.Go",
+      "chocolatey": "golang",
       "category": "development",
       "info": "A Fast programming language.",
       "link": "https://go.dev/?ref=sparkle",
@@ -667,6 +756,7 @@
     {
       "name": "Bulk Crap Uninstaller",
       "id": "Klocman.BulkCrapUninstaller",
+      "chocolatey": "bulk-crap-uninstaller",
       "category": "utilities",
       "info": "A powerful uninstaller for Windows.",
       "link": "https://www.bcuninstaller.com/?ref=sparkle",
@@ -675,6 +765,7 @@
     {
       "name": "Windhawk",
       "id": "RamenSoftware.Windhawk",
+      "chocolatey": "windhawk",
       "category": "utilities",
       "info": "A powerful tool to customize Windows.",
       "link": "https://windhawk.net/?ref=sparkle",
@@ -683,6 +774,7 @@
     {
       "name": "Bulk Rename Utility",
       "id": "TGRMNSoftware.BulkRenameUtility",
+      "chocolatey": "bulkrenameutility",
       "category": "utilities",
       "info": "A powerful file renaming tool.",
       "link": "https://www.bulkrenameutility.co.uk/?ref=sparkle",
@@ -691,6 +783,7 @@
     {
       "name": "GIMP",
       "id": "GIMP.GIMP.2",
+      "chocolatey": "gimp",
       "category": "utilities",
       "info": "A free and open source image editor.",
       "link": "https://www.gimp.org/?ref=sparkle",
@@ -707,6 +800,7 @@
     {
       "name": "Zen Browser",
       "id": "Zen-Team.Zen-Browser",
+      "chocolatey": "zen-browser",
       "category": "browsers",
       "info": "A fast, private and secure web browser.",
       "link": "https://zen-browser.app/?ref=sparkle",
@@ -715,6 +809,7 @@
     {
       "name": "Lively Wallpaper",
       "id": "rocksdanister.LivelyWallpaper",
+      "chocolatey": "lively",
       "category": "utilities",
       "info": "A free and open source animated wallpaper app.",
       "link": "https://rocksdanister.github.io/lively/?ref=sparkle",
@@ -723,6 +818,7 @@
     {
       "name": "File-Converter",
       "id": "AdrienAllard.FileConverter",
+      "chocolatey": "file-converter",
       "category": "utilities",
       "info": "A simple file converter app.",
       "link": "https://file-converter.io/?ref=sparkle",
@@ -731,6 +827,7 @@
     {
       "name": "JDownloader 2",
       "id": "AppWork.JDownloader",
+      "chocolatey": "jdownloader",
       "category": "utilities",
       "info": "A download manager.",
       "link": "https://jdownloader.org/jdownloader2?ref=sparkle",
@@ -739,6 +836,7 @@
     {
       "name": "Files",
       "id": "FilesCommunity.Files",
+      "chocolatey": "files",
       "category": "utilities",
       "info": "A modern file manager for Windows.",
       "link": "https://files.community/?ref=sparkle",
@@ -747,6 +845,7 @@
     {
       "name": "FxSound",
       "id": "FxSound.FxSound",
+      "chocolatey": "fxsound",
       "category": "multimedia",
       "info": "An audio enhancer for Windows.",
       "link": "https://www.fxsound.com/?ref=sparkle",
@@ -755,6 +854,7 @@
     {
       "name": "Blender",
       "id": "BlenderFoundation.Blender",
+      "chocolatey": "blender",
       "category": "productivity",
       "info": "A free and open source 3D creation suite.",
       "link": "https://www.blender.org/?ref=sparkle",
@@ -763,14 +863,24 @@
     {
       "name": "GeForce NOW",
       "id": "NVIDIA.GeForceNOW",
+      "chocolatey": "nvidia-geforce-now",
       "category": "games",
       "info": "A cloud gaming service.",
       "link": "https://www.nvidia.com/en-us/geforce-now/?ref=sparkle",
       "icon": "https://cdn-1.webcatalog.io/catalog/nvidia-geforce-now/nvidia-geforce-now-icon-filled-256.png?v=1714775303603"
     },
     {
+      "name": "Nvidia App",
+      "chocolatey": "nvidia-app",
+      "category": "games",
+      "info": "The place to install drivers, tweak gpu settings",
+      "link": "https://www.nvidia.com/en-eu/software/nvidia-app/?ref=sparkle",
+      "icon": "https://img.utdstc.com/icon/8d6/734/8d673466f097adae8077bd21f9b46956317d8e561af712e5927f1dcd1193b26e:200"
+    },
+    {
       "name": "Twinkle Tray",
       "id": "xanderfrangos.twinkletray",
+      "chocolatey": "twinkle-tray",
       "category": "utilities",
       "info": "A monitor brightness control app.",
       "link": "https://twinkletray.com/?ref=sparkle",
@@ -779,6 +889,7 @@
     {
       "name": "Bambu Studio",
       "id": "Bambulab.Bambustudio",
+      "chocolatey": "bambustudio",
       "category": "utilities",
       "info": "A Slicer for Bambu Labs 3D Printers.",
       "link": "https://bambulab.com//download/studio/?ref=sparkle",
@@ -787,6 +898,7 @@
     {
       "name": "PursaSlicer",
       "id": "Pursa3D.PursaSlicer",
+      "chocolatey": "prusaslicer",
       "category": "utilities",
       "info": "An Open Source 3D model slicer",
       "link": "https://www.prusa3d.com/prusaslicer/?ref=sparkle",
@@ -795,6 +907,7 @@
     {
       "name": "Creality Print",
       "id": "Creality.CrealityPrint",
+      "chocolatey": "creality-print",
       "category": "utilities",
       "info": "A 3D printing software for Creality printers.",
       "link": "https://www.creality.com/download?ref=sparkle",
@@ -803,6 +916,7 @@
     {
       "name": "OrcaSlicer",
       "id": "SoftFever.OrcaSlicer",
+      "chocolatey": "orcaslicer",
       "category": "utilities",
       "info": "A 3D printing slicer software.",
       "link": "https://orcaslicer.com/?ref=sparkle",
@@ -811,6 +925,7 @@
     {
       "name": "Ultimaker Cura",
       "id": "Ultimaker.Cura",
+      "chocolatey": "cura-new",
       "category": "utilities",
       "info": "A 3D printing slicer software.",
       "link": "https://ultimaker.com/software/ultimaker-cura?ref=sparkle",
@@ -819,6 +934,7 @@
     {
       "name": "SuperF4",
       "id": "StefanSundin.Superf4",
+      "chocolatey": "superf4",
       "category": "utilities",
       "info": "A utility to force close applications with a keyboard shortcut.",
       "link": "https://stefansundin.github.io/superf4/?ref=sparkle",
@@ -827,6 +943,7 @@
     {
       "name": "Revo Uninstaller",
       "id": "RevoUninstaller.RevoUninstaller",
+      "chocolatey": "revo-uninstaller",
       "category": "utilities",
       "info": "A powerful uninstaller for Windows. (paid)",
       "link": "https://www.revouninstaller.com/products/revo-uninstaller-free/?ref=sparkle",
@@ -835,6 +952,7 @@
     {
       "name": "Unity Hub",
       "id": "Unity.UnityHub",
+      "chocolatey": "unity-hub",
       "category": "development",
       "info": "A hub for managing Unity projects and installations.",
       "link": "https://unity.com/products/unity-hub?ref=sparkle",
@@ -843,6 +961,7 @@
     {
       "name": "Oh My Posh",
       "id": "JanDeDobbeleer.OhMyPosh",
+      "chocolatey": "oh-my-posh",
       "category": "development",
       "info": "A prompt theme engine for any shell.",
       "link": "https://ohmyposh.dev/?ref=sparkle",
@@ -859,6 +978,7 @@
     {
       "name": "Prism Launcher",
       "id": "PrismLauncher.PrismLauncher",
+      "chocolatey": "prismlauncher",
       "category": "games",
       "info": "A Minecraft launcher that supports multiple accounts and modpacks.",
       "link": "https://prismlauncher.org/?ref=sparkle",
@@ -867,6 +987,7 @@
     {
       "name": "Free Download Manager",
       "id": "SoftDeluxe.FreeDownloadManager",
+      "chocolatey": "freedownloadmanager",
       "category": "utilities",
       "info": "An app to manage all of your downloads in one place",
       "link": "https://www.freedownloadmanager.org/?ref=sparkle",
@@ -875,6 +996,7 @@
     {
       "name": "Oracle VirtualBox",
       "id": "Oracle.VirtualBox",
+      "chocolatey": "virtualbox",
       "category": "utilities",
       "info": "A Virtual machine manager",
       "link": "https://www.virtualbox.org/?ref=sparkle",
@@ -883,6 +1005,7 @@
     {
       "name": "TeamViewer",
       "id": "TeamViewer.TeamViewer",
+      "chocolatey": "teamviewer",
       "category": "utilities",
       "info": "A remote desktop app.",
       "link": "https://www.teamviewer.com/en-ca/?ref=sparkle",
@@ -891,6 +1014,7 @@
     {
       "name": "Ungoogled Chromium",
       "id": "eloston.ungoogled-chromium",
+      "chocolatey": "ungoogled-chromium",
       "category": "browsers",
       "info": "A Chromium web browser with out google features",
       "link": "https://github.com/ungoogled-software/ungoogled-chromium?ref=sparkle",
@@ -899,6 +1023,7 @@
     {
       "name": "LibreWolf",
       "id": "LibreWolf.LibreWolf",
+      "chocolatey": "librewolf",
       "category": "browsers",
       "info": "A privacy focused firefox fork",
       "link": "https://librewolf.net/?ref=sparkle",
@@ -907,6 +1032,7 @@
     {
       "name": "ShareX",
       "id": "ShareX.ShareX",
+      "chocolatey": "sharex",
       "category": "multimedia",
       "info": "Advanced Screenshot Tool",
       "link": "https://github.com/ShareX/ShareX?ref=sparkle",
@@ -915,6 +1041,7 @@
     {
       "name": "Fastfetch",
       "id": "Fastfetch-cli.Fastfetch",
+      "chocolatey": "fastfetch",
       "category": "utilities",
       "info": "System Info Tool",
       "link": "https://github.com/fastfetch-cli/fastfetch?ref=sparkle",
@@ -923,6 +1050,7 @@
     {
       "name": "ZeroTier One",
       "id": "ZeroTier.ZeroTierOne",
+      "chocolatey": "zerotier-one",
       "category": "utilities",
       "info": "A softwarethat allows you to virtual networks.",
       "link": "https://www.zerotier.com/?ref=sparkle",
@@ -931,6 +1059,7 @@
     {
       "name": "WinMerge",
       "id": "WinMerge.WinMerge",
+      "chocolatey": "winmerge",
       "category": "utilities",
       "info": "A software that allows you to compare and merge files.",
       "link": "https://winmerge.org/?ref=sparkle",
@@ -939,6 +1068,7 @@
     {
       "name": "AIMP",
       "id": "AIMP.AIMP",
+      "chocolatey": "aimp",
       "category": "multimedia",
       "info": "A music player for Windows",
       "link": "https://www.aimp.ru/?ref=sparkle",
@@ -947,6 +1077,7 @@
     {
       "name": "CopyQ",
       "id": "hluk.copyq",
+      "chocolatey": "copyq",
       "category": "utilities",
       "info": "A clipboard manager with advanced features.",
       "link": "https://hluk.github.io/CopyQ/?ref=sparkle",
@@ -955,14 +1086,25 @@
     {
       "name": "Krita",
       "id": "KDE.Krita",
+      "chocolatey": "krita",
       "category": "multimedia",
       "info": "A free and open source digital painting application.",
       "link": "https://krita.org/en/?ref=sparkle",
       "icon": "https://krita.org/images/favicon.ico"
     },
+        {
+      "name": "Kate",
+      "id": "KDE.Kate",
+      "chocolatey": "kate",
+      "category": "multimedia",
+      "info": "A free and open source text editor.",
+      "link": "https://kate-editor.org/?ref=sparkle",
+      "icon": "https://kate-editor.org/images/kate.svg"
+    },
     {
       "name": "Paint.NET",
       "id": "dotPDN.PaintDotNet",
+      "chocolatey": "paint.net",
       "category": "multimedia",
       "info": "A free image and photo editing software for Windows.",
       "link": "https://www.getpaint.net/?ref=sparkle",
@@ -971,6 +1113,7 @@
     {
       "name": "IrfanView",
       "id": "IrfanSkiljan.IrfanView",
+      "chocolatey": "irfanview",
       "category": "multimedia",
       "info": "A fast and compact image viewer/converter.",
       "link": "https://www.irfanview.com/?ref=sparkle",
@@ -979,6 +1122,7 @@
     {
       "name": "AB Download Manager",
       "id": "ABDownloadManager.ABDownloadManager",
+      "chocolatey": "ab-download-manager",
       "category": "utilities",
       "info": "A powerful download manager for Windows.",
       "link": "https://abdownloadmanager.com/?ref=sparkle",
@@ -987,6 +1131,7 @@
     {
       "name": "Total Commander",
       "id": "Ghisler.TotalCommander",
+      "chocolatey": "totalcommander",
       "category": "utilities",
       "info": "A file manager for Windows.",
       "link": "https://www.ghisler.com/?ref=sparkle",
@@ -1021,6 +1166,14 @@
       "id": "Python.Python.3.13",
       "category": "development",
       "info": "Python 3.13 programming language.",
+      "link": "https://www.python.org?ref=sparkle",
+      "icon": "https://www.python.org/favicon.ico"
+    },
+        {
+      "name": "Python 3",
+      "chocolatey": "python3",
+      "category": "development",
+      "info": "Python 3 programming language. on Chocolatey.",
       "link": "https://www.python.org?ref=sparkle",
       "icon": "https://www.python.org/favicon.ico"
     }

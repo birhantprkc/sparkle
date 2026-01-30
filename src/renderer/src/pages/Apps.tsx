@@ -60,7 +60,10 @@ function Apps() {
   const [wingetInstalled, setWingetInstalled] = useState<boolean>(true)
   const [wingetChecking, setWingetChecking] = useState<boolean>(false)
   const [wingetInstalling, setWingetInstalling] = useState<boolean>(false)
-  const [source, setSource] = useState<string>("Winget")
+  const [source, setSource] = useState<"Chocolatey" | "Winget">(
+    (localStorage.getItem("defaultPackageManager") as "Chocolatey" | "Winget") || "Winget",
+  )
+
   const [chocolateyInstalled, setChocolateyInstalled] = useState<boolean>(true)
   const [chocolateyChecking, setChocolateyChecking] = useState<boolean>(false)
   const [chocolateyInstalling, setChocolateyInstalling] = useState<boolean>(false)
@@ -542,7 +545,7 @@ function Apps() {
             <Dropdown
               options={["Winget", "Chocolatey"]}
               value={source || "Winget"}
-              onChange={setSource}
+              onChange={(value) => setSource(value as "Chocolatey" | "Winget")}
             />
           </div>
         </div>

@@ -7,6 +7,7 @@ import Modal from "@/components/ui/modal"
 import Toggle from "@/components/ui/Toggle"
 import { toast } from "react-toastify"
 import Card from "@/components/ui/Card"
+import { Dropdown } from "@/components/ui/dropdown"
 
 const themes = [
   { label: "System", value: "system" },
@@ -28,6 +29,9 @@ function Settings() {
     return localStorage.getItem("posthogDisabled") === "true"
   })
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+  const [defaultPackageManager, setDefaultPackageManager] = useState<"Chocolatey" | "Winget">(
+    (localStorage.getItem("defaultPackageManager") as "Chocolatey" | "Winget") || "Winget",
+  )
 
   const checkForUpdates = async () => {
     try {
@@ -225,6 +229,28 @@ function Settings() {
                   <Button onClick={checkForUpdates} disabled={checking}>
                     {checking ? "Checking..." : "Check for Updates"}
                   </Button>
+                </div>
+              </SettingCard>
+            </SettingSection>
+            <SettingSection title="Package Manager">
+              <SettingCard>
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <h3 className="text-base font-medium text-sparkle-text mb-1">
+                      Default Package Manager
+                    </h3>
+                    <p className="text-sm text-sparkle-text-secondary">
+                      Set the default package manager for installing apps
+                    </p>
+                  </div>
+                  <Dropdown
+                    value={defaultPackageManager}
+                    options={["Winget", "Chocolatey"]}
+                    onChange={(value) => {
+                      setDefaultPackageManager(value as "Chocolatey" | "Winget")
+                      localStorage.setItem("defaultPackageManager", value)
+                    }}
+                  />
                 </div>
               </SettingCard>
             </SettingSection>

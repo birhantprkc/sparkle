@@ -61,6 +61,9 @@ function Apps() {
   const [wingetChecking, setWingetChecking] = useState<boolean>(false)
   const [wingetInstalling, setWingetInstalling] = useState<boolean>(false)
   const [source, setSource] = useState<string>("Winget")
+  const [chocolateyInstalled, setChocolateyInstalled] = useState<boolean>(true)
+  const [chocolateyChecking, setChocolateyChecking] = useState<boolean>(false)
+  const [chocolateyInstalling, setChocolateyInstalling] = useState<boolean>(false)
 
   const router = useNavigate()
 
@@ -165,6 +168,38 @@ function Apps() {
     }
   }
 
+  const checkChocolatey = async (): Promise<void> => {
+    setChocolateyChecking(true)
+    try {
+      const result = (await invoke({ channel: "check-chocolatey" })) as InvokeResult
+      if (result.success) {
+        setChocolateyInstalled(result.installed ?? false)
+      } else {
+        console.warn("Failed to check Chocolatey status:", result.error)
+        setChocolateyInstalled(false)
+      }
+    } catch (error) {
+      console.error("Error checking Chocolatey:", error)
+      setChocolateyInstalled(false)
+    } finally {
+      setChocolateyChecking(false)
+    }
+  }
+
+  const installChocolatey = async (): Promise<void> => {
+    setChocolateyInstalling(true)
+    try {
+      await invoke({ channel: "install-chocolatey" })
+      toast.success("Chocolatey installation completed!")
+      await checkChocolatey()
+    } catch (error) {
+      console.error("Error installing Chocolatey:", error)
+      toast.error("Failed to install Chocolatey. Please try again.")
+    } finally {
+      setChocolateyInstalling(false)
+    }
+  }
+
   const toggleApp = (appId: string): void => {
     setSelectedApps((prev) =>
       prev.includes(appId) ? prev.filter((selectedId) => selectedId !== appId) : [...prev, appId],
@@ -206,6 +241,7 @@ function Apps() {
 
     checkInstalledApps()
     checkWinget()
+    checkChocolatey()
 
     const listeners = {
       "install-progress": (_event: unknown, message: string) => {
@@ -258,6 +294,9 @@ function Apps() {
 
   useEffect(() => {
     setSelectedApps([]) // reset selections when switching sources
+    if (source === "Chocolatey") {
+      checkChocolatey()
+    }
   }, [source])
 
   const handleAppAction = async (type: string, appsToUse = selectedApps) => {
@@ -394,6 +433,42 @@ function Apps() {
                 ) : (
                   <>
                     <Download size={18} /> Install Winget
+                  </>
+                )}
+              </Button>
+            </div>
+          </Card>
+        )}
+
+        {source === "Chocolatey" && !chocolateyInstalled && (
+          <Card className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-4 w-full mt-5 flex gap-4 items-center">
+            <div className="p-3 bg-amber-500/10 rounded-lg">
+              <Download className="text-amber-500" size={24} />
+            </div>
+            <div className="flex-1">
+              <h1 className="font-medium text-sparkle-text">Chocolatey Not Installed</h1>
+              <p className="text-sparkle-text-secondary">
+                Chocolatey is required to install and manage apps with this source. Click the button
+                to install it.
+              </p>
+            </div>
+            <div className="ml-auto">
+              <Button
+                variant="outline"
+                className="flex items-center gap-2 border-amber-500/20 hover:bg-amber-500/10"
+                onClick={installChocolatey}
+                disabled={chocolateyInstalling || chocolateyChecking}
+              >
+                {chocolateyInstalling ? (
+                  <>
+                    <div className="animate-spin inline-block w-4 h-4 border-2 border-current border-t-transparent rounded-full" />
+                    Installing...
+                  </>
+                ) : chocolateyChecking ? (
+                  <>Checking...</>
+                ) : (
+                  <>
+                    <Download size={18} /> Install Chocolatey
                   </>
                 )}
               </Button>

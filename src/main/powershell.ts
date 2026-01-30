@@ -74,17 +74,19 @@ ipcMain.handle("run-powershell", executePowerShell)
 ipcMain.handle("check-chocolatey", async (event) => {
   try {
     const result = await executePowerShell(event, {
-      script: "choco --version",
+      script: "Test-Path -Path 'C:\\ProgramData\\chocolatey\\bin\\choco.exe'",
       name: "check-chocolatey",
     })
+
     if (result.success) {
-      return { installed: true, version: (result as any).output.trim() }
+      const isInstalled = (result.output as string).trim().toLowerCase() === "true"
+      return { success: true, installed: isInstalled }
     } else {
-      return { installed: false }
+      return { success: false, installed: false }
     }
   } catch (error) {
     console.error("Error checking Chocolatey installation:", error)
-    return { installed: false }
+    return { success: false, installed: false }
   }
 })
 ipcMain.handle("install-chocolatey", async (event) => {

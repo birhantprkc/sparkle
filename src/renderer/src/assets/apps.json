@@ -12,7 +12,7 @@
     {
       "name": "Firefox Nightly",
       "id": "Mozilla.Firefox.MSIX.Nightly",
-      "chocolatey": "firefox-nightly",
+      "chocolatey": "firefox-nightly --pre",
       "category": "browsers",
       "info": "A fast, private and secure web browsers. Nightly build.",
       "link": "https://www.firefox.com/en-US/channel/desktop/?ref=sparkle",
@@ -58,7 +58,7 @@
     {
       "name": "Epic Games Launcher",
       "id": "EpicGames.EpicGamesLauncher",
-      "chocolatey": "epicgameslauncher", 
+      "chocolatey": "epicgameslauncher",
       "category": "games",
       "info": "A Games Store",
       "link": "https://www.epicgames.com/?ref=sparkle",
@@ -125,7 +125,7 @@
       "link": "https://visualstudio.microsoft.com/?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Visual_Studio_Icon_2019.svg/2060px-Visual_Studio_Icon_2019.svg.png"
     },
-        {
+    {
       "name": "Visual Studio Installer",
       "chocolatey": "visualstudio-installer",
       "category": "development",
@@ -169,10 +169,10 @@
       "link": "https://brave.com/?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Brave_lion_icon.svg/1200px-Brave_lion_icon.svg.png"
     },
-        {
+    {
       "name": "Brave Nightly",
       "id": "Brave.Brave.Nightly",
-      "chocolatey": "brave-nightly",
+      "chocolatey": "brave-nightly --pre",
       "category": "browsers",
       "info": "A fast, private and secure web browsers.",
       "link": "https://brave.com/?ref=sparkle",
@@ -597,7 +597,7 @@
     {
       "name": "PowerToys",
       "id": "Microsoft.PowerToys",
-      "chocolatey": "powertoys",  
+      "chocolatey": "powertoys",
       "category": "utilities",
       "info": "A set of utilities for power users to tune and streamline their Windows experience.",
       "link": "https://learn.microsoft.com/en-us/windows/powertoys/?ref=sparkle",
@@ -800,7 +800,7 @@
     {
       "name": "Zen Browser",
       "id": "Zen-Team.Zen-Browser",
-      "chocolatey": "zen-browser",
+      "chocolatey": "zen-browser --pre",
       "category": "browsers",
       "info": "A fast, private and secure web browser.",
       "link": "https://zen-browser.app/?ref=sparkle",
@@ -1092,7 +1092,7 @@
       "link": "https://krita.org/en/?ref=sparkle",
       "icon": "https://krita.org/images/favicon.ico"
     },
-        {
+    {
       "name": "Kate",
       "id": "KDE.Kate",
       "chocolatey": "kate",
@@ -1169,7 +1169,7 @@
       "link": "https://www.python.org?ref=sparkle",
       "icon": "https://www.python.org/favicon.ico"
     },
-        {
+    {
       "name": "Python 3",
       "chocolatey": "python3",
       "category": "development",

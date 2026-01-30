@@ -47,14 +47,12 @@ function Tweaks() {
       return { compatible: true }
     }
 
-    // Check if tweak requires GPU
     if (tweak.category && tweak.category.includes("GPU")) {
       if (!systemInfo.hasGPU) {
         return { compatible: false, reason: "Requires a dedicated GPU" }
       }
     }
 
-    // Check if tweak requires NVIDIA GPU
     if (tweak.name === "optimize-nvidia-settings") {
       if (!systemInfo.isNvidia) {
         return { compatible: false, reason: "Requires an NVIDIA GPU" }

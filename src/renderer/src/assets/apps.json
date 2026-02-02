@@ -1023,6 +1023,14 @@
       "info": "Python 3.13 programming language.",
       "link": "https://www.python.org?ref=sparkle",
       "icon": "https://www.python.org/favicon.ico"
+    },
+    {
+      "name": "Nilesoft Shell",
+      "id": "Nilesoft.Shell",
+      "category": "utilities",
+      "info": "A shell extension for Windows that adds useful features to the context menu.",
+      "link": "https://nilesoft.org/?ref=sparkle",
+      "icon": "https://nilesoft.org/images/favicon.svg"
     }
   ]
 }

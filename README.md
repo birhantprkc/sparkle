@@ -9,7 +9,7 @@
   <p>
     <img alt="React" src="https://img.shields.io/badge/React-000000?style=for-the-badge&logo=react&labelColor=0c121f&color=0c121f">
     <img alt="Electron" src="https://img.shields.io/badge/Electron-000000?style=for-the-badge&logo=electron&labelColor=0c121f&color=0c121f">
-    <img alt="JavaScript" src="https://img.shields.io/badge/JavaScript-000000?style=for-the-badge&logo=javascript&labelColor=0c121f&color=0c121f">
+    <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-000000?style=for-the-badge&logo=typescript&labelColor=0c121f&color=0c121f">
     <img alt="PowerShell" src="https://img.shields.io/badge/PowerShell-000000?style=for-the-badge&logo=gnometerminal&labelColor=0c121f&color=0c121f">
   </p>
 
@@ -90,11 +90,12 @@ Refer to the <a href="https://docs.getsparkle.net">docs</a> for more info on how
 <details>
   <summary><h2>🤧 What if I’m allergic to Electron?</h2></summary>
 
-  That’s totally fine, this project probably isn’t for you.  
-  You might want to check out [CTT WinUtil](https://github.com/ChrisTitusTech/winutil),  
-  A PowerShell based alternative that keeps things nice and lightweight. 
+That’s totally fine, this project probably isn’t for you.  
+ You might want to check out [CTT WinUtil](https://github.com/ChrisTitusTech/winutil),  
+ A PowerShell based alternative that keeps things nice and lightweight.
 
-  this message is inspired by [this](https://github.com/nukeop/nuclear/blob/master/docs/electron.md)
+this message is inspired by [this](https://github.com/nukeop/nuclear/blob/master/docs/electron.md)
+
 </details>
 
 ---

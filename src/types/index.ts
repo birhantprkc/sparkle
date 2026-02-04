@@ -1,7 +1,5 @@
 import React from "react"
 
-// Shared types for Sparkle
-
 export interface SystemInfo {
   platform?: string
   arch?: string

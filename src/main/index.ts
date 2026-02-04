@@ -97,7 +97,6 @@ const initDiscordRPC = (): void => {
   }
 }
 
-// Non-blocking initialization
 initDiscordRPC()
 
 ipcMain.handle(

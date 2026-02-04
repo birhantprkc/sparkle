@@ -1031,6 +1031,14 @@
       "info": "A shell extension for Windows that adds useful features to the context menu.",
       "link": "https://nilesoft.org/?ref=sparkle",
       "icon": "https://nilesoft.org/images/favicon.svg"
+    },
+    {
+      "name": "Warp Terminal",
+      "id": "Warp.Warp",
+      "category": "utilities",
+      "info": "A modern terminal emulator for Windows.",
+      "link": "https://www.warp.dev/?ref=sparkle",
+      "icon": "https://avatars.githubusercontent.com/u/71840468?s=200&v=4"
     }
   ]
 }

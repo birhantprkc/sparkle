@@ -20,7 +20,6 @@ function App() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(
     localStorage.getItem("sidebarCollapsed") === "true",
   )
-
   useEffect(() => {
     const applyTheme = (theme) => {
       document.body.classList.remove("light", "purple", "dark", "gray", "classic")

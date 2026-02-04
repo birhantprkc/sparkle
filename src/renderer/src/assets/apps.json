@@ -1216,7 +1216,7 @@
       "id": "OpenWhisperSystems.Signal",
       "chocolatey": "signal",
       "category": "communication",
-      "info": "A secure messaging app .",
+      "info": "A secure messaging app.",
       "link": "https://signal.org/?ref=sparkle",
       "icon": "https://signal.org/assets/images/favicon/favicon.svg"
     },
@@ -1228,6 +1228,14 @@
       "info": "A vector graphics editor.",
       "link": "https://inkscape.org/?ref=sparkle",
       "icon": "https://media.inkscape.org/static/images/inkscape-logo.svg"
+    },
+    {
+      "name": "Nilesoft Shell",
+      "id": "Nilesoft.Shell",
+      "category": "utilities",
+      "info": "A shell extension for Windows that adds useful features to the context menu.",
+      "link": "https://nilesoft.org/?ref=sparkle",
+      "icon": "https://nilesoft.org/images/favicon.svg"
     }
   ]
 }

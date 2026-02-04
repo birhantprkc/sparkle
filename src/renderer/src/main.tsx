@@ -1,6 +1,7 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
 import App from "./App"
+import ErrorBoundary from "./components/ErrorBoundary"
 import { HashRouter } from "react-router-dom"
 import { init } from "@sentry/electron/renderer"
 import { init as reactInit } from "@sentry/react"
@@ -26,7 +27,9 @@ if (rootElement) {
         }}
       >
         <HashRouter>
-          <App />
+          <ErrorBoundary>
+            <App />
+          </ErrorBoundary>
         </HashRouter>
       </PostHogProvider>
     </React.StrictMode>,

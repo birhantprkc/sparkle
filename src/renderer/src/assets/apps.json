@@ -1176,6 +1176,58 @@
       "info": "Python 3 programming language. on Chocolatey.",
       "link": "https://www.python.org?ref=sparkle",
       "icon": "https://www.python.org/favicon.ico"
+    },
+    {
+      "name": "Filezilla",
+      "chocolatey": "filezilla",
+      "category": "utilities",
+      "info": "A free FTP client.",
+      "link": "https://filezilla-project.org/?ref=sparkle",
+      "icon": "https://filezilla-project.org/favicon.ico"
+    },
+    {
+      "name": "Chromium",
+      "chocolatey": "chromium",
+      "category": "browsers",
+      "info": "A free and open source web browser.",
+      "link": "https://www.chromium.org/?ref=sparkle",
+      "icon": "https://www.chromium.org/_assets/icon-chromium-96.png"
+    },
+    {
+      "name": "CMake",
+      "id": "Kitware.CMake",
+      "chocolatey": "cmake",
+      "category": "development",
+      "info": "A cross-platform build system.",
+      "link": "https://cmake.org/?ref=sparkle",
+      "icon": "https://cmake.org/favicon.ico"
+    },
+    {
+      "name": "Autoruns",
+      "id": "Microsoft.Sysinternals.Autoruns",
+      "chocolatey": "autoruns",
+      "category": "utilities",
+      "info": "A utility that shows you what programs are configured to run during system startup.",
+      "link": "https://learn.microsoft.com/en-us/sysinternals/downloads/autoruns?ref=sparkle",
+      "icon": "https://cdn2.portableapps.com/AutorunsPortable_128.png"
+    },
+    {
+      "name": "Signal",
+      "id": "OpenWhisperSystems.Signal",
+      "chocolatey": "signal",
+      "category": "communication",
+      "info": "A secure messaging app .",
+      "link": "https://signal.org/?ref=sparkle",
+      "icon": "https://signal.org/assets/images/favicon/favicon.svg"
+    },
+    {
+      "name": "Inkscape",
+      "id": "Inkscape.Inkscape",
+      "chocolatey": "inkscape",
+      "category": "utilities",
+      "info": "A vector graphics editor.",
+      "link": "https://inkscape.org/?ref=sparkle",
+      "icon": "https://media.inkscape.org/static/images/inkscape-logo.svg"
     }
   ]
 }

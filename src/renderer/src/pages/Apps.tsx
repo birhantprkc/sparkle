@@ -39,19 +39,12 @@ interface InvokeResult {
   error?: string
 }
 
-interface InstalledAppsResult {
-  success: boolean
-  installed: string[]
-  error?: string
-}
-
 function Apps() {
   const [search, setSearch] = useState("")
   const [selectedApps, setSelectedApps] = useState<string[]>([])
   const [loading, setLoading] = useState("")
   const [currentApp, setCurrentApp] = useState("")
   const [totalApps, setTotalApps] = useState(0)
-  const [installedApps, setInstalledApps] = useState<string[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [importModalOpen, setImportModalOpen] = useState(false)
   const [importedApps, setImportedApps] = useState<string[]>([])
@@ -128,16 +121,6 @@ function Apps() {
       return acc
     }, {})
   }, [filteredApps])
-
-  const checkInstalledApps = () => {
-    invoke({
-      channel: "handle-apps",
-      payload: {
-        action: "check-installed",
-        apps: appsList.map((a) => a.id),
-      },
-    })
-  }
 
   const checkWinget = async (): Promise<void> => {
     setWingetChecking(true)
@@ -230,19 +213,6 @@ function Apps() {
     }
 
     loadApps()
-
-    const idleHandle = requestIdleCallback(() => {
-      try {
-        const item = window.localStorage.getItem("installedApps")
-        if (item) {
-          setInstalledApps(JSON.parse(item))
-        }
-      } catch (error) {
-        console.error("Failed to parse installedApps from localStorage", error)
-      }
-    })
-
-    checkInstalledApps()
     checkWinget()
     checkChocolatey()
 
@@ -258,28 +228,11 @@ function Apps() {
         setCurrentIndex(0)
         setTotalApps(0)
         toast.success("Operation completed successfully!")
-        checkInstalledApps()
       },
       "install-error": () => {
         setLoading("")
         setCurrentApp("")
         toast.error("There was an error during the operation. Please try again.")
-      },
-      "installed-apps-checked": (
-        _event: unknown,
-        { success, installed, error }: InstalledAppsResult,
-      ) => {
-        if (success) {
-          setInstalledApps(installed)
-          try {
-            window.localStorage.setItem("installedApps", JSON.stringify(installed))
-          } catch (err) {
-            console.error("Failed to save installed apps to localStorage", err)
-          }
-        } else {
-          console.error("Failed to check installed apps:", error)
-          toast.error("Could not verify installed apps.")
-        }
       },
     }
 
@@ -288,7 +241,6 @@ function Apps() {
     })
 
     return () => {
-      cancelIdleCallback(idleHandle)
       Object.keys(listeners).forEach((channel) => {
         window.electron.ipcRenderer.removeAllListeners(channel)
       })
@@ -592,11 +544,6 @@ function Apps() {
                               <p className="text-xs text-sparkle-text-secondary">ID: {appId}</p>
                             </div>
                           </div>
-                          {installedApps.includes(Array.isArray(app.id) ? app.id[0] : app.id) && (
-                            <div className="text-xs font-semibold text-sparkle-text bg-sparkle-accent py-1 px-2 rounded-full">
-                              Installed
-                            </div>
-                          )}
                           {app.link && (
                             <div onClick={(e) => e.stopPropagation()}>
                               <button

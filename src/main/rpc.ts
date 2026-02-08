@@ -57,31 +57,41 @@ async function startDiscordRPC(): Promise<boolean> {
       rpcClient.on("error", (error: Error) => {
         console.warn("(rpc.js) ", "Discord RPC error:", error.message)
         isInitializing = false
-        stopDiscordRPC()
+        stopDiscordRPC().catch(() => {})
       })
 
       await rpcClient.login({ clientId }).catch((error: Error) => {
         console.warn("(rpc.js) ", "Discord RPC login failed:", error.message)
         isInitializing = false
-        stopDiscordRPC()
+        stopDiscordRPC().catch(() => {})
+        return
       })
     } catch (error: any) {
       console.warn("(rpc.js) ", "Failed to initialize Discord RPC:", error.message)
       isInitializing = false
-      stopDiscordRPC()
+      stopDiscordRPC().catch(() => {})
     }
   }, 1000)
 
   return true
 }
 
-function stopDiscordRPC(): boolean {
-  if (rpcClient) {
-    rpcClient.destroy()
-    rpcClient = null
-    console.log("(rpc.js) ", "Discord RPC disconnected")
+async function stopDiscordRPC(): Promise<boolean> {
+  if (!rpcClient) {
+    return true
   }
+
+  const client = rpcClient
+  rpcClient = null
   isInitializing = false
+
+  try {
+    await client.destroy()
+  } catch (error: any) {
+    console.warn("(rpc.js) ", "Error stopping Discord RPC:", error.message)
+  }
+
+  console.log("(rpc.js) ", "Discord RPC disconnected")
   return true
 }
 

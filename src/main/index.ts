@@ -97,8 +97,6 @@ const initDiscordRPC = (): void => {
   }
 }
 
-initDiscordRPC()
-
 ipcMain.handle(
   "discord-rpc:toggle",
   async (_event: Electron.IpcMainInvokeEvent, value: boolean) => {
@@ -112,7 +110,7 @@ ipcMain.handle(
       } else {
         store.set("discord-rpc", false)
         console.log(logo, "Stopping Discord RPC")
-        stopDiscordRPC()
+        stopDiscordRPC().catch(() => {})
       }
       return { success: true, enabled: store.get("discord-rpc") }
     } catch (error: any) {
@@ -128,6 +126,19 @@ ipcMain.handle(
 ipcMain.handle("discord-rpc:get", () => {
   return store.get("discord-rpc")
 })
+
+const gotTheLock = app.requestSingleInstanceLock()
+
+if (!gotTheLock) {
+  app.quit()
+} else {
+  app.on("second-instance", () => {
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore()
+      mainWindow.focus()
+    }
+  })
+}
 
 export let mainWindow: BrowserWindow | null = null
 
@@ -215,18 +226,8 @@ app.whenReady().then(() => {
     }
   })
 
-  const gotTheLock = app.requestSingleInstanceLock()
+  initDiscordRPC()
 
-  if (!gotTheLock) {
-    app.quit()
-  } else {
-    app.on("second-instance", () => {
-      if (mainWindow) {
-        if (mainWindow.isMinimized()) mainWindow.restore()
-        mainWindow.focus()
-      }
-    })
-  }
   app.on("activate", function () {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })

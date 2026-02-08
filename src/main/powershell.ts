@@ -71,16 +71,80 @@ async function runPowerShellInWindow(_, { script, name = "script", noExit = true
 
 ipcMain.handle("run-powershell-window", runPowerShellInWindow)
 ipcMain.handle("run-powershell", executePowerShell)
-ipcMain.handle("handle-apps", async (event, { action, apps }) => {
+ipcMain.handle("check-chocolatey", async (event) => {
+  try {
+    const result = await executePowerShell(event, {
+      script: "Test-Path -Path 'C:\\ProgramData\\chocolatey\\bin\\choco.exe'",
+      name: "check-chocolatey",
+    })
+
+    if (result.success) {
+      const isInstalled = (result.output as string).trim().toLowerCase() === "true"
+      return { success: true, installed: isInstalled }
+    } else {
+      return { success: false, installed: false }
+    }
+  } catch (error) {
+    console.error("Error checking Chocolatey installation:", error)
+    return { success: false, installed: false }
+  }
+})
+ipcMain.handle("install-chocolatey", async (event) => {
+  try {
+    const result = await executePowerShell(event, {
+      script: "winget install --id chocolatey.chocolatey --source winget",
+      name: "install-chocolatey",
+    })
+    if (result.success) {
+      return { installed: true, version: (result as any).output.trim() }
+    } else {
+      return { installed: false }
+    }
+  } catch (error) {
+    console.error("Error installing Chocolatey:", error)
+    return { installed: false }
+  }
+})
+ipcMain.handle("handle-apps", async (event, { action, apps, source }) => {
   switch (action) {
     case "install":
       for (const app of apps) {
-        const command = `winget install ${app} --silent --accept-package-agreements --accept-source-agreements`
+        let command
+        if (source === "Chocolatey") {
+          command = `choco install ${app} -y --no-progress`
+        } else {
+          command = `winget install ${app} --silent --accept-package-agreements --accept-source-agreements`
+        }
+
         if (!mainWindow) throw new Error("Main window is not available")
+
         mainWindow.webContents.send("install-progress", `${app}`)
         const result = await executePowerShell(event, { script: command, name: `Install-${app}` })
-        if (result.success) {
+        const isChocoFailure =
+          source === "Chocolatey" &&
+          !result.success &&
+          result.output &&
+          !result.output.includes("already installed")
+
+        if (result.success || (result.output && result.output.includes("already installed"))) {
           console.log(`Successfully installed ${app}`)
+        } else if (isChocoFailure) {
+          console.log(`Initial install failed for ${app}, retrying with --pre flag`)
+          const retryCommand = `choco install ${app} -y --no-progress --pre`
+          const retryResult = await executePowerShell(event, {
+            script: retryCommand,
+            name: `Install-${app}-pre`,
+          })
+
+          if (
+            retryResult.success ||
+            (retryResult.output && retryResult.output.includes("already installed"))
+          ) {
+            console.log(`Successfully installed ${app} with --pre flag`)
+          } else {
+            console.error(`Failed to install ${app} even with --pre flag:`, retryResult.error)
+            mainWindow.webContents.send("install-error")
+          }
         } else {
           console.error(`Failed to install ${app}:`, result.error)
           mainWindow.webContents.send("install-error")
@@ -90,12 +154,21 @@ ipcMain.handle("handle-apps", async (event, { action, apps }) => {
         mainWindow.webContents.send("install-complete")
       }
       break
+
     case "uninstall":
       for (const app of apps) {
-        const command = `winget uninstall ${app} --silent`
+        let command
+        if (source === "Chocolatey") {
+          command = `choco uninstall ${app} -y --no-progress`
+        } else {
+          command = `winget uninstall ${app} --silent`
+        }
+
         if (!mainWindow) throw new Error("Main window is not available")
+
         mainWindow.webContents.send("install-progress", `${app}`)
         const result = await executePowerShell(event, { script: command, name: `Uninstall-${app}` })
+
         if (result.success) {
           console.log(`Successfully uninstalled ${app}`)
         } else {
@@ -107,6 +180,7 @@ ipcMain.handle("handle-apps", async (event, { action, apps }) => {
         mainWindow.webContents.send("install-complete")
       }
       break
+
     case "check-installed":
       try {
         const result = await executePowerShell(event, {
@@ -126,6 +200,7 @@ ipcMain.handle("handle-apps", async (event, { action, apps }) => {
           const regex = new RegExp(`\\b${escapeRegExp(appId)}\\b`, "i")
           return regex.test((result as any).output)
         })
+
         if (mainWindow) {
           mainWindow.webContents.send("installed-apps-checked", {
             success: true,
@@ -142,6 +217,7 @@ ipcMain.handle("handle-apps", async (event, { action, apps }) => {
         }
       }
       break
+
     default:
       console.error(`Unknown action: ${action}`)
   }

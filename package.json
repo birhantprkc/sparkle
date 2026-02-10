@@ -1,6 +1,6 @@
 {
   "name": "sparkle",
-  "version": "2.12.0",
+  "version": "2.13.0",
   "description": "Sparkle",
   "main": "./out/main/index.js",
   "author": "The Parcoil Network",

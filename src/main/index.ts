@@ -16,7 +16,7 @@ import { setupTweaksHandlers } from "./tweakHandler"
 import { setupDNSHandlers } from "./dnsHandler"
 import Store from "electron-store"
 import { startDiscordRPC, stopDiscordRPC } from "./rpc"
-import { initAutoUpdater, triggerAutoUpdateCheck } from "./updates.js"
+import { initAutoUpdater } from "./updates.js"
 
 Sentry.init({
   dsn: "https://d1e8991c715dd717e6b7b44dbc5c43dd@o4509167771648000.ingest.us.sentry.io/4509167772958720",
@@ -143,24 +143,36 @@ if (!gotTheLock) {
 export let mainWindow: BrowserWindow | null = null
 
 function createWindow(): void {
-  mainWindow = new BrowserWindow({
-    width: 1380,
-    backgroundColor: "#0c121f",
-    height: 760,
-    // minWidth: 1380,
-    // minHeight: 760,
-    minWidth: 790,
-    center: true,
-    frame: false,
-    show: false,
-    autoHideMenuBar: true,
-    icon: path.join(__dirname, "../../resources/sparkle2.ico"),
-    webPreferences: {
-      preload: join(__dirname, "../preload/index.js"),
-      devTools: app.isPackaged ? false : true,
-      sandbox: false,
-    },
-  })
+  console.log("[Sparkle]: createWindow called")
+  console.log("[Sparkle]: __dirname =", __dirname)
+  console.log("[Sparkle]: icon path =", path.join(__dirname, "../../resources/sparkle2.ico"))
+  console.log("[Sparkle]: preload path =", join(__dirname, "../preload/index.js"))
+  console.log("[Sparkle]: renderer path =", join(__dirname, "../renderer/index.html"))
+
+  try {
+    mainWindow = new BrowserWindow({
+      width: 1380,
+      backgroundColor: "#0c121f",
+      height: 760,
+      // minWidth: 1380,
+      // minHeight: 760,
+      minWidth: 790,
+      center: true,
+      frame: false,
+      show: true,
+      autoHideMenuBar: true,
+      icon: path.join(__dirname, "../../resources/sparkle2.ico"),
+      webPreferences: {
+        preload: join(__dirname, "../preload/index.js"),
+        devTools: app.isPackaged ? false : true,
+        sandbox: false,
+      },
+    })
+    console.log("[Sparkle]: BrowserWindow created")
+  } catch (err: any) {
+    console.error("[Sparkle]: BrowserWindow creation failed:", err)
+    throw err
+  }
 
   mainWindow.webContents.setWindowOpenHandler((details: Electron.HandlerDetails) => {
     shell.openExternal(details.url)
@@ -168,67 +180,92 @@ function createWindow(): void {
   })
 
   if (is.dev && process.env["ELECTRON_RENDERER_URL"]) {
+    console.log("[Sparkle]: Loading renderer from URL:", process.env["ELECTRON_RENDERER_URL"])
     mainWindow.loadURL(process.env["ELECTRON_RENDERER_URL"])
   } else {
+    console.log("[Sparkle]: Loading renderer from file")
     mainWindow.loadFile(join(__dirname, "../renderer/index.html"))
   }
 
   mainWindow.once("ready-to-show", () => {
-    mainWindow!.show()
+    console.log("[Sparkle]: Window ready to show")
+    // mainWindow!.show()
   })
+
+  mainWindow.webContents.on(
+    "did-fail-load",
+    (_event: Electron.Event, errorCode: number, errorDescription: string) => {
+      console.error("[Sparkle]: Renderer failed to load:", errorCode, errorDescription)
+    },
+  )
 }
 
-app.whenReady().then(() => {
-  createWindow()
-  initAutoUpdater(() => mainWindow)
-  if (store.get("showTray")) {
+app
+  .whenReady()
+  .then(() => {
+    console.log("[Sparkle]: App ready, creating window...")
+    try {
+      createWindow()
+      console.log("[Sparkle]: Window created successfully")
+    } catch (err: any) {
+      console.error("[Sparkle]: createWindow failed:", err)
+    }
+    initAutoUpdater(() => mainWindow)
+    console.log("[Sparkle]: Auto updater initialized")
+    if (store.get("showTray")) {
+      console.log("[Sparkle]: Creating tray...")
+      setTimeout(() => {
+        try {
+          trayInstance = createTray(mainWindow!)
+          console.log("[Sparkle]: Tray created")
+        } catch (err: any) {
+          console.error("[Sparkle]: Tray creation failed:", err)
+        }
+      }, 50)
+    }
     setTimeout(() => {
-      trayInstance = createTray(mainWindow!)
-    }, 50)
-  }
-  setTimeout(() => {
-    void triggerAutoUpdateCheck()
-  }, 1500)
+      void Defender()
+      setupTweaksHandlers()
+      setupDNSHandlers()
+      console.log("[Sparkle]: Handlers setup complete")
+    }, 0)
 
-  setTimeout(() => {
-    void Defender()
-    setupTweaksHandlers()
-    setupDNSHandlers()
-  }, 0)
+    electronApp.setAppUserModelId("com.parcoil.sparkle")
 
-  electronApp.setAppUserModelId("com.parcoil.sparkle")
+    app.on("browser-window-created", (_, window: BrowserWindow) => {
+      optimizer.watchWindowShortcuts(window)
+    })
 
-  app.on("browser-window-created", (_, window: BrowserWindow) => {
-    optimizer.watchWindowShortcuts(window)
-  })
+    ipcMain.on("window-minimize", () => {
+      if (mainWindow) mainWindow.minimize()
+    })
 
-  ipcMain.on("window-minimize", () => {
-    if (mainWindow) mainWindow.minimize()
-  })
-
-  ipcMain.on("window-toggle-maximize", () => {
-    if (mainWindow) {
-      if (mainWindow.isMaximized()) {
-        mainWindow.unmaximize()
-      } else {
-        mainWindow.maximize()
+    ipcMain.on("window-toggle-maximize", () => {
+      if (mainWindow) {
+        if (mainWindow.isMaximized()) {
+          mainWindow.unmaximize()
+        } else {
+          mainWindow.maximize()
+        }
       }
-    }
-  })
+    })
 
-  ipcMain.on("window-close", () => {
-    if (mainWindow) {
-      if (store.get("showTray")) {
-        mainWindow.hide()
-      } else {
-        app.quit()
+    ipcMain.on("window-close", () => {
+      if (mainWindow) {
+        if (store.get("showTray")) {
+          mainWindow.hide()
+        } else {
+          app.quit()
+        }
       }
-    }
-  })
+    })
 
-  initDiscordRPC()
+    initDiscordRPC()
 
-  app.on("activate", function () {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
+    app.on("activate", function () {
+      if (BrowserWindow.getAllWindows().length === 0) createWindow()
+    })
   })
-})
+  .catch((err: any) => {
+    console.error("[Sparkle]: app.whenReady failed:", err)
+  })

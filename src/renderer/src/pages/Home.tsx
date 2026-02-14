@@ -160,10 +160,17 @@ function Home() {
             iconColor="text-teal-500"
             title="GPU"
             subtitle="Graphics Information"
-            items={[
-              { label: "Model", value: systemInfo?.gpu_model || "Unknown" },
-              { label: "VRAM", value: systemInfo?.vram || "Unknown" },
-            ]}
+            items={
+              systemInfo?.hasGPU
+                ? [
+                    { label: "Model", value: systemInfo?.gpu_model || "Unknown" },
+                    { label: "VRAM", value: systemInfo?.vram || "Unknown" },
+                  ]
+                : [
+                    { label: "Model", value: systemInfo?.integrated_gpu || "Unknown" },
+                    { label: "Type", value: "Integrated" },
+                  ]
+            }
           />
 
           <InfoCard

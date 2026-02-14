@@ -16,6 +16,8 @@ export interface SystemInfo {
   vram?: string
   hasGPU?: boolean
   isNvidia?: boolean
+  integrated_gpu?: string
+  hasIntegratedGPU?: boolean
   memory_total?: number
   memory_type?: string
   os?: string

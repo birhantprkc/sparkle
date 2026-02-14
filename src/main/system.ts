@@ -18,6 +18,8 @@ interface GPUInfo {
   vram: string
   hasGPU: boolean
   isNvidia: boolean
+  integratedModel: string
+  hasIntegratedGPU: boolean
 }
 
 interface PowerShellResult {
@@ -64,16 +66,37 @@ async function getSystemInfo(): Promise<SystemInfo> {
       }
     }
 
-    let gpuInfo: GPUInfo = { model: "GPU not found", vram: "N/A", hasGPU: false, isNvidia: false }
+    let gpuInfo: GPUInfo = {
+      model: "GPU not found",
+      vram: "N/A",
+      hasGPU: false,
+      isNvidia: false,
+      integratedModel: "Not detected",
+      hasIntegratedGPU: false,
+    }
 
     if (graphicsData.controllers && graphicsData.controllers.length > 0) {
+      const integratedControllers = graphicsData.controllers.filter((controller: any) => {
+        const model = (controller.model || "").toLowerCase()
+        return (
+          model.includes("integrated") ||
+          (model.includes("intel") &&
+            (model.includes("hd") || model.includes("uhd") || model.includes("iris"))) ||
+          (model.includes("amd") && model.includes("radeon") && model.includes("graphics")) ||
+          (model.includes("amd") && model.includes("vega") && !model.includes("rx")) ||
+          model.includes("intel graphics")
+        )
+      })
+
       const dedicatedControllers = graphicsData.controllers.filter((controller: any) => {
         const model = (controller.model || "").toLowerCase()
         const isIntegrated =
           model.includes("integrated") ||
           (model.includes("intel") &&
             (model.includes("hd") || model.includes("uhd") || model.includes("iris"))) ||
-          (model.includes("amd") && model.includes("radeon") && model.includes("graphics"))
+          (model.includes("amd") && model.includes("radeon") && model.includes("graphics")) ||
+          (model.includes("amd") && model.includes("vega") && !model.includes("rx")) ||
+          model.includes("intel graphics")
 
         return (
           !isIntegrated &&
@@ -92,10 +115,20 @@ async function getSystemInfo(): Promise<SystemInfo> {
         (a: any, b: any) => (b.vram || 0) - (a.vram || 0),
       )[0]
 
+      const integratedGPU = integratedControllers.sort(
+        (a: any, b: any) => (b.vram || 0) - (a.vram || 0),
+      )[0]
+
+      if (integratedGPU) {
+        gpuInfo.integratedModel = integratedGPU.model || "Unknown Integrated GPU"
+        gpuInfo.hasIntegratedGPU = true
+      }
+
       if (dedicatedGPU) {
         const hasGPU = true
         const isNvidia = dedicatedGPU.model.toLowerCase().includes("nvidia")
         gpuInfo = {
+          ...gpuInfo,
           model: dedicatedGPU.model || "Unknown GPU",
           vram: dedicatedGPU.vram ? `${Math.round(dedicatedGPU.vram / 1024)} GB` : "Unknown",
           hasGPU,
@@ -120,6 +153,8 @@ async function getSystemInfo(): Promise<SystemInfo> {
       vram: gpuInfo.vram,
       hasGPU: gpuInfo.hasGPU,
       isNvidia: gpuInfo.isNvidia,
+      integrated_gpu: gpuInfo.integratedModel,
+      hasIntegratedGPU: gpuInfo.hasIntegratedGPU,
 
       memory_total: totalMemory,
       memory_type: memoryType,

@@ -3,8 +3,8 @@
 $packageArgs = @{
   packageName   = $env:ChocolateyPackageName
   fileType      = 'EXE'
-  url           = 'https://github.com/parcoil/sparkle/releases/download/2.12.0/sparkle-2.12.0-setup.exe'
-  checksum      = '8c7a858e19242d01a95efdd880d8c7c30705c6112040e7ebf0cb4ddc6492ac9b'
+  url           = 'https://github.com/parcoil/sparkle/releases/download/2.13.0/sparkle-2.13.0-setup.exe'
+  checksum      = '163922DE587E17F77F2966089B53070216E3A334C57BE7ABB9966408C635764B'
   checksumType  = 'sha256'
   softwareName  = 'sparkle*'
   silentArgs    = '/S'

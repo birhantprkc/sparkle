@@ -1,7 +1,6 @@
 {
   "title": "Disable Telemetry",
   "name": "disable-telemetry",
-  "modal": "This disables Windows telemetry and data collection.",
   "recommended": true,
   "addedversion": "2.13.1",
   "top": true,

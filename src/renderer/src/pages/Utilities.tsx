@@ -14,6 +14,9 @@ import {
   RefreshCwIcon,
   Wrench,
   Star,
+  NetworkIcon,
+  BluetoothIcon,
+  SearchIcon,
 } from "lucide-react"
 import { useState, useEffect } from "react"
 import { invoke } from "@/lib/electron"
@@ -21,6 +24,7 @@ import { toast } from "react-toastify"
 import log from "electron-log/renderer"
 import { Dropdown } from "@/components/ui/dropdown"
 import Modal from "@/components/ui/modal"
+import { LargeInput } from "@/components/ui/input"
 
 type Utility = {
   name: string
@@ -212,6 +216,43 @@ Write-Output "DNS cache flushed."
 `,
   },
   {
+    name: "Release IP",
+    description: "Release your current IP address and disconnect from the network temporarily.",
+    state: false,
+    icon: <NetworkIcon />,
+    type: "button",
+    buttonText: "Release",
+    runScript: `
+ipconfig /release
+Write-Output "IP address released. You are temporarily disconnected from the network."
+`,
+  },
+  {
+    name: "Renew IP",
+    description: "Request a new IP address from the DHCP server.",
+    state: false,
+    icon: <NetworkIcon />,
+    type: "button",
+    buttonText: "Renew",
+    runScript: `
+ipconfig /renew
+Write-Output "New IP address obtained successfully."
+`,
+  },
+  {
+    name: "Fix Bluetooth",
+    description: "Restart Bluetooth services to resolve connectivity issues.",
+    state: false,
+    icon: <BluetoothIcon />,
+    type: "button",
+    buttonText: "Fix",
+    runScript: `
+Stop-Service -Name "bthserv" -Force -ErrorAction SilentlyContinue
+Start-Service -Name "bthserv" -ErrorAction SilentlyContinue
+Write-Output "Bluetooth services restarted."
+`,
+  },
+  {
     name: "System File Checker",
     description: "Repair corrupted system files to improve stability.",
     state: false,
@@ -280,6 +321,13 @@ function Utilities() {
   const [toggleStates, setToggleStates] = useState<Record<string, boolean>>({})
   const [loadingStates, setLoadingStates] = useState<Record<string, boolean>>({})
   const [modalOpen, setModalOpen] = useState(false)
+  const [search, setSearch] = useState("")
+
+  const filteredUtilities = utilities.filter(
+    (util) =>
+      util.name.toLowerCase().includes(search.toLowerCase()) ||
+      util.description.toLowerCase().includes(search.toLowerCase()),
+  )
 
   useEffect(() => {
     if (localStorage.getItem("utilitiesModalShown") !== "true") {
@@ -499,41 +547,54 @@ function Utilities() {
 
       <RootDiv>
         <div className="flex gap-4 flex-col mb-10">
-          {utilities.map((util) => {
-            return (
-              <Card className="p-4 flex items-center gap-4" key={util.name}>
-                {util.icon}
-                <div>
-                  <h1>{util.name}</h1>
-                  <p className="text-sm  text-sparkle-text-secondary">{util.description}</p>
-                </div>
-                <div className="flex justify-end ml-auto">
-                  {util.type === "toggle" &&
-                    (loadingStates[util.name] ? (
-                      <div className="w-6 h-6 border-2 border-sparkle-border-secondary border-t-sparkle-primary rounded-full animate-spin" />
-                    ) : (
-                      <Toggle
-                        checked={toggleStates[util.name] || false}
-                        onChange={(checked: boolean) => handleToggleChange(util, checked)}
-                      />
-                    ))}
-                  {util.type === "button" && (
-                    <Button onClick={() => handleButtonClick(util)}>{util.buttonText}</Button>
-                  )}
-                  {util.type === "dropdown" &&
-                    (loadingStates[util.name] ? (
-                      <div className="w-6 h-6 border-2 border-sparkle-border-secondary border-t-sparkle-primary rounded-full animate-spin" />
-                    ) : (
-                      <Dropdown
-                        options={util.options || []}
-                        value={dropdownValues[util.name] || util.options?.[0] || ""}
-                        onChange={(value) => handleDropdownChange(util, value)}
-                      />
-                    ))}
-                </div>
-              </Card>
-            )
-          })}
+          <LargeInput
+            placeholder="Search utilities..."
+            className="w-full"
+            icon={SearchIcon}
+            onChange={(e) => setSearch(e.target.value)}
+            value={search}
+          />
+          {filteredUtilities.length === 0 && (
+            <p className="text-sparkle-text-secondary flex text-center items-center justify-center gap-2">
+              No utilities match your search.
+            </p>
+          )}
+          {filteredUtilities !== null &&
+            filteredUtilities.map((util) => {
+              return (
+                <Card className="p-4 flex items-center gap-4" key={util.name}>
+                  {util.icon}
+                  <div>
+                    <h1>{util.name}</h1>
+                    <p className="text-sm  text-sparkle-text-secondary">{util.description}</p>
+                  </div>
+                  <div className="flex justify-end ml-auto">
+                    {util.type === "toggle" &&
+                      (loadingStates[util.name] ? (
+                        <div className="w-6 h-6 border-2 border-sparkle-border-secondary border-t-sparkle-primary rounded-full animate-spin" />
+                      ) : (
+                        <Toggle
+                          checked={toggleStates[util.name] || false}
+                          onChange={(checked: boolean) => handleToggleChange(util, checked)}
+                        />
+                      ))}
+                    {util.type === "button" && (
+                      <Button onClick={() => handleButtonClick(util)}>{util.buttonText}</Button>
+                    )}
+                    {util.type === "dropdown" &&
+                      (loadingStates[util.name] ? (
+                        <div className="w-6 h-6 border-2 border-sparkle-border-secondary border-t-sparkle-primary rounded-full animate-spin" />
+                      ) : (
+                        <Dropdown
+                          options={util.options || []}
+                          value={dropdownValues[util.name] || util.options?.[0] || ""}
+                          onChange={(value) => handleDropdownChange(util, value)}
+                        />
+                      ))}
+                  </div>
+                </Card>
+              )
+            })}
         </div>
       </RootDiv>
     </>

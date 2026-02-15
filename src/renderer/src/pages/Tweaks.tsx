@@ -21,7 +21,6 @@ import useSystemStore from "@/store/systemInfo"
 import Button from "@/components/ui/button"
 import Toggle from "@/components/ui/Toggle"
 import log from "electron-log/renderer"
-import posthog from "posthog-js"
 import Card from "@/components/ui/Card"
 import { Gpu, Plus, RefreshCw } from "lucide-react"
 import { LargeInput } from "@/components/ui/input"
@@ -138,9 +137,6 @@ function Tweaks() {
           isLoading: false,
           autoClose: 3000,
         })
-        posthog.capture("tweak_applied", {
-          tweak_name: tweak.name,
-        })
       } else {
         await invoke({
           channel: "tweak:unapply",
@@ -154,9 +150,6 @@ function Tweaks() {
           type: "info",
           isLoading: false,
           autoClose: 3000,
-        })
-        posthog.capture("tweak_unapplied", {
-          tweak_name: tweak.name,
         })
       }
     } catch (error) {
@@ -210,9 +203,6 @@ function Tweaks() {
         type: "success",
         isLoading: false,
         autoClose: 3000,
-      })
-      posthog.capture("tweak_applied", {
-        tweak_name: tweak.name,
       })
     } catch (error) {
       console.error(`Error applying tweak ${tweak.title}:`, error)
@@ -351,9 +341,6 @@ function Tweaks() {
                       type: "success",
                       isLoading: false,
                       autoClose: 3000,
-                    })
-                    posthog.capture("tweak_applied", {
-                      tweak_name: selectedTweak.name,
                     })
                   } catch (error) {
                     console.error(`Error applying tweak ${selectedTweak.title}:`, error)

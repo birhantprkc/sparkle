@@ -3,9 +3,9 @@ import ReactDOM from "react-dom/client"
 import App from "./App"
 import ErrorBoundary from "./components/ErrorBoundary"
 import { HashRouter } from "react-router-dom"
+import mixpanel from "mixpanel-browser"
 import { init } from "@sentry/electron/renderer"
 import { init as reactInit } from "@sentry/react"
-import { PostHogProvider } from "posthog-js/react"
 
 init({
   sendDefaultPpi: true,
@@ -14,24 +14,33 @@ init({
   reactInit,
 })
 
+if (localStorage.getItem("analyticsDisabled") !== "true") {
+  mixpanel.init("68a972fa07a32b2c604205e24bd588db", {
+    debug: import.meta.env.MODE === "development",
+    track_pageview: true,
+    persistence: "localStorage",
+    autocapture: true,
+    record_sessions_percent: 100,
+    record_mask_text_selector: "",
+  })
+
+  let userId = localStorage.getItem("mixpanel_user_id")
+  if (!userId) {
+    userId = crypto.randomUUID()
+    localStorage.setItem("mixpanel_user_id", userId)
+  }
+  mixpanel.identify(userId)
+}
+
 const rootElement = document.getElementById("root")
 if (rootElement) {
   ReactDOM.createRoot(rootElement).render(
     <React.StrictMode>
-      <PostHogProvider
-        apiKey="phc_4vF2nxwQK17nl5wIQ4sT8UJae8iHZmsjGkPxgyQJhZo"
-        options={{
-          api_host: "https://us.i.posthog.com",
-          capture_exceptions: true,
-          debug: import.meta.env.MODE === "development",
-        }}
-      >
-        <HashRouter>
-          <ErrorBoundary>
-            <App />
-          </ErrorBoundary>
-        </HashRouter>
-      </PostHogProvider>
+      <HashRouter>
+        <ErrorBoundary>
+          <App />
+        </ErrorBoundary>
+      </HashRouter>
     </React.StrictMode>,
   )
 }

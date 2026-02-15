@@ -7,8 +7,6 @@ repo_name: "Sparkle"
 edit_uri: edit/v2/docs/docs/
 extra_css:
  - css/extra.css
-extra_javascript:
- - js/extra.js
 
 theme:
   name: material

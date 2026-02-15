@@ -25,8 +25,8 @@ function Settings() {
   const [discordLoading, setDiscordLoading] = useState(false)
   const [trayEnabled, setTrayEnabled] = useState(true)
   const [trayLoading, setTrayLoading] = useState(false)
-  const [posthogDisabled, setPosthogDisabled] = useState(() => {
-    return localStorage.getItem("posthogDisabled") === "true"
+  const [analyticsDisabled, setAnalyticsDisabled] = useState(() => {
+    return localStorage.getItem("analyticsDisabled") === "true"
   })
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
   const [defaultPackageManager, setDefaultPackageManager] = useState<"Chocolatey" | "Winget">(
@@ -70,13 +70,8 @@ function Settings() {
   }, [])
 
   useEffect(() => {
-    if (posthogDisabled) {
-      document.body.classList.add("ph-no-capture")
-    } else {
-      document.body.classList.remove("ph-no-capture")
-    }
-    localStorage.setItem("posthogDisabled", posthogDisabled.toString())
-  }, [posthogDisabled])
+    localStorage.setItem("analyticsDisabled", analyticsDisabled.toString())
+  }, [analyticsDisabled])
 
   const handleToggleDiscord = async () => {
     setDiscordLoading(true)
@@ -289,7 +284,7 @@ function Settings() {
                       Disable Analytics
                     </h3>
                     <p className="text-sm text-sparkle-text-secondary">
-                      Disables Posthog analytics
+                      Disables Mixpanel analytics
                       <span className="inline-flex items-center gap-1 ml-2 text-yellow-500">
                         <span className="w-1.5 h-1.5 bg-yellow-500 rounded-full"></span>
                         Requires restart
@@ -298,17 +293,17 @@ function Settings() {
                   </div>
                   <div className="flex items-center gap-3">
                     <Toggle
-                      checked={posthogDisabled}
-                      onChange={() => setPosthogDisabled((v) => !v)}
+                      checked={analyticsDisabled}
+                      onChange={() => setAnalyticsDisabled((v) => !v)}
                     />
                     <span
                       className={`text-xs font-medium px-2 py-1 rounded-full ${
-                        posthogDisabled
+                        analyticsDisabled
                           ? "text-green-400 bg-green-400/10"
                           : "text-sparkle-text-secondary bg-sparkle-border-secondary/20"
                       }`}
                     >
-                      {posthogDisabled ? "Disabled" : "Enabled"}
+                      {analyticsDisabled ? "Disabled" : "Enabled"}
                     </span>
                   </div>
                 </div>

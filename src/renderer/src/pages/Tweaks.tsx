@@ -138,9 +138,6 @@ function Tweaks() {
           isLoading: false,
           autoClose: 3000,
         })
-        posthog.capture("tweak_applied", {
-          tweak_name: tweak.name,
-        })
       } else {
         await invoke({
           channel: "tweak:unapply",
@@ -154,9 +151,6 @@ function Tweaks() {
           type: "info",
           isLoading: false,
           autoClose: 3000,
-        })
-        posthog.capture("tweak_unapplied", {
-          tweak_name: tweak.name,
         })
       }
     } catch (error) {
@@ -210,9 +204,6 @@ function Tweaks() {
         type: "success",
         isLoading: false,
         autoClose: 3000,
-      })
-      posthog.capture("tweak_applied", {
-        tweak_name: tweak.name,
       })
     } catch (error) {
       console.error(`Error applying tweak ${tweak.title}:`, error)
@@ -351,9 +342,6 @@ function Tweaks() {
                       type: "success",
                       isLoading: false,
                       autoClose: 3000,
-                    })
-                    posthog.capture("tweak_applied", {
-                      tweak_name: selectedTweak.name,
                     })
                   } catch (error) {
                     console.error(`Error applying tweak ${selectedTweak.title}:`, error)

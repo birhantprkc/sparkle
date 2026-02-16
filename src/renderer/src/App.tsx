@@ -49,6 +49,12 @@ function App() {
     mediaQuery.addEventListener("change", handleSystemThemeChange)
     window.addEventListener("storage", handleStorageChange)
 
+    if (localStorage.getItem("posthogDisabled") === "true") {
+      document.body.classList.add("ph-no-capture")
+    } else {
+      document.body.classList.remove("ph-no-capture")
+    }
+
     return () => {
       mediaQuery.removeEventListener("change", handleSystemThemeChange)
       window.removeEventListener("storage", handleStorageChange)

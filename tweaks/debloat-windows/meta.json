@@ -3,7 +3,7 @@
   "name": "debloat-windows",
   "description": "Choose between Sparkle Debloat script or Raphire's Win11Debloat script to remove built-in Windows apps and bloatware.",
   "reversible": false,
-  "updatedversion": "2.9.0",
+  "updatedversion": "2.14.0",
   "recommended": true,
   "top": true,
   "deepDescription": "The user can choose between two methods to debloat Windows:\n\n 1. Sparkle Custom Selective Script: This method allows users to select which apps they want to keep. A WPF Window is presented where users can check or uncheck apps from a list.\n\n 2. Raphire's Win11Debloat Script: This method uses a well-known script that removes a wide range of built-in Windows apps and features. It is comprehensive and suitable for users who want a quick and effective way to debloat their system.\n\n Both remove bloatware and improve privacy by removing unnecessary Microsoft components, but they cater to different user preferences regarding control and convenience.",

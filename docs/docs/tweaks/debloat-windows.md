@@ -9,7 +9,7 @@
 
 
 !!! note 
-    This tweak was last updated in 2.9.0
+    This tweak was last updated in 2.14.0
   
 
 ## Details
@@ -42,10 +42,41 @@
 
 param(
     [string]$ScriptChoice = "",
-    [string[]]$AppsToKeep = @()
+    [string[]]$AppsToRemove = @()
 )
 
-$version = "1.0.0"
+$version = "1.1.0"
+
+function Test-IsAdmin {
+    $currentUser = [Security.Principal.WindowsIdentity]::GetCurrent()
+    $principal = New-Object Security.Principal.WindowsPrincipal($currentUser)
+    return $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+}
+
+if (-not (Test-IsAdmin)) {
+    Write-Host "Not running as administrator. Requesting elevation..." -ForegroundColor Yellow
+    
+    $scriptPath = $MyInvocation.MyCommand.Path
+    $arguments = "-NoProfile -ExecutionPolicy Bypass -File `"$scriptPath`""
+    
+    foreach ($param in $PSBoundParameters.GetEnumerator()) {
+        if ($param.Key -ne "ScriptChoice" -and $param.Key -ne "AppsToRemove") {
+            $arguments += " -$($param.Key) `"$($param.Value)`""
+        }
+    }
+    
+    if ($ScriptChoice) {
+        $arguments += " -ScriptChoice `"$ScriptChoice`""
+    }
+    if ($AppsToRemove.Count -gt 0) {
+        $arguments += " -AppsToRemove $($AppsToRemove -join ',')"
+    }
+    
+    Write-Host "Launching elevated PowerShell..." -ForegroundColor Yellow
+    Start-Process powershell.exe -ArgumentList $arguments -Verb RunAs
+    Write-Host "Exiting non-admin instance." -ForegroundColor Yellow
+    exit 0
+}
 
 Add-Type -AssemblyName PresentationFramework
 Add-Type -AssemblyName PresentationCore
@@ -64,6 +95,7 @@ $appDefinitions = @(
     @{ Package = "Microsoft.BingTranslator"; FriendlyName = "Bing Translator" },
     @{ Package = "Microsoft.BingTravel"; FriendlyName = "Bing Travel" },
     @{ Package = "Microsoft.BingWeather"; FriendlyName = "Bing Weather" },
+    @{ Package = "Microsoft.Windows.DevHome"; FriendlyName = "Dev Home" },
     @{ Package = "Microsoft.Copilot"; FriendlyName = "Microsoft Copilot" },
     @{ Package = "Microsoft.Getstarted"; FriendlyName = "Get Started (Tips)" },
     @{ Package = "Microsoft.Messaging"; FriendlyName = "Microsoft Messaging" },
@@ -71,6 +103,7 @@ $appDefinitions = @(
     @{ Package = "Microsoft.MicrosoftJournal"; FriendlyName = "Microsoft Journal" },
     @{ Package = "Microsoft.MicrosoftOfficeHub"; FriendlyName = "Office Hub" },
     @{ Package = "Microsoft.MicrosoftPowerBIForWindows"; FriendlyName = "Power BI" },
+    @{ Package = "Microsoft.PowerAutomateDesktop"; FriendlyName = "Power Automate" },
     @{ Package = "Microsoft.MicrosoftSolitaireCollection"; FriendlyName = "Solitaire Collection" },
     @{ Package = "Microsoft.MicrosoftStickyNotes"; FriendlyName = "Sticky Notes" },
     @{ Package = "Microsoft.MixedReality.Portal"; FriendlyName = "Mixed Reality Portal" },
@@ -124,17 +157,64 @@ $appDefinitions = @(
 
 $allAppsToRemove = $appDefinitions | ForEach-Object { $_.Package }
 
-# default apps to pre-check (these will be kept)
-$defaultApps = @(
-    "Microsoft.WindowsCalculator", 
-    "Microsoft.WindowsNotepad",
-    "Microsoft.Paint",
-    "Microsoft.Windows.Photos",
-    "Microsoft.WindowsCamera",
-    "Microsoft.XboxGamingOverlay",
-    "Microsoft.XboxIdentityProvider",
-    "Microsoft.XboxSpeechToTextOverlay",
-    "Microsoft.XboxApp"
+$recommendedApps = @(
+    "Microsoft.3DBuilder",
+    "Microsoft.549981C3F5F10",
+    "Microsoft.BingFinance",
+    "Microsoft.BingFoodAndDrink",
+    "Microsoft.BingHealthAndFitness",
+    "Microsoft.BingNews",
+    "Microsoft.BingSports",
+    "Microsoft.BingTranslator",
+    "Microsoft.BingTravel",
+    "Microsoft.BingWeather",
+    "Microsoft.Windows.DevHome",
+    "Microsoft.Copilot",
+    "Microsoft.Getstarted",
+    "Microsoft.Messaging",
+    "Microsoft.Microsoft3DViewer",
+    "Microsoft.MicrosoftJournal",
+    "Microsoft.MicrosoftOfficeHub",
+    "Microsoft.MicrosoftPowerBIForWindows",
+    "Microsoft.PowerAutomateDesktop",
+    "Microsoft.MicrosoftSolitaireCollection",
+    "Microsoft.MixedReality.Portal",
+    "Microsoft.News",
+    "Microsoft.Office.OneNote",
+    "Microsoft.Office.Sway",
+    "Microsoft.OneConnect",
+    "Microsoft.Print3D",
+    "Microsoft.SkypeApp",
+    "Microsoft.Todos",
+    "Microsoft.WindowsFeedbackHub",
+    "Microsoft.WindowsMaps",
+    "Microsoft.WindowsSoundRecorder",
+    "Microsoft.XboxApp",
+    "Microsoft.ZuneVideo",
+    "MicrosoftTeams",
+    "MSTeams",
+    "MicrosoftCorporationII.MicrosoftFamily",
+    "Clipchamp.Clipchamp",
+    "9P1J8S7CCWWT",
+    "Amazon.com.Amazon",
+    "AmazonVideo.PrimeVideo",
+    "Disney",
+    "Duolingo-LearnLanguagesforFree",
+    "Facebook",
+    "FarmVille2CountryEscape",
+    "Instagram",
+    "Netflix",
+    "PandoraMediaInc.Pandora",
+    "Spotify",
+    "Twitter",
+    "TwitterUniversal",
+    "YouTube",
+    "Plex",
+    "TikTok",
+    "TuneInRadio",
+    "king.com.BubbleWitch3Saga",
+    "king.com.CandyCrushSaga",
+    "king.com.CandyCrushSodaSaga"
 )
 
 function Get-FriendlyName {
@@ -153,31 +233,95 @@ function Show-ScriptSelectionDialog {
     [xml]$xaml = @"
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="(Sparkle) Debloat Script v$version" 
-        Height="220" Width="550" 
+        Title="Sparkle Debloat v$version" 
+        Height="300" Width="650" 
         WindowStartupLocation="CenterScreen"
         Topmost="True"
-        ResizeMode="NoResize">
-    <Grid Margin="15">
+        ResizeMode="NoResize"
+        Background="#f0f0f0">
+    <Window.Resources>
+        <Style TargetType="RadioButton">
+            <Setter Property="Foreground" Value="#1e293b"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="#3b82f6"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#f1f5f9"/>
+            <Setter Property="Foreground" Value="#1e293b"/>
+            <Setter Property="BorderBrush" Value="#d5dae2"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="18,8"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#3b82f6"/>
+                                <Setter Property="Foreground" Value="#ffffff"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#2563eb"/>
+                                <Setter Property="Foreground" Value="#ffffff"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    
+    <Grid Margin="24">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         
-        <TextBlock Grid.Row="0" Text="Choose your debloat approach:" 
-                   FontSize="14" FontWeight="Bold" Margin="0,0,0,15"/>
+        <TextBlock Grid.Row="0" 
+                   Text="Choose your debloat approach:" 
+                   FontSize="16" 
+                   FontWeight="SemiBold" 
+                   Foreground="#1e293b"
+                   Margin="0,0,0,20"/>
         
-        <StackPanel Grid.Row="1" Margin="10,0,0,0">
-            <RadioButton x:Name="RadioSparkle" Content="Sparkle Debloat Script (You can choose which apps to keep) (Recommended)" 
-                        Margin="0,0,0,10" IsChecked="True" FontSize="12"/>
-            <RadioButton x:Name="RadioRaphire" Content="Raphire's Win11Debloat Script (Comprehensive, read docs for details)" 
-                        FontSize="12"/>
-        </StackPanel>
+        <Border Grid.Row="1" 
+                Background="#ffffff" 
+                BorderBrush="#d5dae2" 
+                BorderThickness="1" 
+                CornerRadius="8"
+                Padding="20"
+                Margin="0,0,0,20">
+            <StackPanel>
+                <RadioButton x:Name="RadioSparkle" 
+                            Content="Sparkle Debloat (Choose which apps to remove) - Recommended" 
+                            Margin="0,0,0,16" 
+                            IsChecked="True"/>
+                <RadioButton x:Name="RadioRaphire" 
+                            Content="Raphire's Win11Debloat (Comprehensive - read docs for details)"/>
+            </StackPanel>
+        </Border>
         
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
-            <Button x:Name="BtnOK" Content="OK" Width="80" Height="28" Margin="0,0,10,0" IsDefault="True"/>
-            <Button x:Name="BtnCancel" Content="Cancel" Width="80" Height="28" IsCancel="True"/>
+        <StackPanel Grid.Row="2" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right" 
+                    Margin="0,20,0,0">
+            <Button x:Name="BtnOK" Content="Continue" Width="100" Margin="0,0,12,0" IsDefault="True"/>
+            <Button x:Name="BtnCancel" Content="Cancel" Width="100" IsCancel="True"/>
         </StackPanel>
     </Grid>
 </Window>
@@ -212,14 +356,135 @@ function Show-ScriptSelectionDialog {
     return $script:dialogResult
 }
 
+function Show-BehaviorChangeWarning {
+    [xml]$xaml = @"
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Sparkle Debloat - Important Change" 
+        Height="420" Width="550" 
+        WindowStartupLocation="CenterScreen"
+        Topmost="True"
+        ResizeMode="NoResize"
+        Background="#f0f0f0">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#3b82f6"/>
+            <Setter Property="Foreground" Value="#ffffff"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="24,10"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#60a5fa"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#2563eb"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    
+    <Grid Margin="28">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,16">
+            <TextBlock Text="!" FontSize="24" FontWeight="Bold" Foreground="#f59e0b" Margin="0,0,10,0" VerticalAlignment="Center"/>
+            <TextBlock Text="Behavior Has Changed!"
+                       FontSize="18" 
+                       FontWeight="SemiBold" 
+                       Foreground="#1e293b"
+                       VerticalAlignment="Center"/>
+        </StackPanel>
+        
+        <Border Grid.Row="1" 
+                Background="#fef3c7" 
+                BorderBrush="#f59e0b" 
+                BorderThickness="1" 
+                CornerRadius="8"
+                Padding="16"
+                Margin="0,0,0,20">
+            <StackPanel>
+                <TextBlock Text="The app selection has been inverted:" 
+                           FontSize="14" 
+                           FontWeight="SemiBold" 
+                           Foreground="#92400e"
+                           Margin="0,0,0,10"/>
+                <TextBlock Text="- Previously: You selected apps to KEEP"
+                           FontSize="13" 
+                           Foreground="#92400e"
+                           Margin="0,0,0,4"/>
+                <TextBlock Text="- Now: Select apps to REMOVE"
+                           FontSize="13" 
+                           FontWeight="SemiBold"
+                           Foreground="#b91c1c"
+                           Margin="0,0,0,10"/>
+                <TextBlock Text="This change gives you more direct control over what gets removed from your system, and allows us to set recommended defaults for removal. It also lets us add more features to this script in the future."
+                           FontSize="13" 
+                           Foreground="#92400e"
+                           TextWrapping="Wrap"/>
+            </StackPanel>
+        </Border>
+        
+        <StackPanel Grid.Row="2" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right">
+            <Button x:Name="BtnCancel" Content="Cancel" Width="100" Margin="0,0,12,0" IsCancel="True"/>
+            <Button x:Name="BtnUnderstand" Content="I Understand, Continue" Width="195"/>
+        </StackPanel>
+    </Grid>
+</Window>
+"@
+
+    $reader = New-Object System.Xml.XmlNodeReader $xaml
+    $window = [Windows.Markup.XamlReader]::Load($reader)
+    
+    $btnUnderstand = $window.FindName("BtnUnderstand")
+    $btnCancel = $window.FindName("BtnCancel")
+    
+    $script:dialogResult = $true
+    
+    $btnUnderstand.Add_Click({
+        $script:dialogResult = $true
+        $window.Close()
+    })
+    
+    $btnCancel.Add_Click({
+        $script:dialogResult = $false
+        $window.Close()
+    })
+    
+    $window.ShowDialog() | Out-Null
+    return $script:dialogResult
+}
+
 function Show-AppSelectionDialog {
     # generate apps list with friendly names
+    # apps are unchecked by default (meaning they won't be removed)
+    # users check apps they want to remove
     $apps = @()
     foreach ($appDef in $appDefinitions) {
         $apps += @{ 
             Name      = $appDef.FriendlyName
             Package   = $appDef.Package
-            IsChecked = ($defaultApps -contains $appDef.Package) 
+            IsChecked = $false
         }
     }
     
@@ -229,46 +494,128 @@ function Show-AppSelectionDialog {
     [xml]$xaml = @"
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="(Sparkle) Select Apps to Keep v$version" 
-    Height="650" Width="550" 
+    Title="Sparkle Debloat v$version" 
+    Height="750" Width="650" 
     WindowStartupLocation="CenterScreen"
-    ResizeMode="NoResize">
-    <Grid Margin="15">
-    <Grid.RowDefinitions>
-        <RowDefinition Height="Auto"/>   <!-- Title -->
-        <RowDefinition Height="Auto"/>   <!-- Warning -->
-        <RowDefinition Height="*"/>      <!-- List -->
-        <RowDefinition Height="Auto"/>   <!-- Select/Deselect -->
-        <RowDefinition Height="Auto"/>   <!-- OK/Cancel -->
-    </Grid.RowDefinitions>
+    ResizeMode="NoResize"
+    Background="#f0f0f0">
+    <Window.Resources>
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground" Value="#334155"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Padding" Value="8,5"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="#1e293b"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#f1f5f9"/>
+            <Setter Property="Foreground" Value="#1e293b"/>
+            <Setter Property="BorderBrush" Value="#d5dae2"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="16,8"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#3b82f6"/>
+                                <Setter Property="Foreground" Value="#ffffff"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#2563eb"/>
+                                <Setter Property="Foreground" Value="#ffffff"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="SecondaryButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Background" Value="#ffffff"/>
+        </Style>
+    </Window.Resources>
     
-    <TextBlock Grid.Row="0" Text="Select the apps you want to KEEP (uncheck to remove):" 
-           FontSize="14" FontWeight="Bold" Margin="0,0,0,10" TextWrapping="Wrap"/>
-    <TextBlock Grid.Row="1" Text="Ensure you have a restore point before proceeding." 
-           FontSize="12"  Margin="0,0,0,10"/>
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <TextBlock Grid.Row="0" 
+                   Text="Select apps to remove" 
+                   FontSize="18" 
+                   FontWeight="SemiBold" 
+                   Foreground="#1e293b"
+                   Margin="0,0,0,6"/>
+        
+        <TextBlock Grid.Row="1" 
+                   Text="Check the apps you want to remove. Unchecked apps will remain installed." 
+                   FontSize="13" 
+                   Foreground="#64748b"
+                   TextWrapping="Wrap"
+                   Margin="0,0,0,12"/>
 
-    <Border Grid.Row="2" BorderBrush="#CCCCCC" BorderThickness="1" Margin="0,0,0,10">
-        <ScrollViewer VerticalScrollBarVisibility="Auto" >
-        <ItemsControl x:Name="AppsList" Margin="5">
-            <ItemsControl.ItemTemplate>
-            <DataTemplate>
-                <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}" 
-                     Margin="5,3" FontSize="11"/>
-            </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-        </ScrollViewer>
-    </Border>
-    
-    <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,0,0,10">
-        <Button x:Name="BtnSelectAll" Content="Select All" Width="100" Height="28" Margin="0,0,10,0"/>
-        <Button x:Name="BtnDeselectAll" Content="Deselect All" Width="100" Height="28"/>
-    </StackPanel>
-    
-    <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
-        <Button x:Name="BtnOK" Content="OK" Width="80" Height="28" Margin="0,0,10,0" IsDefault="True"/>
-        <Button x:Name="BtnCancel" Content="Cancel" Width="80" Height="28" IsCancel="True"/>
-    </StackPanel>
+        <Border Grid.Row="2" 
+                Background="#ffffff" 
+                BorderBrush="#d5dae2" 
+                BorderThickness="1" 
+                CornerRadius="8"
+                Margin="0,0,0,12">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ItemsControl x:Name="AppsList" Margin="12">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox Content="{Binding Name}" 
+                                     IsChecked="{Binding IsChecked}" 
+                                     Margin="4,3"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Border>
+        
+        <StackPanel Grid.Row="3" 
+                    Orientation="Horizontal" 
+                    Margin="0,0,0,12">
+            <Button x:Name="BtnSelectAll" 
+                    Content="Select All" 
+                    Width="110" 
+                    Margin="0,0,12,0"
+                    Style="{StaticResource SecondaryButton}"/>
+            <Button x:Name="BtnDeselectAll" 
+                    Content="Deselect All" 
+                    Width="110"
+                    Margin="0,0,12,0"
+                    Style="{StaticResource SecondaryButton}"/>
+            <Button x:Name="BtnSelectRecommended" 
+                    Content="Select Recommended" 
+                    Width="165"
+                    Background="#dbeafe"
+                    Foreground="#1e40af"/>
+        </StackPanel>
+        
+        <StackPanel Grid.Row="4" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right">
+            <Button x:Name="BtnOK" Content="Start Debloat" Width="120" Margin="0,0,12,0" IsDefault="True"/>
+            <Button x:Name="BtnCancel" Content="Cancel" Width="100" IsCancel="True"/>
+        </StackPanel>
     </Grid>
 </Window>
 "@
@@ -279,6 +626,7 @@ function Show-AppSelectionDialog {
     $appsList = $window.FindName("AppsList")
     $btnSelectAll = $window.FindName("BtnSelectAll")
     $btnDeselectAll = $window.FindName("BtnDeselectAll")
+    $btnSelectRecommended = $window.FindName("BtnSelectRecommended")
     $btnOK = $window.FindName("BtnOK")
     $btnCancel = $window.FindName("BtnCancel")
     
@@ -305,6 +653,15 @@ function Show-AppSelectionDialog {
             $appsList.Items.Refresh()
         })
     
+    $btnSelectRecommended.Add_Click({
+            foreach ($item in $observableApps) {
+                if ($recommendedApps -contains $item.Package) {
+                    $item.IsChecked = $true
+                }
+            }
+            $appsList.Items.Refresh()
+        })
+    
     $btnOK.Add_Click({
             $script:dialogResult = @()
             foreach ($item in $observableApps) {
@@ -312,32 +669,40 @@ function Show-AppSelectionDialog {
                     $script:dialogResult += $item.Package
                 }
             }
+            $window.DialogResult = $true
             $window.Close()
         })
     
     $btnCancel.Add_Click({
             $script:dialogResult = $null
+            $window.DialogResult = $false
             $window.Close()
-            
         })
     
-    $window.ShowDialog() | Out-Null
+    $window.Add_Closing({
+            if ($null -eq $script:dialogResult) {
+                $script:dialogResult = $null
+            }
+        })
+    
+    $result = $window.ShowDialog()
+    if ($result -eq $false) {
+        return $null
+    }
     return $script:dialogResult
 }
 
 function Remove-SelectedApps {
-    param([string[]]$AppsToKeep)
+    param([string[]]$AppsToRemove)
 
     Write-Host "Starting Sparkle debloat..." -ForegroundColor Green
 
-    $appsToRemove = $allAppsToRemove | Where-Object { $_ -notin $AppsToKeep }
-
     # display friendly names in console output
-    $keptNames = $AppsToKeep | ForEach-Object { Get-FriendlyName $_ }
-    Write-Host "Apps that will be kept: $($keptNames -join ', ')" -ForegroundColor Yellow
-    Write-Host "Apps that will be removed: $($appsToRemove.Count)" -ForegroundColor Red
+    $removeNames = $AppsToRemove | ForEach-Object { Get-FriendlyName $_ }
+    Write-Host "Apps that will be removed: $($removeNames -join ', ')" -ForegroundColor Yellow
+    Write-Host "Number of apps to remove: $($AppsToRemove.Count)" -ForegroundColor Red
     
-    foreach ($app in $appsToRemove) {
+    foreach ($app in $AppsToRemove) {
         try {
             $friendlyName = Get-FriendlyName $app
             Write-Host "Checking for $friendlyName ($app)..." -ForegroundColor Yellow
@@ -371,24 +736,41 @@ function Remove-SelectedApps {
 }
 
 try {
+    $script:appsWereRemoved = $false
+    
     Write-Host "Starting Sparkle Debloat script..." -ForegroundColor Green
     Write-Host "Script Choice: '$ScriptChoice'" -ForegroundColor Yellow
-    Write-Host "Apps to Keep Count: $($AppsToKeep.Count)" -ForegroundColor Yellow
+    Write-Host "Apps to Remove Count: $($AppsToRemove.Count)" -ForegroundColor Yellow
     
     # get the ui params 
     if ($ScriptChoice -eq "raphire") {
         Write-Host "Running Raphire's Win11Debloat script..." -ForegroundColor Green
         & ([scriptblock]::Create((Invoke-RestMethod 'https://debloat.raphi.re/'))) -Silent -RemoveApps
         Write-Host "Raphire's script completed!" -ForegroundColor Green
+        $script:appsWereRemoved = $true
     }
     elseif ($ScriptChoice -eq "custom") {
-        if ($AppsToKeep.Count -gt 0) {
-            Write-Host "Running Sparkle debloat with $($AppsToKeep.Count) apps to keep..." -ForegroundColor Green
-            Remove-SelectedApps -AppsToKeep $AppsToKeep
+        if ($AppsToRemove.Count -gt 0) {
+            Write-Host "Running Sparkle debloat to remove $($AppsToRemove.Count) apps..." -ForegroundColor Green
+            Remove-SelectedApps -AppsToRemove $AppsToRemove
+            $script:appsWereRemoved = $true
         }
         else {
-            Write-Host "Custom debloat selected but no apps specified. Running with defaults..." -ForegroundColor Yellow
-            Remove-SelectedApps -AppsToKeep $defaultApps
+            Write-Host "Custom debloat selected but no apps specified. Showing dialog..." -ForegroundColor Yellow
+            $warningResult = Show-BehaviorChangeWarning
+            if (-not $warningResult) {
+                Write-Host "Operation cancelled by user." -ForegroundColor Yellow
+                exit 0
+            }
+            $appsToRemove = Show-AppSelectionDialog
+            
+            if ($appsToRemove -eq $null -or $appsToRemove.Count -eq 0) {
+                Write-Host "No apps selected for removal. Operation cancelled." -ForegroundColor Yellow
+                exit 0
+            }
+            
+            Remove-SelectedApps -AppsToRemove $appsToRemove
+            $script:appsWereRemoved = $true
         }
     }
     elseif ($ScriptChoice -eq "" -or $ScriptChoice -eq $null) {
@@ -406,16 +788,23 @@ try {
                 Write-Host "Running Raphire's Win11Debloat script..." -ForegroundColor Green
                 & ([scriptblock]::Create((Invoke-RestMethod 'https://debloat.raphi.re/'))) -Silent -RemoveApps
                 Write-Host "Debloat completed!" -ForegroundColor Green
+                $script:appsWereRemoved = $true
             }
             elseif ($choice -eq "custom") {
-                $appsToKeep = Show-AppSelectionDialog
-                
-                if ($appsToKeep -eq $null) {
+                $warningResult = Show-BehaviorChangeWarning
+                if (-not $warningResult) {
                     Write-Host "Operation cancelled by user." -ForegroundColor Yellow
                     exit 0
                 }
+                $appsToRemove = Show-AppSelectionDialog
                 
-                Remove-SelectedApps -AppsToKeep $appsToKeep
+                if ($appsToRemove -eq $null -or $appsToRemove.Count -eq 0) {
+                    Write-Host "No apps selected for removal. Operation cancelled." -ForegroundColor Yellow
+                    exit 0
+                }
+                
+                Remove-SelectedApps -AppsToRemove $appsToRemove
+                $script:appsWereRemoved = $true
             }
         }
         catch {
@@ -429,36 +818,74 @@ try {
     }
     Write-Host "Debloat Script From https://getsparkle.net" -ForegroundColor Cyan
 
-    if (-not (Get-Process -Name "Sparkle" -ErrorAction SilentlyContinue)) {
-        Add-Type -AssemblyName PresentationFramework
-        
+    if ($script:appsWereRemoved -and -not (Get-Process -Name "Sparkle" -ErrorAction SilentlyContinue)) {
         [xml]$xaml = @"
 <Window 
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="Sparkle - Debloat Complete" 
-    Height="150" 
-    Width="400"
-    WindowStartupLocation="CenterScreen">
-    <Grid>
+    Title="Sparkle Debloat" 
+    Height="200" 
+    Width="480"
+    WindowStartupLocation="CenterScreen"
+    Background="#f0f0f0"
+    ResizeMode="NoResize">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#3b82f6"/>
+            <Setter Property="Foreground" Value="#ffffff"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="24,10"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#60a5fa"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#2563eb"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    
+    <Grid Margin="30">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         
-        <TextBlock Grid.Row="0" 
-                  Text="Debloat completed successfully!" 
-                  FontSize="16"
-                  TextWrapping="Wrap"
-                  HorizontalAlignment="Center"
-                  VerticalAlignment="Center"
-                  TextAlignment="Center"/>
+        <StackPanel Grid.Row="0" VerticalAlignment="Center">
+            <TextBlock Text="Debloat Complete" 
+                      FontSize="20"
+                      FontWeight="SemiBold"
+                      Foreground="#2dac7d"
+                      HorizontalAlignment="Center"
+                      Margin="0,0,0,10"/>
+            <TextBlock Text="Your system has been successfully optimized." 
+                      FontSize="14"
+                      Foreground="#64748b"
+                      HorizontalAlignment="Center"
+                      TextAlignment="Center"
+                      TextWrapping="Wrap"
+                      Margin="0,0,0,5"/>
+        </StackPanel>
                   
         <Button Grid.Row="1" 
                x:Name="BtnOK" 
-               Content="OK" 
-               Width="80" 
-               Margin="15"
+               Content="Done" 
+               Width="100"
                HorizontalAlignment="Center"/>
     </Grid>
 </Window>

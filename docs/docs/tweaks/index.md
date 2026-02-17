@@ -7,7 +7,8 @@ A collection of tweaks to customize and enhance your Windows experience using Sp
 
 _This page is auto-generated._
 
-## All Tweaks (33)
+## All Tweaks (36)
+- [24-hour-clock](24-hour-clock.md)
 - [align-taskbar-left](align-taskbar-left.md)
 - [debloat-windows](debloat-windows.md)
 - [detailed-bsod](detailed-bsod.md)
@@ -22,20 +23,21 @@ _This page is auto-generated._
 - [disable-location-tracking](disable-location-tracking.md)
 - [disable-lockscreen-tips](disable-lockscreen-tips.md)
 - [disable-mouse-acceleration](disable-mouse-acceleration.md)
+- [disable-telemetry](disable-telemetry.md)
 - [disable-wifi-sense](disable-wifi-sense.md)
 - [enable-dark-mode](enable-dark-mode.md)
 - [enable-end-task-right-click](enable-end-task-right-click.md)
 - [enable-game-mode](enable-game-mode.md)
 - [enable-hags](enable-hags.md)
-
 - [enable-optimization-for-windowed-games](enable-optimization-for-windowed-games.md)
+- [hide-taskview-and-widgets](hide-taskview-and-widgets.md)
 - [menu-show-delay-zero](menu-show-delay-zero.md)
 - [optimize-network-settings](optimize-network-settings.md)
 - [optimize-nvidia-settings](optimize-nvidia-settings.md)
 - [remove-gaming-apps](remove-gaming-apps.md)
+- [remove-ms-bing-integration](remove-ms-bing-integration.md)
 - [remove-onedrive](remove-onedrive.md)
 - [revert-context-menu](revert-context-menu.md)
-- [run-disk-cleanup](run-disk-cleanup.md)
 - [set-powershell7-default](set-powershell7-default.md)
 - [set-services-to-manual](set-services-to-manual.md)
 - [set-time-utc](set-time-utc.md)

@@ -399,7 +399,7 @@ function Show-BehaviorChangeWarning {
                            FontWeight="SemiBold"
                            Foreground="#b91c1c"
                            Margin="0,0,0,10"/>
-                <TextBlock Text="This change gives you more direct control over what gets removed from your system."
+                <TextBlock Text="This change gives you more direct control over what gets removed from your system, and allows us to set recommended defaults for removal. It also lets us add more features to this script in the future."
                            FontSize="13" 
                            Foreground="#92400e"
                            TextWrapping="Wrap"/>

@@ -371,7 +371,6 @@ function Tweaks() {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
-
               <div className="flex flex-wrap items-center gap-2">
                 {categories.map((category) => (
                   <button
@@ -386,6 +385,9 @@ function Tweaks() {
                     {category}
                   </button>
                 ))}
+                <p className="text-sm text-sparkle-text-secondary ml-auto mr-2">
+                  Showing {sortedTweaks.length} of {tweaks.length} tweaks
+                </p>
               </div>
             </div>
           </div>

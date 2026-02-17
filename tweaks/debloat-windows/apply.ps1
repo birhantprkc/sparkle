@@ -10,6 +10,37 @@ param(
 
 $version = "1.1.0"
 
+function Test-IsAdmin {
+    $currentUser = [Security.Principal.WindowsIdentity]::GetCurrent()
+    $principal = New-Object Security.Principal.WindowsPrincipal($currentUser)
+    return $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+}
+
+if (-not (Test-IsAdmin)) {
+    Write-Host "Not running as administrator. Requesting elevation..." -ForegroundColor Yellow
+    
+    $scriptPath = $MyInvocation.MyCommand.Path
+    $arguments = "-NoProfile -ExecutionPolicy Bypass -File `"$scriptPath`""
+    
+    foreach ($param in $PSBoundParameters.GetEnumerator()) {
+        if ($param.Key -ne "ScriptChoice" -and $param.Key -ne "AppsToRemove") {
+            $arguments += " -$($param.Key) `"$($param.Value)`""
+        }
+    }
+    
+    if ($ScriptChoice) {
+        $arguments += " -ScriptChoice `"$ScriptChoice`""
+    }
+    if ($AppsToRemove.Count -gt 0) {
+        $arguments += " -AppsToRemove $($AppsToRemove -join ',')"
+    }
+    
+    Write-Host "Launching elevated PowerShell..." -ForegroundColor Yellow
+    Start-Process powershell.exe -ArgumentList $arguments -Verb RunAs
+    Write-Host "Exiting non-admin instance." -ForegroundColor Yellow
+    exit 0
+}
+
 Add-Type -AssemblyName PresentationFramework
 Add-Type -AssemblyName PresentationCore
 Add-Type -AssemblyName WindowsBase
@@ -390,16 +421,6 @@ function Show-BehaviorChangeWarning {
     
     $btnUnderstand = $window.FindName("BtnUnderstand")
     $btnCancel = $window.FindName("BtnCancel")
-
-
-    $iconUrl = "https://getsparkle.net/sparklelogo.png"  # replace with your actual icon URL
-    $iconResponse = Invoke-WebRequest -Uri $iconUrl -UseBasicParsing
-
-    $stream = New-Object System.IO.MemoryStream
-    $stream.Write($iconResponse.Content, 0, $iconResponse.Content.Length)
-    $stream.Position = 0
-
-    $window.Icon = [System.Windows.Media.Imaging.BitmapFrame]::Create($stream)
     
     $script:dialogResult = $true
     

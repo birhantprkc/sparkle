@@ -83,7 +83,6 @@ Refer to the <a href="https://docs.getsparkle.net">docs</a> for more info on how
 <p>To build sparkle you will need the following</p>
 <ul>
   <li><b>Node.js</b> v22 or higher</li>
-  <li><b>Yarn</b></li>
   <li><b>Windows 10/11</b></li>
 </ul>
 
@@ -113,17 +112,17 @@ cd Sparkle</code></pre>
   </li>
   <li>
     <b>Install dependencies:</b>
-    <pre><code>yarn</code></pre>
+    <pre><code>npm i</code></pre>
   </li>
   <li>
     <b>Start the app in development mode:</b>
-    <pre><code>yarn dev</code></pre>
+    <pre><code>npm run dev</code></pre>
     <i>This will launch Sparkle with hot reload for both the Electron main and renderer processes.</i>
   </li>
   <br/>
   <li>
     <b>Build for production:</b>
-    <pre><code>yarn build</code></pre>
+    <pre><code>npm build</code></pre>
     <i>This will generate optimized production builds.</i>
   </li>
 </ol>

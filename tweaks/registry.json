@@ -1,5 +1,5 @@
 {
-  "version": "2026-02-10T22:28:08.248Z",
+  "version": "2026-02-17T03:21:41.441Z",
   "tweaks": [
     {
       "id": "24-hour-clock",
@@ -37,7 +37,7 @@
       ],
       "recommended": true,
       "reversible": false,
-      "updatedversion": "2.9.0",
+      "updatedversion": "2.14.0",
       "docsurl": "https://docs.getsparkle.net/tweaks/debloat-windows",
       "source": "https://github.com/Parcoil/Sparkle/blob/v2/tweaks/debloat-windows/meta.json"
     },
@@ -162,7 +162,7 @@
       "category": [
         "Privacy"
       ],
-      "recommended": false,
+      "recommended": true,
       "reversible": true,
       "docsurl": "https://docs.getsparkle.net/tweaks/disable-location-tracking",
       "source": "https://github.com/Parcoil/Sparkle/blob/v2/tweaks/disable-location-tracking/meta.json"
@@ -191,6 +191,20 @@
       "reversible": true,
       "docsurl": "https://docs.getsparkle.net/tweaks/disable-mouse-acceleration",
       "source": "https://github.com/Parcoil/Sparkle/blob/v2/tweaks/disable-mouse-acceleration/meta.json"
+    },
+    {
+      "id": "disable-telemetry",
+      "title": "Disable Telemetry",
+      "description": "Disables Windows telemetry and data collection for improved privacy and performance.",
+      "category": [
+        "Privacy",
+        "Performance"
+      ],
+      "recommended": true,
+      "reversible": true,
+      "addedversion": "2.14.0",
+      "docsurl": "https://docs.getsparkle.net/tweaks/disable-telemetry",
+      "source": "https://github.com/Parcoil/Sparkle/blob/v2/tweaks/disable-telemetry/meta.json"
     },
     {
       "id": "disable-wifi-sense",

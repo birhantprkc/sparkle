@@ -1,5 +1,5 @@
 import { ipcMain } from "electron"
-import discordRPC from "discord-rpc"
+import { Client, PresenceBuilder, ActivityType } from "discord-rpc-new"
 import { logo } from "./index"
 import jsonData from "../../package.json"
 import log from "electron-log"
@@ -9,7 +9,7 @@ console.error = log.error
 console.warn = log.warn
 
 const clientId = "1188686354490609754"
-let rpcClient: discordRPC.Client | null = null
+let rpcClient: Client | null = null
 let isInitializing = false
 let initRetryCount = 0
 const MAX_RETRIES = 3
@@ -29,32 +29,44 @@ async function startDiscordRPC(): Promise<boolean> {
 
   setTimeout(async () => {
     try {
-      rpcClient = new discordRPC.Client({ transport: "ipc" })
+      rpcClient = new Client()
 
-      rpcClient.on("ready", () => {
+      rpcClient.on("READY", () => {
         console.log("(rpc.js) ", logo, "Discord RPC connected")
         isInitializing = false
         initRetryCount = 0
 
-        rpcClient!
-          .setActivity({
-            details: "Optimizing your PC",
-            state: `Running Sparkle v${jsonData.version || "2"}`,
-            buttons: [
-              // keep this as parcoil incase of the domain going down
-              { label: "Download Sparkle", url: "https://parcoil.com/sparkle" },
-              { label: "Join Discord", url: "https://discord.com/invite/En5YJYWj3Z" },
-            ],
-            largeImageKey: "sparklelogo",
-            largeImageText: "Sparkle Optimizer",
-            instance: false,
-          })
-          .catch((err: Error) => {
-            console.warn("(rpc.js) ", "Failed to set Discord RPC activity:", err.message)
-          })
+        const activity = new PresenceBuilder()
+          .setType(ActivityType.Playing)
+          .setDetails("Optimizing your PC")
+          .setState(`Running Sparkle v${jsonData.version ?? "2"}`)
+          .setLargeImage("sparklelogo", "Sparkle Optimizer")
+          .addButton("Download Sparkle", "https://parcoil.com/sparkle")
+          .addButton("Join Discord", "https://discord.com/invite/En5YJYWj3Z")
+          .build()
+
+        const client = rpcClient
+        if (!client || !activity) return
+
+        console.log("(rpc.js) ", "Setting activity:", JSON.stringify(activity, null, 2))
+
+        try {
+          client.setActivity(activity)
+          console.log("(rpc.js) ", "Activity set successfully")
+        } catch (err: any) {
+          console.warn("(rpc.js) ", "Failed to set Discord RPC activity:", err.message)
+        }
       })
 
-      rpcClient.on("error", (error: Error) => {
+      rpcClient.on("disconnected", () => {
+        console.log("(rpc.js) ", "Discord RPC connected event fired")
+      })
+
+      rpcClient.on("close", () => {
+        console.log("(rpc.js) ", "Discord RPC connection closed")
+      })
+
+      rpcClient.on("ERROR", (error: Error) => {
         console.warn("(rpc.js) ", "Discord RPC error:", error.message)
         isInitializing = false
         stopDiscordRPC().catch(() => {})
@@ -64,8 +76,9 @@ async function startDiscordRPC(): Promise<boolean> {
         console.warn("(rpc.js) ", "Discord RPC login failed:", error.message)
         isInitializing = false
         stopDiscordRPC().catch(() => {})
-        return
       })
+
+      console.log("(rpc.js) ", "Discord RPC login completed")
     } catch (error: any) {
       console.warn("(rpc.js) ", "Failed to initialize Discord RPC:", error.message)
       isInitializing = false

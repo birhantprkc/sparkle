@@ -284,14 +284,6 @@
       "icon": "https://upload.wikimedia.org/wikipedia/en/7/7f/Steelseries-logo.png"
     },
     {
-      "name": "Python 3.9",
-      "id": "Python.Python.3.9",
-      "category": "development",
-      "info": "Programming language",
-      "link": "https://www.python.org?ref=sparkle",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1869px-Python-logo-notext.svg.png"
-    },
-    {
       "name": "Node.js",
       "id": "OpenJS.NodeJS",
       "chocolatey": "nodejs.install",
@@ -363,6 +355,14 @@
       "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/VLC_Icon.svg/2048px-VLC_Icon.svg.png"
     },
     {
+      "name": "Medal",
+      "id": "MedalB.V.Medal",
+      "category": "multimedia",
+      "info": "A modern clipping software to capture moments in your videogames.",
+      "link": "https://medal.tv?ref=sparkle",
+      "icon": "https://imgs.search.brave.com/lBnbkGrpvZWX0qezDMkyaRQkqTLWLUqtthGE7Bye6bk/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5wb2NrZXRnYW1l/ci5iaXovaW1hZ2Vz/Lzk1NjU2L3N0ZC9t/ZWRhbHR2XzMyMC5q/cGc"
+    },
+    {
       "name": "Audacity",
       "id": "Audacity.Audacity",
       "chocolatey": "audacity",
@@ -405,6 +405,15 @@
       "info": "A file archiver.",
       "link": "https://www.win-rar.com/?ref=sparkle",
       "icon": "https://keyoriginal.com/wp-content/uploads/2023/12/winrar-min.png"
+    },
+    {
+      "name": "Tabby",
+      "id": "Eugeny.Tabby",
+      "chocolatey": "tabby",
+      "category": "utilities",
+      "info": "A terminal for a more modern age.",
+      "link": "https://tabby.sh/?ref=sparkle",
+      "icon": "https://cdn.terminaltrove.com/m/79b6fbf6-67f8-4f01-94a9-aa20bbf19ebd.png"
     },
     {
       "name": "Parsec",
@@ -761,6 +770,14 @@
       "info": "A powerful uninstaller for Windows.",
       "link": "https://www.bcuninstaller.com/?ref=sparkle",
       "icon": "https://raw.githubusercontent.com/Klocman/Bulk-Crap-Uninstaller/refs/heads/master/source/BulkCrapUninstaller/logo.ico"
+    },
+    {
+      "name": "MiniTool Partition Wizard",
+      "chocolatey": "partitionwizard",
+      "category": "utilities",
+      "info": "A powerful partition manager for Windows.",
+      "link": "https://www.partitionwizard.com/?ref=sparkle",
+      "icon": "https://www.partitionwizard.com/images/logo.png"
     },
     {
       "name": "Windhawk",
@@ -1138,9 +1155,36 @@
       "icon": "https://www.ghisler.com/favicon.ico"
     },
     {
+      "name": "Python 3",
+      "chocolatey": "python3",
+      "category": "python",
+      "info": "Python 3 programming language. on Chocolatey.",
+      "link": "https://www.python.org?ref=sparkle",
+      "icon": "https://www.python.org/favicon.ico"
+    },
+    {
+      "name": "Python 3.8",
+      "id": "Python.Python.3.8",
+      "chocolatey": "python38",
+      "category": "python",
+      "info": "Programming language",
+      "link": "https://www.python.org?ref=sparkle",
+      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1869px-Python-logo-notext.svg.png"
+    },
+    {
+      "name": "Python 3.9",
+      "id": "Python.Python.3.9",
+      "chocolatey": "python39",
+      "category": "python",
+      "info": "Programming language",
+      "link": "https://www.python.org?ref=sparkle",
+      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1869px-Python-logo-notext.svg.png"
+    },
+    {
       "name": "Python 3.10",
       "id": "Python.Python.3.10",
-      "category": "development",
+      "chocolatey": "python310",
+      "category": "python",
       "info": "Python 3.10 programming language.",
       "link": "https://www.python.org?ref=sparkle",
       "icon": "https://www.python.org/favicon.ico"
@@ -1148,7 +1192,8 @@
     {
       "name": "Python 3.11",
       "id": "Python.Python.3.11",
-      "category": "development",
+      "chocolatey": "python311",
+      "category": "python",
       "info": "Python 3.11 programming language.",
       "link": "https://www.python.org?ref=sparkle",
       "icon": "https://www.python.org/favicon.ico"
@@ -1156,7 +1201,8 @@
     {
       "name": "Python 3.12",
       "id": "Python.Python.3.12",
-      "category": "development",
+      "chocolatey": "python312",
+      "category": "python",
       "info": "Python 3.12 programming language.",
       "link": "https://www.python.org?ref=sparkle",
       "icon": "https://www.python.org/favicon.ico"
@@ -1164,16 +1210,9 @@
     {
       "name": "Python 3.13",
       "id": "Python.Python.3.13",
-      "category": "development",
+      "chocolatey": "python313",
+      "category": "python",
       "info": "Python 3.13 programming language.",
-      "link": "https://www.python.org?ref=sparkle",
-      "icon": "https://www.python.org/favicon.ico"
-    },
-    {
-      "name": "Python 3",
-      "chocolatey": "python3",
-      "category": "development",
-      "info": "Python 3 programming language. on Chocolatey.",
       "link": "https://www.python.org?ref=sparkle",
       "icon": "https://www.python.org/favicon.ico"
     },

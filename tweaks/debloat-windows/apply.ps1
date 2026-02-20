@@ -20,21 +20,32 @@ if (-not (Test-IsAdmin)) {
     Write-Host "Not running as administrator. Requesting elevation..." -ForegroundColor Yellow
     
     $scriptPath = $MyInvocation.MyCommand.Path
+    $tempScript = $null
     
     if ([string]::IsNullOrEmpty($scriptPath)) {
-        $tempScript = [System.IO.Path]::Combine($env:TEMP, "sparkle_debloat_$(Get-Random).ps1")
-        $scriptContent = $MyInvocation.MyCommand.ScriptContents
-        if ([string]::IsNullOrEmpty($scriptContent)) {
-            $scriptContent = (Get-Content -Path $PSCommandPath -Raw -ErrorAction SilentlyContinue)
-        }
-        if (-not [string]::IsNullOrEmpty($scriptContent)) {
-            $scriptContent | Set-Content -Path $tempScript -Encoding UTF8
+        $tempScript = [System.IO.Path]::Combine($env:TEMP, "sparkle_debloat.ps1")
+        Write-Host "Saving script to temp file for elevation..." -ForegroundColor Yellow
+        
+        try {
+            $scriptUrl = "https://getsparkle.net/debloat"
+            Invoke-WebRequest -Uri $scriptUrl -OutFile $tempScript -UseBasicParsing
             $scriptPath = $tempScript
+        } catch {
+            try {
+                $scriptContent = $MyInvocation.MyCommand.ScriptContents
+                if (-not [string]::IsNullOrEmpty($scriptContent)) {
+                    $scriptContent | Out-File -FilePath $tempScript -Encoding UTF8
+                    $scriptPath = $tempScript
+                }
+            } catch {}
         }
     }
     
     if ([string]::IsNullOrEmpty($scriptPath)) {
-        Write-Host "[X] Cannot determine script path. Please download the script and run it directly." -ForegroundColor Red
+        Write-Host "[X] Cannot determine script path." -ForegroundColor Red
+        Write-Host "Please run these commands instead:" -ForegroundColor Yellow
+        Write-Host "  irm https://getsparkle.net/debloat -OutFile `"$env:TEMP\sparkle_debloat.ps1`"" -ForegroundColor Cyan
+        Write-Host "  & `"$env:TEMP\sparkle_debloat.ps1`"" -ForegroundColor Cyan
         Read-Host "Press Enter to exit"
         exit 1
     }

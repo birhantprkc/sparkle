@@ -17,23 +17,10 @@ function Test-IsAdmin {
 }
 
 if (-not (Test-IsAdmin)) {
-    Write-Host "Not running as administrator. Requesting elevation..." -ForegroundColor Yellow
-
-    $argList = "-NoProfile -ExecutionPolicy Bypass -Command `"& { $($MyInvocation.Line) }`""
-
-    if ($PSBoundParameters.ContainsKey('ScriptChoice')) {
-        $argList += " -ScriptChoice `"$ScriptChoice`""
-    }
-    if ($PSBoundParameters.ContainsKey('AppsToRemove') -and $AppsToRemove.Count -gt 0) {
-        $argList += " -AppsToRemove $($AppsToRemove -join ',')"
-    }
-
-    Write-Host "Launching elevated PowerShell..." -ForegroundColor Yellow
-    Start-Process powershell.exe -ArgumentList $argList -Verb RunAs -Wait
-    Write-Host "Exiting non-admin instance." -ForegroundColor Yellow
-    exit 0
+    Write-Host "[Sparkle Debloat] This script must be run as Administrator." -ForegroundColor Red
+    Read-Host "Press Enter to exit"
+    exit 1
 }
-
 Add-Type -AssemblyName PresentationFramework
 Add-Type -AssemblyName PresentationCore
 Add-Type -AssemblyName WindowsBase

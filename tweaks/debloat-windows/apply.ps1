@@ -18,58 +18,18 @@ function Test-IsAdmin {
 
 if (-not (Test-IsAdmin)) {
     Write-Host "Not running as administrator. Requesting elevation..." -ForegroundColor Yellow
-    
-    $scriptPath = $MyInvocation.MyCommand.Path
-    $tempScript = $null
-    
-    if ([string]::IsNullOrEmpty($scriptPath)) {
-        $tempScript = [System.IO.Path]::Combine($env:TEMP, "sparkle_debloat.ps1")
-        Write-Host "Saving script to temp file for elevation..." -ForegroundColor Yellow
-        
-        try {
-            $scriptUrl = "https://getsparkle.net/debloat"
-            Invoke-WebRequest -Uri $scriptUrl -OutFile $tempScript -UseBasicParsing
-            $scriptPath = $tempScript
-        } catch {
-            try {
-                $scriptContent = $MyInvocation.MyCommand.ScriptContents
-                if (-not [string]::IsNullOrEmpty($scriptContent)) {
-                    $scriptContent | Out-File -FilePath $tempScript -Encoding UTF8
-                    $scriptPath = $tempScript
-                }
-            } catch {}
-        }
+
+    $argList = "-NoProfile -ExecutionPolicy Bypass -Command `"& { $($MyInvocation.Line) }`""
+
+    if ($PSBoundParameters.ContainsKey('ScriptChoice')) {
+        $argList += " -ScriptChoice `"$ScriptChoice`""
     }
-    
-    if ([string]::IsNullOrEmpty($scriptPath)) {
-        Write-Host "[X] Cannot determine script path." -ForegroundColor Red
-        Write-Host "Please run these commands instead:" -ForegroundColor Yellow
-        Write-Host "  irm https://getsparkle.net/debloat -OutFile `"$env:TEMP\sparkle_debloat.ps1`"" -ForegroundColor Cyan
-        Write-Host "  & `"$env:TEMP\sparkle_debloat.ps1`"" -ForegroundColor Cyan
-        Read-Host "Press Enter to exit"
-        exit 1
+    if ($PSBoundParameters.ContainsKey('AppsToRemove') -and $AppsToRemove.Count -gt 0) {
+        $argList += " -AppsToRemove $($AppsToRemove -join ',')"
     }
-    
-    $arguments = "-NoProfile -ExecutionPolicy Bypass -File `"$scriptPath`""
-    
-    foreach ($param in $PSBoundParameters.GetEnumerator()) {
-        if ($param.Key -ne "ScriptChoice" -and $param.Key -ne "AppsToRemove") {
-            $arguments += " -$($param.Key) `"$($param.Value)`""
-        }
-    }
-    
-    if ($ScriptChoice) {
-        $arguments += " -ScriptChoice `"$ScriptChoice`""
-    }
-    if ($AppsToRemove.Count -gt 0) {
-        $arguments += " -AppsToRemove $($AppsToRemove -join ',')"
-    }
-    
+
     Write-Host "Launching elevated PowerShell..." -ForegroundColor Yellow
-    Start-Process powershell.exe -ArgumentList $arguments -Verb RunAs -Wait
-    if ($tempScript -and (Test-Path $tempScript)) {
-        Remove-Item -Path $tempScript -Force -ErrorAction SilentlyContinue
-    }
+    Start-Process powershell.exe -ArgumentList $argList -Verb RunAs -Wait
     Write-Host "Exiting non-admin instance." -ForegroundColor Yellow
     exit 0
 }
@@ -149,7 +109,7 @@ $appDefinitions = @(
     @{ Package = "king.com.BubbleWitch3Saga"; FriendlyName = "Bubble Witch 3 Saga" },
     @{ Package = "king.com.CandyCrushSaga"; FriendlyName = "Candy Crush Saga" },
     @{ Package = "king.com.CandyCrushSodaSaga"; FriendlyName = "Candy Crush Soda Saga" },
-    @{ Package = "9NBLGGH4QGHW"; FriendlyName = "Microsoft Sticky Notes" }    
+    @{ Package = "9NBLGGH4QGHW"; FriendlyName = "Microsoft Sticky Notes" }   
 )
 
 $allAppsToRemove = $appDefinitions | ForEach-Object { $_.Package }

@@ -20,6 +20,25 @@ if (-not (Test-IsAdmin)) {
     Write-Host "Not running as administrator. Requesting elevation..." -ForegroundColor Yellow
     
     $scriptPath = $MyInvocation.MyCommand.Path
+    
+    if ([string]::IsNullOrEmpty($scriptPath)) {
+        $tempScript = [System.IO.Path]::Combine($env:TEMP, "sparkle_debloat_$(Get-Random).ps1")
+        $scriptContent = $MyInvocation.MyCommand.ScriptContents
+        if ([string]::IsNullOrEmpty($scriptContent)) {
+            $scriptContent = (Get-Content -Path $PSCommandPath -Raw -ErrorAction SilentlyContinue)
+        }
+        if (-not [string]::IsNullOrEmpty($scriptContent)) {
+            $scriptContent | Set-Content -Path $tempScript -Encoding UTF8
+            $scriptPath = $tempScript
+        }
+    }
+    
+    if ([string]::IsNullOrEmpty($scriptPath)) {
+        Write-Host "[X] Cannot determine script path. Please download the script and run it directly." -ForegroundColor Red
+        Read-Host "Press Enter to exit"
+        exit 1
+    }
+    
     $arguments = "-NoProfile -ExecutionPolicy Bypass -File `"$scriptPath`""
     
     foreach ($param in $PSBoundParameters.GetEnumerator()) {
@@ -36,7 +55,10 @@ if (-not (Test-IsAdmin)) {
     }
     
     Write-Host "Launching elevated PowerShell..." -ForegroundColor Yellow
-    Start-Process powershell.exe -ArgumentList $arguments -Verb RunAs
+    Start-Process powershell.exe -ArgumentList $arguments -Verb RunAs -Wait
+    if ($tempScript -and (Test-Path $tempScript)) {
+        Remove-Item -Path $tempScript -Force -ErrorAction SilentlyContinue
+    }
     Write-Host "Exiting non-admin instance." -ForegroundColor Yellow
     exit 0
 }
@@ -115,7 +137,8 @@ $appDefinitions = @(
     @{ Package = "TuneInRadio"; FriendlyName = "TuneIn Radio" },
     @{ Package = "king.com.BubbleWitch3Saga"; FriendlyName = "Bubble Witch 3 Saga" },
     @{ Package = "king.com.CandyCrushSaga"; FriendlyName = "Candy Crush Saga" },
-    @{ Package = "king.com.CandyCrushSodaSaga"; FriendlyName = "Candy Crush Soda Saga" }
+    @{ Package = "king.com.CandyCrushSodaSaga"; FriendlyName = "Candy Crush Soda Saga" },
+    @{ Package = "9NBLGGH4QGHW"; FriendlyName = "Microsoft Sticky Notes" }    
 )
 
 $allAppsToRemove = $appDefinitions | ForEach-Object { $_.Package }
@@ -177,7 +200,8 @@ $recommendedApps = @(
     "TuneInRadio",
     "king.com.BubbleWitch3Saga",
     "king.com.CandyCrushSaga",
-    "king.com.CandyCrushSodaSaga"
+    "king.com.CandyCrushSodaSaga",
+    "9NBLGGH4QGHW"
 )
 
 function Get-FriendlyName {

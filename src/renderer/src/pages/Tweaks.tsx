@@ -37,6 +37,9 @@ function Tweaks() {
   const [modalContent, setModalContent] = useState<string | boolean | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedTweak, setSelectedTweak] = useState<Tweak | null>(null)
+  const [isRecommendedModalOpen, setIsRecommendedModalOpen] = useState(false)
+  const [recommendedTweaksToApply, setRecommendedTweaksToApply] = useState<Tweak[]>([])
+  const [isApplyingRecommended, setIsApplyingRecommended] = useState(false)
 
   const { setNeedsRestart } = useRestartStore()
   const systemInfo = useSystemStore((state) => state.systemInfo)
@@ -242,6 +245,58 @@ function Tweaks() {
     await applyNonReversibleTweak(tweak, index)
   }
 
+  const handleApplyRecommended = async () => {
+    const preset = presets[0]
+    const presetTweaks = tweaks.filter((t) => preset.tweaks.includes(t.name))
+    setRecommendedTweaksToApply(presetTweaks)
+    setIsRecommendedModalOpen(true)
+  }
+
+  const applyRecommendedTweaks = async () => {
+    setIsApplyingRecommended(true)
+    setIsRecommendedModalOpen(false)
+
+    const newStates = { ...toggleStates }
+
+    for (const tweak of recommendedTweaksToApply) {
+      const loadingToastId = toast.loading(`Applying tweak: ${tweak.title}`)
+
+      try {
+        newStates[tweak.name] = true
+        setToggleStates({ ...newStates })
+        await saveToggleStates(newStates)
+
+        await invoke({
+          channel: "tweak:apply",
+          payload: tweak.name,
+        })
+
+        if (tweak.restart) {
+          setNeedsRestart(true)
+        }
+
+        toast.update(loadingToastId, {
+          render: `Applied tweak: ${tweak.title}`,
+          type: "success",
+          isLoading: false,
+          autoClose: 3000,
+        })
+      } catch (error) {
+        console.error(`Error applying tweak ${tweak.title}:`, error)
+        log.error(`Error applying tweak ${tweak.title}:`, error)
+
+        toast.update(loadingToastId, {
+          render: `Failed to apply tweak: ${tweak.title}`,
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+        })
+      }
+    }
+
+    setIsApplyingRecommended(false)
+  }
+
   const categories = useMemo(
     () => ["All", ...new Set(tweaks.flatMap((t: any) => t.category || []).filter(Boolean))],
     [tweaks],
@@ -281,6 +336,26 @@ function Tweaks() {
     General: <Wrench className="w-4 h-4 text-blue-500" />,
   }
 
+  const presets = [
+    {
+      name: "Apply Recommended Tweaks",
+      description: "A balanced set of tweaks for everyday use.",
+      tweaks: [
+        "disable-telemetry",
+        "revert-context-menu",
+        "hide-taskview-and-widgets",
+        "set-win32-priority-separation",
+        "disable-copilot",
+        "enable-end-task-right-click",
+        "disable-location-tracking",
+        "disable-lockscreen-tips",
+        "optimize-network-settings",
+        "set-services-to-manual",
+        "wpbt",
+      ],
+    },
+  ]
+
   if (isLoading) {
     return (
       <RootDiv>
@@ -293,6 +368,36 @@ function Tweaks() {
 
   return (
     <>
+      <Modal open={isRecommendedModalOpen} onClose={() => setIsRecommendedModalOpen(false)}>
+        <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-6 shadow-xl max-w-lg w-full mx-4">
+          <h3 className="text-xl font-semibold text-sparkle-text mb-3">Apply Recommended Tweaks</h3>
+          <div className="text-sparkle-text-secondary text-sm leading-6 whitespace-pre-wrap max-h-64 overflow-y-auto custom-scrollbar mb-6">
+            The following recommended tweaks will be applied:
+            <ul className="list-disc list-inside mt-2 space-y-1">
+              {recommendedTweaksToApply.map((tweak) => (
+                <li key={tweak.name}>
+                  <span className="font-medium">{tweak.title}</span>
+                  {tweak.description && (
+                    <span className="text-sparkle-text-muted"> - {tweak.description}</span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="flex justify-end gap-3">
+            <Button
+              variant="secondary"
+              onClick={() => setIsRecommendedModalOpen(false)}
+              disabled={isApplyingRecommended}
+            >
+              Cancel
+            </Button>
+            <Button onClick={applyRecommendedTweaks} disabled={isApplyingRecommended}>
+              {isApplyingRecommended ? "Applying..." : "Apply All"}
+            </Button>
+          </div>
+        </div>
+      </Modal>
       <Modal
         open={isModalOpen}
         onClose={() => {
@@ -388,6 +493,20 @@ function Tweaks() {
                 <p className="text-sm text-sparkle-text-secondary ml-auto mr-2">
                   Showing {sortedTweaks.length} of {tweaks.length} tweaks
                 </p>
+              </div>
+              <div>
+                {presets.length > 0 &&
+                  tweaks.some(
+                    (t) => presets[0].tweaks.includes(t.name) && !toggleStates[t.name],
+                  ) && (
+                    <Button
+                      variant="secondary"
+                      onClick={handleApplyRecommended}
+                      disabled={isApplyingRecommended}
+                    >
+                      Apply Recommended Tweaks
+                    </Button>
+                  )}
               </div>
             </div>
           </div>

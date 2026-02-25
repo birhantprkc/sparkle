@@ -495,18 +495,15 @@ function Tweaks() {
                 </p>
               </div>
               <div>
-                {presets.length > 0 &&
-                  tweaks.some(
-                    (t) => presets[0].tweaks.includes(t.name) && !toggleStates[t.name],
-                  ) && (
-                    <Button
-                      variant="secondary"
-                      onClick={handleApplyRecommended}
-                      disabled={isApplyingRecommended}
-                    >
-                      Apply Recommended Tweaks
-                    </Button>
-                  )}
+                {presets.length > 0 && tweaks.some((t) => presets[0].tweaks.includes(t.name)) && (
+                  <Button
+                    variant="secondary"
+                    onClick={handleApplyRecommended}
+                    disabled={isApplyingRecommended}
+                  >
+                    Apply Recommended Tweaks
+                  </Button>
+                )}
               </div>
             </div>
           </div>

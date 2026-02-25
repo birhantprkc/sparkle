@@ -20,6 +20,7 @@ import useRestartStore from "@/store/restartState"
 import useSystemStore from "@/store/systemInfo"
 import Button from "@/components/ui/button"
 import Toggle from "@/components/ui/Toggle"
+import Checkbox from "@/components/ui/Checkbox"
 import log from "electron-log/renderer"
 import Card from "@/components/ui/Card"
 import { Gpu, Plus, RefreshCw } from "lucide-react"
@@ -39,6 +40,7 @@ function Tweaks() {
   const [selectedTweak, setSelectedTweak] = useState<Tweak | null>(null)
   const [isRecommendedModalOpen, setIsRecommendedModalOpen] = useState(false)
   const [recommendedTweaksToApply, setRecommendedTweaksToApply] = useState<Tweak[]>([])
+  const [selectedRecommendedTweaks, setSelectedRecommendedTweaks] = useState<Set<string>>(new Set())
   const [isApplyingRecommended, setIsApplyingRecommended] = useState(false)
 
   const { setNeedsRestart } = useRestartStore()
@@ -249,6 +251,7 @@ function Tweaks() {
     const preset = presets[0]
     const presetTweaks = tweaks.filter((t) => preset.tweaks.includes(t.name))
     setRecommendedTweaksToApply(presetTweaks)
+    setSelectedRecommendedTweaks(new Set(presetTweaks.map((t) => t.name)))
     setIsRecommendedModalOpen(true)
   }
 
@@ -257,8 +260,11 @@ function Tweaks() {
     setIsRecommendedModalOpen(false)
 
     const newStates = { ...toggleStates }
+    const tweaksToApply = recommendedTweaksToApply.filter((t) =>
+      selectedRecommendedTweaks.has(t.name),
+    )
 
-    for (const tweak of recommendedTweaksToApply) {
+    for (const tweak of tweaksToApply) {
       const loadingToastId = toast.loading(`Applying tweak: ${tweak.title}`)
 
       try {
@@ -369,16 +375,37 @@ function Tweaks() {
   return (
     <>
       <Modal open={isRecommendedModalOpen} onClose={() => setIsRecommendedModalOpen(false)}>
-        <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-6 shadow-xl max-w-lg w-full mx-4">
+        <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-6 max-w-xl w-full mx-4 max-h-2xl">
           <h3 className="text-xl font-semibold text-sparkle-text mb-3">Apply Recommended Tweaks</h3>
           <div className="text-sparkle-text-secondary text-sm leading-6 whitespace-pre-wrap max-h-64 overflow-y-auto custom-scrollbar mb-6">
-            The following recommended tweaks will be applied:
-            <ul className="list-disc list-inside mt-2 space-y-1">
+            Select the tweaks you want to apply:
+            <p className="text-xs text-orange-500 ">
+              Debloating windows is highly recommended. you can do it after you apply the recomended
+              tweaks. its not here because it has a UI
+            </p>
+            <ul className="mt-3 space-y-3">
               {recommendedTweaksToApply.map((tweak) => (
-                <li key={tweak.name}>
-                  <span className="font-medium">{tweak.title}</span>
+                <li
+                  key={tweak.name}
+                  className="flex flex-col rounded-lg border border-sparkle-border p-3 mr-2"
+                >
+                  <label className="flex items-center cursor-pointer">
+                    <Checkbox
+                      checked={selectedRecommendedTweaks.has(tweak.name)}
+                      onChange={(checked) => {
+                        const newSelected = new Set(selectedRecommendedTweaks)
+                        if (checked) newSelected.add(tweak.name)
+                        else newSelected.delete(tweak.name)
+                        setSelectedRecommendedTweaks(newSelected)
+                      }}
+                    />
+                    <h2 className="font-medium text-sparkle-text">{tweak.title}</h2>
+                  </label>
+
                   {tweak.description && (
-                    <span className="text-sparkle-text-muted"> - {tweak.description}</span>
+                    <p className="ml-7 text-sm text-sparkle-text-secondary leading-snug">
+                      {tweak.description}
+                    </p>
                   )}
                 </li>
               ))}
@@ -392,8 +419,13 @@ function Tweaks() {
             >
               Cancel
             </Button>
-            <Button onClick={applyRecommendedTweaks} disabled={isApplyingRecommended}>
-              {isApplyingRecommended ? "Applying..." : "Apply All"}
+            <Button
+              onClick={applyRecommendedTweaks}
+              disabled={isApplyingRecommended || selectedRecommendedTweaks.size === 0}
+            >
+              {isApplyingRecommended
+                ? "Applying..."
+                : `Apply Selected (${selectedRecommendedTweaks.size})`}
             </Button>
           </div>
         </div>
@@ -467,7 +499,7 @@ function Tweaks() {
         </div>
       </Modal>
       <RootDiv>
-        <div className="max-w-[1800px] mx-auto ">
+        <div className="max-w-450 mx-auto ">
           <div className="mb-4">
             <div className="space-y-4">
               <LargeInput
@@ -514,7 +546,7 @@ function Tweaks() {
                 const originalIndex = tweaks.indexOf(tweak)
                 return (
                   <Card key={originalIndex} className=" p-0 h-52">
-                    <div className="p-5 flex flex-col h-[260px]">
+                    <div className="p-5 flex flex-col h-65">
                       <div className="flex items-center justify-between mb-3">
                         {tweak.category && (
                           <div className="flex items-center gap-2 flex-wrap">

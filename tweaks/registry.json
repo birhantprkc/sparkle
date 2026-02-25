@@ -1,5 +1,5 @@
 {
-  "version": "2026-02-17T03:21:41.441Z",
+  "version": "2026-02-25T01:15:18.775Z",
   "tweaks": [
     {
       "id": "24-hour-clock",
@@ -65,6 +65,19 @@
       "reversible": true,
       "docsurl": "https://docs.getsparkle.net/tweaks/disable-background-ms-store-apps",
       "source": "https://github.com/Parcoil/Sparkle/blob/v2/tweaks/disable-background-ms-store-apps/meta.json"
+    },
+    {
+      "id": "consumer-features",
+      "title": "Disable Consumer Features",
+      "description": "Prevents Windows from automatically installing games, third-party apps, or app links from the Microsoft Store.",
+      "category": [
+        "Privacy"
+      ],
+      "recommended": false,
+      "reversible": true,
+      "addedversion": "2.14.1",
+      "docsurl": "https://docs.getsparkle.net/tweaks/disable-consumer-features",
+      "source": "https://github.com/Parcoil/Sparkle/blob/v2/tweaks/disable-consumer-features/meta.json"
     },
     {
       "id": "disable-copilot",
@@ -468,6 +481,19 @@
       "reversible": true,
       "docsurl": "https://docs.getsparkle.net/tweaks/ultimate-performance-plan",
       "source": "https://github.com/Parcoil/Sparkle/blob/v2/tweaks/ultimate-performance-plan/meta.json"
+    },
+    {
+      "id": "wpbt",
+      "title": "Disable Windows Platform Binary Table",
+      "description": "Prevents your computer vendor from executing programs at boot, reducing potential security risks.",
+      "category": [
+        "Privacy"
+      ],
+      "recommended": false,
+      "reversible": true,
+      "addedversion": "2.14.1",
+      "docsurl": "https://docs.getsparkle.net/tweaks/wpbt",
+      "source": "https://github.com/Parcoil/Sparkle/blob/v2/tweaks/wpbt/meta.json"
     }
   ]
 }

@@ -1226,6 +1226,7 @@
     },
     {
       "name": "Chromium",
+      "id": "Hibbiki.Chromium",
       "chocolatey": "chromium",
       "category": "browsers",
       "info": "A free and open source web browser.",
@@ -1283,6 +1284,32 @@
       "info": "A modern terminal emulator for Windows.",
       "link": "https://www.warp.dev/?ref=sparkle",
       "icon": "https://avatars.githubusercontent.com/u/71840468?s=200&v=4"
+    },
+        {
+      "name": "NanaZip",
+      "id": "M2Team.NanaZip",
+      "chocolatey": "nanazip",
+      "category": "utilities",
+      "info": "A free and open source file archiver.",
+      "link": "https://nanazip.org/?ref=sparkle",
+      "icon": "https://nanazip.org/favicon.ico"
+    },
+    {
+      "name": "Fishstrap",
+      "id": "Fishstrap.Fishstrap",
+      "category": "games",
+      "info": "A Modded Roblox client for Windows.",
+      "link": "https://fishstrap.app/?ref=sparkle",
+      "icon": "https://tr.rbxcdn.com/180DAY-474f0d60254aded6fa01c33ec46ab385/420/420/Image/Webp/noFilter"
+    },
+    {
+      "name": "Balena Etcher",
+      "id": "Balena.Etcher",
+      "chocolatey": "balenaetcher",
+      "category": "utilities",
+      "info": "A powerful tool to flash OS images to SD cards and USB drives.",
+      "link": "https://www.balena.io/etcher/?ref=sparkle",
+      "icon": "https://www.balena.io/etcher/static/media/icon.png"
     }
   ]
 }

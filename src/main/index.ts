@@ -1,8 +1,6 @@
 import { app, shell, BrowserWindow, ipcMain } from "electron"
 import path, { join } from "path"
 import { electronApp, optimizer, is } from "@electron-toolkit/utils"
-import * as Sentry from "@sentry/electron/main"
-import { IPCMode } from "@sentry/electron/main"
 import log from "electron-log"
 import "./system"
 import "./powershell"
@@ -17,11 +15,6 @@ import { setupDNSHandlers } from "./dnsHandler"
 import Store from "electron-store"
 import { startDiscordRPC, stopDiscordRPC } from "./rpc"
 import { initAutoUpdater } from "./updates.js"
-
-Sentry.init({
-  dsn: "https://d1e8991c715dd717e6b7b44dbc5c43dd@o4509167771648000.ingest.us.sentry.io/4509167772958720",
-  ipcMode: IPCMode.Both,
-})
 
 console.log = log.log
 console.error = log.error
@@ -159,7 +152,7 @@ function createWindow(): void {
       minWidth: 790,
       center: true,
       frame: false,
-      show: true,
+      show: false,
       autoHideMenuBar: true,
       icon: path.join(__dirname, "../../resources/sparkle2.ico"),
       webPreferences: {
@@ -189,7 +182,7 @@ function createWindow(): void {
 
   mainWindow.once("ready-to-show", () => {
     console.log("[Sparkle]: Window ready to show")
-    // mainWindow!.show()
+    mainWindow!.show()
   })
 
   mainWindow.webContents.on(

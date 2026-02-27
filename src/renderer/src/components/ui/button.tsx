@@ -1,4 +1,3 @@
-import { Button as HeadlessButton } from "@headlessui/react"
 import clsx from "clsx"
 
 type ButtonSize = "sm" | "md" | "lg"
@@ -47,8 +46,7 @@ const Button: React.FC<ButtonProps> = ({
   const disabledClasses = "opacity-50 cursor-not-allowed pointer-events-none"
 
   return (
-    <HeadlessButton
-      as={as}
+    <button
       className={clsx(
         base,
         sizes[size as ButtonSize],
@@ -60,7 +58,7 @@ const Button: React.FC<ButtonProps> = ({
       {...props}
     >
       {children}
-    </HeadlessButton>
+    </button>
   )
 }
 

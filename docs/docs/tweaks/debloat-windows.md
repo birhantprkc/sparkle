@@ -54,30 +54,10 @@ function Test-IsAdmin {
 }
 
 if (-not (Test-IsAdmin)) {
-    Write-Host "Not running as administrator. Requesting elevation..." -ForegroundColor Yellow
-    
-    $scriptPath = $MyInvocation.MyCommand.Path
-    $arguments = "-NoProfile -ExecutionPolicy Bypass -File `"$scriptPath`""
-    
-    foreach ($param in $PSBoundParameters.GetEnumerator()) {
-        if ($param.Key -ne "ScriptChoice" -and $param.Key -ne "AppsToRemove") {
-            $arguments += " -$($param.Key) `"$($param.Value)`""
-        }
-    }
-    
-    if ($ScriptChoice) {
-        $arguments += " -ScriptChoice `"$ScriptChoice`""
-    }
-    if ($AppsToRemove.Count -gt 0) {
-        $arguments += " -AppsToRemove $($AppsToRemove -join ',')"
-    }
-    
-    Write-Host "Launching elevated PowerShell..." -ForegroundColor Yellow
-    Start-Process powershell.exe -ArgumentList $arguments -Verb RunAs
-    Write-Host "Exiting non-admin instance." -ForegroundColor Yellow
-    exit 0
+    Write-Host "[Sparkle Debloat] This script must be run as Administrator." -ForegroundColor Red
+    Read-Host "Press Enter to exit"
+    exit 1
 }
-
 Add-Type -AssemblyName PresentationFramework
 Add-Type -AssemblyName PresentationCore
 Add-Type -AssemblyName WindowsBase
@@ -152,7 +132,8 @@ $appDefinitions = @(
     @{ Package = "TuneInRadio"; FriendlyName = "TuneIn Radio" },
     @{ Package = "king.com.BubbleWitch3Saga"; FriendlyName = "Bubble Witch 3 Saga" },
     @{ Package = "king.com.CandyCrushSaga"; FriendlyName = "Candy Crush Saga" },
-    @{ Package = "king.com.CandyCrushSodaSaga"; FriendlyName = "Candy Crush Soda Saga" }
+    @{ Package = "king.com.CandyCrushSodaSaga"; FriendlyName = "Candy Crush Soda Saga" },
+    @{ Package = "9NBLGGH4QGHW"; FriendlyName = "Microsoft Sticky Notes" }   
 )
 
 $allAppsToRemove = $appDefinitions | ForEach-Object { $_.Package }
@@ -214,7 +195,8 @@ $recommendedApps = @(
     "TuneInRadio",
     "king.com.BubbleWitch3Saga",
     "king.com.CandyCrushSaga",
-    "king.com.CandyCrushSodaSaga"
+    "king.com.CandyCrushSodaSaga",
+    "9NBLGGH4QGHW"
 )
 
 function Get-FriendlyName {

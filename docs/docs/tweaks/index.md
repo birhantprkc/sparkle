@@ -7,12 +7,13 @@ A collection of tweaks to customize and enhance your Windows experience using Sp
 
 _This page is auto-generated._
 
-## All Tweaks (36)
+## All Tweaks (38)
 - [24-hour-clock](24-hour-clock.md)
 - [align-taskbar-left](align-taskbar-left.md)
 - [debloat-windows](debloat-windows.md)
 - [detailed-bsod](detailed-bsod.md)
 - [disable-background-ms-store-apps](disable-background-ms-store-apps.md)
+- [consumer-features](consumer-features.md)
 - [disable-copilot](disable-copilot.md)
 - [disable-core-isolation](disable-core-isolation.md)
 - [disable-defender-rtp](disable-defender-rtp.md)
@@ -44,3 +45,4 @@ _This page is auto-generated._
 - [set-win32-priority-separation](set-win32-priority-separation.md)
 - [show-seconds-in-taskbar-clock](show-seconds-in-taskbar-clock.md)
 - [ultimate-performance-plan](ultimate-performance-plan.md)
+- [wpbt](wpbt.md)

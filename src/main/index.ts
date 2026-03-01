@@ -8,7 +8,6 @@ import "./rpc"
 import "./tweakHandler"
 import "./dnsHandler"
 import "./backup"
-import { executePowerShell } from "./powershell"
 import { createTray } from "./tray"
 import { setupTweaksHandlers } from "./tweakHandler"
 import { setupDNSHandlers } from "./dnsHandler"
@@ -22,31 +21,6 @@ console.warn = log.warn
 
 export const logo = "[Sparkle]:"
 log.initialize()
-
-async function Defender(): Promise<void> {
-  const Apppath = path.dirname(process.execPath)
-  if (app.isPackaged) {
-    const result = await executePowerShell(null, {
-      script: `
-        if (Get-Command Add-MpPreference -ErrorAction SilentlyContinue) {
-          Add-MpPreference -ExclusionPath '${Apppath}'
-          Write-Output "Success"
-        } else {
-          Write-Output "Skipped"
-        }
-      `,
-      name: "Add-MpPreference",
-    })
-
-    if (result.output && result.output.includes("Skipped")) {
-      console.log(logo, "Skipped Windows Defender exclusion (Defender not found)")
-    } else {
-      console.log(logo, "Added Sparkle to Windows Defender Exclusions")
-    }
-  } else {
-    console.log(logo, "Running in development mode, skipping Windows Defender exclusion")
-  }
-}
 
 const store = new Store()
 
@@ -217,7 +191,6 @@ app
       }, 50)
     }
     setTimeout(() => {
-      void Defender()
       setupTweaksHandlers()
       setupDNSHandlers()
       console.log("[Sparkle]: Handlers setup complete")

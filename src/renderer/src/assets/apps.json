@@ -1285,7 +1285,7 @@
       "link": "https://www.warp.dev/?ref=sparkle",
       "icon": "https://avatars.githubusercontent.com/u/71840468?s=200&v=4"
     },
-        {
+    {
       "name": "NanaZip",
       "id": "M2Team.NanaZip",
       "chocolatey": "nanazip",
@@ -1310,6 +1310,15 @@
       "info": "A powerful tool to flash OS images to SD cards and USB drives.",
       "link": "https://www.balena.io/etcher/?ref=sparkle",
       "icon": "https://www.balena.io/etcher/static/media/icon.png"
+    },
+    {
+      "name": "Bun",
+      "id": "Oven-sh.Bun",
+      "chocolatey": "bun",
+      "category": "development",
+      "info": "A fast all-in-one JavaScript runtime.",
+      "link": "https://bun.sh/?ref=sparkle",
+      "icon": "https://bun.sh/logo.svg"
     }
   ]
 }

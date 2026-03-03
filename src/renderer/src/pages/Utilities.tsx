@@ -42,7 +42,7 @@ type Utility = {
 
 const utilities: Utility[] = [
   {
-    name: "Disk Cleaner",
+    name: "Disk Cleaner (cleanmgr)",
     description: "Free up space by removing unnecessary files.",
     state: true,
     icon: <HardDrive />,
@@ -204,7 +204,7 @@ if ($ultimatePlanGUID) {
     },
   },
   {
-    name: "Flush DNS Cache",
+    name: "Flush DNS Cache (ipconfig /flushdns)",
     description: "Fix connection issues by clearing DNS resolver cache.",
     state: false,
     icon: <GlobeIcon />,
@@ -216,7 +216,7 @@ Write-Output "DNS cache flushed."
 `,
   },
   {
-    name: "Release IP",
+    name: "Release IP (ipconfig /release)",
     description: "Release your current IP address and disconnect from the network temporarily.",
     state: false,
     icon: <NetworkIcon />,
@@ -228,7 +228,7 @@ Write-Output "IP address released. You are temporarily disconnected from the net
 `,
   },
   {
-    name: "Renew IP",
+    name: "Renew IP (ipconfig /renew)",
     description: "Request a new IP address from the DHCP server.",
     state: false,
     icon: <NetworkIcon />,
@@ -253,7 +253,7 @@ Write-Output "Bluetooth services restarted."
 `,
   },
   {
-    name: "System File Checker",
+    name: "System File Checker (sfc /scannow)",
     description: "Repair corrupted system files to improve stability.",
     state: false,
     icon: <Wrench />,
@@ -265,7 +265,7 @@ Start-Process powershell -ArgumentList "-NoExit", "-Command", "sfc /scannow; Wri
 `,
   },
   {
-    name: "DISM Health Restore",
+    name: "DISM Health Restore (dism /restorehealth)",
     description: "Use DISM to repair the Windows image and fix system issues.",
     state: false,
     icon: <Star />,
@@ -277,7 +277,7 @@ Start-Process powershell -ArgumentList "-NoExit", "-Command", "dism /online /cle
 `,
   },
   {
-    name: "Check Disk",
+    name: "Check Disk (chkdsk)",
     description: "Check and fix disk errors on your system.",
     state: false,
     icon: <HardDrive />,
@@ -302,7 +302,7 @@ Write-Output "Audio service restarted."
 `,
   },
   {
-    name: "Network Reset",
+    name: "Network Reset (netsh)",
     description: "Reset your network stack to fix connectivity problems.",
     state: false,
     icon: <WifiIcon />,
@@ -546,7 +546,7 @@ function Utilities() {
       </Modal>
 
       <RootDiv>
-        <div className="flex gap-4 flex-col mb-10">
+        <div className="flex gap-4 flex-col mb-10 mr-4">
           <LargeInput
             placeholder="Search utilities..."
             className="w-full"

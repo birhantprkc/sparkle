@@ -214,7 +214,7 @@ function Home() {
             iconBgColor="bg-green-500/10"
             iconColor="text-green-500"
             title="Tweaks"
-            subtitle="Tweaks Status"
+            subtitle="Applied Tweaks"
             items={[
               { label: "Available Tweaks", value: `${tweakInfo?.length || 0} Tweaks` },
               { label: "Active Tweaks", value: `${activeTweaks.length || 0} Active` },
@@ -228,12 +228,12 @@ function Home() {
           <div>
             <h1 className="font-medium text-sparkle-text">PC Running slow?</h1>
             <p className="text-sparkle-text-secondary">
-              Try Using Tweaks to improve system performance
+              Try Using Tweaks to improve system performance and privacy.
             </p>
           </div>
           <div className="ml-auto">
             <Button variant="outline" className="flex items-center gap-2" onClick={goToTweaks}>
-              <Zap size={18} /> Tweaks
+              <Zap size={18} /> Visit Tweaks
             </Button>
           </div>
         </Card>

@@ -158,8 +158,7 @@ $recommendedApps = @(
     "TuneInRadio",
     "king.com.BubbleWitch3Saga",
     "king.com.CandyCrushSaga",
-    "king.com.CandyCrushSodaSaga",
-    "9NBLGGH4QGHW"
+    "king.com.CandyCrushSodaSaga"
 )
 
 function Get-FriendlyName {

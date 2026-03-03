@@ -508,7 +508,7 @@ function Apps() {
             {Object.entries(appsByCategory).map(([category, apps]) => (
               <div key={category} className="space-y-4">
                 <h2 className="text-2xl text-sparkle-primary font-bold capitalize">{category}</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-4 mr-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-4 mr-4">
                   {apps.map((app) => {
                     const appId = getAppIdForSource(app)
                     return (

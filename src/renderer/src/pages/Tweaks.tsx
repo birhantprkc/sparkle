@@ -553,8 +553,8 @@ function Tweaks() {
                             <>
                               {tweak.warning && (
                                 <Tooltip content={tweak.warning} delay={0.3} side="right">
-                                  <div className="p-1.5 bg-red-900/50 rounded-lg hover:bg-red-900/80 transition-colors">
-                                    <AlertTriangle className="w-4 h-4 text-red-400" />
+                                  <div className="p-1.5 dark:bg-red-900/50 bg-red-300 rounded-lg hover:bg-red-800 dark:hover:bg-red-900/80 transition-colors">
+                                    <AlertTriangle className="w-4 h-4 dark:text-red-400 text-red-600 hover:text-white" />
                                   </div>
                                 </Tooltip>
                               )}

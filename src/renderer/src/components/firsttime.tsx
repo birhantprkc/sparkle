@@ -54,8 +54,8 @@ export default function FirstTime(): React.ReactElement {
   }
 
   return (
-    <Modal open={open} onClose={() => setOpen(false)}>
-      <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-8 shadow-2xl max-w-lg w-full mx-4 flex flex-col items-center text-center">
+    <Modal open={open} onClose={undefined}>
+      <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-8 shadow-2xl max-w-2xl w-full mx-4 flex flex-col items-center text-center">
         <h1 className="text-3xl font-bold text-sparkle-text mb-4">Welcome to Sparkle</h1>
 
         <p className="text-sparkle-text-secondary mb-6">

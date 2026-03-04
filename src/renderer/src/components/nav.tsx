@@ -126,9 +126,9 @@ function Nav({ collapsed }) {
         >
           <span
             className={`flex text-center items-center gap-2 text-red-500 ${collapsed ? "justify-center" : ""}`}
-            title="Restart Windows"
+            title="Restart Windows to apply some changes"
           >
-            <RefreshCw size={16} /> {!collapsed && "Restart Now"}
+            <RefreshCw size={16} /> {!collapsed && "Restart Required"}
           </span>
         </button>
       )}

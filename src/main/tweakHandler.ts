@@ -16,9 +16,7 @@ console.warn = log.warn
 const userDataPath = app.getPath("userData")
 const tweaksStatePath = path.join(userDataPath, "tweakStates.json")
 const isDev = !app.isPackaged
-const tweaksDir = isDev
-  ? path.join(process.cwd(), "tweaks")
-  : path.join(process.resourcesPath, "tweaks")
+const tweaksDir = isDev ? path.join(process.cwd(), "tweaks") : path.join(app.getAppPath(), "tweaks")
 
 interface Tweak {
   name: string

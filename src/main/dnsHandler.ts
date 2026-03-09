@@ -1,75 +1,73 @@
-import { ipcMain, app, IpcMainInvokeEvent } from "electron"
+import { ipcMain, IpcMainInvokeEvent } from "electron"
 import { executePowerShell } from "./powershell"
-import path from "path"
-import fs from "fs/promises"
+import { exec } from "child_process"
 import log from "electron-log"
 
 console.log = log.log
 console.error = log.error
 console.warn = log.warn
 
-const ensureScriptsAvailable = async (): Promise<void> => {
-  const userDataScriptsDir = path.join(app.getPath("userData"), "scripts", "dns-changer")
-
-  try {
-    await fs.access(userDataScriptsDir)
-    return
-  } catch (error) {
-    console.log("Copying DNS scripts to user data directory...")
-
-    const sourcePaths = [
-      path.join(process.cwd(), "scripts", "dns-changer"),
-      path.join(process.cwd(), "resources", "tweaks", "dns-changer"),
-      path.join(process.resourcesPath, "scripts", "dns-changer"),
-      path.join(process.resourcesPath, "tweaks", "dns-changer"),
-    ]
-
-    for (const sourcePath of sourcePaths) {
-      try {
-        await fs.access(sourcePath)
-
-        await fs.mkdir(userDataScriptsDir, { recursive: true })
-
-        const files = ["apply.ps1", "unapply.ps1"]
-        for (const file of files) {
-          const sourceFile = path.join(sourcePath, file)
-          const destFile = path.join(userDataScriptsDir, file)
-
-          try {
-            await fs.copyFile(sourceFile, destFile)
-            console.log(`Copied ${file} to user data`)
-          } catch (copyError: any) {
-            console.warn(`Failed to copy ${file}:`, copyError.message)
-          }
-        }
-        break
-      } catch (error) {}
-    }
-  }
+interface DNSConfig {
+  primary: string
+  secondary: string
+  name: string
 }
 
-const getScriptPath = async (scriptName: string): Promise<string> => {
-  await ensureScriptsAvailable()
+const DNS_CONFIGS: Record<string, DNSConfig> = {
+  cloudflare: { primary: "1.1.1.1", secondary: "1.0.0.1", name: "Cloudflare" },
+  google: { primary: "8.8.8.8", secondary: "8.8.4.4", name: "Google" },
+  opendns: { primary: "208.67.222.222", secondary: "208.67.220.220", name: "OpenDNS" },
+  quad9: { primary: "9.9.9.9", secondary: "149.112.112.112", name: "Quad9" },
+  adguard: { primary: "94.140.14.14", secondary: "94.140.15.15", name: "Adguard DN" },
+  automatic: { primary: "", secondary: "", name: "Automatic (DHCP)" },
+}
 
-  const possiblePaths = [
-    path.join(process.cwd(), "scripts", "dns-changer", scriptName),
-    path.join(process.cwd(), "resources", "tweaks", "dns-changer", scriptName),
-    path.join(process.resourcesPath, "scripts", "dns-changer", scriptName),
-    path.join(process.resourcesPath, "tweaks", "dns-changer", scriptName),
-    path.join(app.getPath("userData"), "scripts", "dns-changer", scriptName),
-  ]
+const getActiveAdapters = async (): Promise<{ name: string; ifIndex: number }[]> => {
+  return new Promise((resolve) => {
+    exec(
+      `Get-NetAdapter | Where-Object { $_.Status -eq "Up" } | ConvertTo-Json -Compress`,
+      { shell: "powershell.exe" },
+      (error, stdout) => {
+        if (error || !stdout.trim()) {
+          resolve([])
+          return
+        }
+        try {
+          const parsed = JSON.parse(stdout)
+          const adapters = Array.isArray(parsed) ? parsed : [parsed]
+          resolve(
+            adapters.map((a: any) => ({
+              name: a.Name,
+              ifIndex: a.ifIndex,
+            })),
+          )
+        } catch {
+          resolve([])
+        }
+      },
+    )
+  })
+}
 
-  for (const scriptPath of possiblePaths) {
-    try {
-      await fs.access(scriptPath)
-      console.log(`Found DNS script at: ${scriptPath}`)
-      return scriptPath
-    } catch (error) {}
-  }
+const setDNSServers = async (ifIndex: number, dnsServers: string[] | null): Promise<boolean> => {
+  return new Promise((resolve) => {
+    let cmd: string
+    if (dnsServers === null) {
+      cmd = `Set-DnsClientServerAddress -InterfaceIndex ${ifIndex} -ResetServerAddresses`
+    } else {
+      const servers = dnsServers.map((s) => `'${s}'`).join(",")
+      cmd = `Set-DnsClientServerAddress -InterfaceIndex ${ifIndex} -ServerAddresses @(${servers})`
+    }
+    exec(cmd, { shell: "powershell.exe" }, (error) => {
+      resolve(!error)
+    })
+  })
+}
 
-  throw new Error(
-    `DNS script not found: ${scriptName}. Searched paths: ${possiblePaths.join(", ")}`,
-  )
+const flushDNS = async (): Promise<void> => {
+  return new Promise((resolve) => {
+    exec("ipconfig /flushdns", { shell: "powershell.exe" }, () => resolve())
+  })
 }
 
 interface DNSResult {
@@ -132,21 +130,59 @@ export const setupDNSHandlers = (): void => {
     async (_event: IpcMainInvokeEvent, props: ApplyDNSProps): Promise<any> => {
       try {
         const { dnsType, primaryDNS = "", secondaryDNS = "" } = props
-        const dnsScriptPath = await getScriptPath("apply.ps1")
+        const normalizedType = dnsType.toLowerCase()
 
-        let script
-        if (dnsType === "custom") {
-          script = `
-          . "${dnsScriptPath}" -DNSType "custom" -PrimaryDNS "${primaryDNS}" -SecondaryDNS "${secondaryDNS}"
-        `
-        } else {
-          script = `
-          . "${dnsScriptPath}" -DNSType "${dnsType}"
-        `
+        if (normalizedType !== "custom" && !DNS_CONFIGS[normalizedType]) {
+          return {
+            success: false,
+            error:
+              "Invalid DNS type. Available options: cloudflare, google, opendns, quad9, adguard, automatic, custom",
+          }
         }
 
-        const result = await executePowerShell(null, { script, name: "Apply-DNS" })
-        return result
+        let config: DNSConfig
+        if (normalizedType === "custom") {
+          if (!primaryDNS) {
+            return { success: false, error: "Primary DNS is required for custom DNS" }
+          }
+          config = { primary: primaryDNS, secondary: secondaryDNS, name: "Custom" }
+        } else {
+          config = DNS_CONFIGS[normalizedType]
+        }
+
+        const adapters = await getActiveAdapters()
+        if (adapters.length === 0) {
+          return { success: false, error: "No active network adapters found" }
+        }
+
+        const results: string[] = []
+        for (const adapter of adapters) {
+          let dnsServers: string[] | null
+          if (normalizedType === "automatic" || !config.primary) {
+            dnsServers = null
+          } else {
+            dnsServers = [config.primary]
+            if (config.secondary) dnsServers.push(config.secondary)
+          }
+
+          const success = await setDNSServers(adapter.ifIndex, dnsServers)
+          if (success) {
+            if (dnsServers === null) {
+              results.push(`Set ${adapter.name} to automatic DNS (DHCP)`)
+            } else {
+              results.push(`Set ${adapter.name} to ${config.name} DNS: ${dnsServers.join(", ")}`)
+            }
+          } else {
+            results.push(`Error configuring DNS for ${adapter.name}`)
+          }
+        }
+
+        await flushDNS()
+
+        return {
+          success: true,
+          output: results.join("\n") + "\nDNS configuration completed successfully!",
+        }
       } catch (error: any) {
         return { success: false, error: error.message }
       }
@@ -155,12 +191,27 @@ export const setupDNSHandlers = (): void => {
 
   ipcMain.handle("dns:reset", async (): Promise<any> => {
     try {
-      const dnsScriptPath = await getScriptPath("unapply.ps1")
-      const script = `
-        . "${dnsScriptPath}"
-      `
-      const result = await executePowerShell(null, { script, name: "Reset-DNS" })
-      return result
+      const adapters = await getActiveAdapters()
+      if (adapters.length === 0) {
+        return { success: false, error: "No active network adapters found" }
+      }
+
+      const results: string[] = []
+      for (const adapter of adapters) {
+        const success = await setDNSServers(adapter.ifIndex, null)
+        if (success) {
+          results.push(`Reset ${adapter.name} to automatic DNS (DHCP)`)
+        } else {
+          results.push(`Error resetting DNS for ${adapter.name}`)
+        }
+      }
+
+      await flushDNS()
+
+      return {
+        success: true,
+        output: results.join("\n") + "\nDNS settings reverted to automatic successfully!",
+      }
     } catch (error: any) {
       return { success: false, error: error.message }
     }

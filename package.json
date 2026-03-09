@@ -77,17 +77,6 @@
           "*.nip",
           "*.pow"
         ]
-      },
-      {
-        "from": "tweaks",
-        "to": "tweaks"
-      },
-      {
-        "from": "scripts",
-        "to": "scripts",
-        "filter": [
-          "**/*"
-        ]
       }
     ],
     "appId": "com.parcoil.sparkle",
@@ -110,7 +99,6 @@
       "!get.ps1",
       "!license",
       "!trusted-dependencies-scripts.json",
-      "!scripts/**",
       "!postcss.config.js",
       "!tsconfig.json",
       "!tsconfig.node.json",
@@ -119,7 +107,6 @@
       "!jsconfig.json",
       "!LICENSE",
       "!chocolatey/**",
-      "!tweaks/**",
       "!node_modules/@headlessui/**",
       "!node_modules/@lucide/**",
       "!node_modules/lucide-react/**",

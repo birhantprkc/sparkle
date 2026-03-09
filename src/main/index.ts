@@ -4,7 +4,7 @@ import { electronApp, optimizer, is } from "@electron-toolkit/utils"
 import log from "electron-log"
 import "./system"
 import "./powershell"
-import "./rpc"
+
 import "./tweakHandler"
 import "./dnsHandler"
 import "./backup"
@@ -12,7 +12,7 @@ import { createTray } from "./tray"
 import { setupTweaksHandlers } from "./tweakHandler"
 import { setupDNSHandlers } from "./dnsHandler"
 import Store from "electron-store"
-import { startDiscordRPC, stopDiscordRPC } from "./rpc"
+
 import { initAutoUpdater } from "./updates.js"
 
 console.log = log.log
@@ -47,51 +47,6 @@ ipcMain.handle("tray:set", (_event: Electron.IpcMainInvokeEvent, value: boolean)
     }
   }
   return store.get("showTray")
-})
-
-const initDiscordRPC = (): void => {
-  if (store.get("discord-rpc") === undefined) {
-    store.set("discord-rpc", true)
-    console.log("(main.js) ", logo, "Starting Discord RPC")
-    startDiscordRPC().catch((err: Error) => {
-      console.warn("(main.js) ", "Failed to initialize Discord RPC:", err.message)
-    })
-  } else if (store.get("discord-rpc") === true) {
-    console.log("(main.js) ", logo, "Starting Discord RPC (from settings)")
-    startDiscordRPC().catch((err: Error) => {
-      console.warn("(main.js) ", "Failed to initialize Discord RPC:", err.message)
-    })
-  }
-}
-
-ipcMain.handle(
-  "discord-rpc:toggle",
-  async (_event: Electron.IpcMainInvokeEvent, value: boolean) => {
-    try {
-      if (value) {
-        store.set("discord-rpc", true)
-        console.log(logo, "Starting Discord RPC")
-        startDiscordRPC().catch((err: Error) => {
-          console.warn("(main.js) ", "Failed to start Discord RPC:", err.message)
-        })
-      } else {
-        store.set("discord-rpc", false)
-        console.log(logo, "Stopping Discord RPC")
-        stopDiscordRPC().catch(() => {})
-      }
-      return { success: true, enabled: store.get("discord-rpc") }
-    } catch (error: any) {
-      console.error(logo, "Error toggling Discord RPC:", error)
-      return {
-        success: false,
-        error: error.message,
-        enabled: store.get("discord-rpc"),
-      }
-    }
-  },
-)
-ipcMain.handle("discord-rpc:get", () => {
-  return store.get("discord-rpc")
 })
 
 const gotTheLock = app.requestSingleInstanceLock()
@@ -225,8 +180,6 @@ app
         }
       }
     })
-
-    initDiscordRPC()
 
     app.on("activate", function () {
       if (BrowserWindow.getAllWindows().length === 0) createWindow()

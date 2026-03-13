@@ -1,5 +1,5 @@
 {
-  "version": "2026-02-27T03:15:57.767Z",
+  "version": "2026-03-13T22:19:25.019Z",
   "tweaks": [
     {
       "id": "24-hour-clock",
@@ -204,6 +204,19 @@
       "reversible": true,
       "docsurl": "https://docs.getsparkle.net/tweaks/disable-mouse-acceleration",
       "source": "https://github.com/Parcoil/Sparkle/blob/v2/tweaks/disable-mouse-acceleration/meta.json"
+    },
+    {
+      "id": "disable-windows-recall",
+      "title": "Disable Windows Recall",
+      "description": "Disables the Windows Recall feature for better privacy.",
+      "category": [
+        "Privacy"
+      ],
+      "recommended": false,
+      "reversible": true,
+      "addedversion": "2.14.2",
+      "docsurl": "https://docs.getsparkle.net/tweaks/disable-recall",
+      "source": "https://github.com/Parcoil/Sparkle/blob/v2/tweaks/disable-recall/meta.json"
     },
     {
       "id": "disable-telemetry",

@@ -1319,6 +1319,23 @@
       "info": "A fast all-in-one JavaScript runtime.",
       "link": "https://bun.sh/?ref=sparkle",
       "icon": "https://bun.sh/logo.svg"
+    },
+    {
+      "name": "Rainmeter",
+      "id": "Rainmeter.Rainmeter",
+      "chocolatey": "rainmeter",
+      "info": "A powerful desktop customization tool.",
+      "link": "https://www.rainmeter.net/?ref=sparkle",
+      "icon": "https://www.rainmeter.net/favicon.ico"
+    },
+    {
+      "name": "Geek Uninstaller",
+      "id": "GeekUninstaller.GeekUninstaller",
+      "chocolatey": "geekuninstaller",
+      "category": "utilities",
+      "info": "A powerful uninstaller for Windows.",
+      "link": "https://www.geekuninstaller.com/?ref=sparkle",
+      "icon": "https://www.geekuninstaller.com/favicon.ico"
     }
   ]
 }

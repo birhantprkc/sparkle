@@ -1,11 +1,26 @@
 import fs from "fs/promises"
 import path from "path"
 import { execSync } from "child_process"
+import readline from "readline"
 
 const root = process.cwd()
 const tweaksDir = path.join(root, "tweaks")
 const registryPath = path.join(tweaksDir, "registry.json")
 const registryScriptsPath = path.join(tweaksDir, "registry-scripts.json")
+const distDir = path.join(root, "dist")
+
+function askQuestion(question) {
+  return new Promise((resolve) => {
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    })
+    rl.question(question, (answer) => {
+      rl.close()
+      resolve(answer.toLowerCase())
+    })
+  })
+}
 
 async function buildRegistry() {
   const folders = await fs.readdir(tweaksDir)
@@ -80,6 +95,30 @@ async function buildRegistry() {
   console.log(`✅ registry-scripts.json created at ${registryScriptsPath}`)
 }
 
+async function getSha256(filePath) {
+  const hash = await crypto.subtle.digest("SHA-256", await fs.readFile(filePath))
+  return Array.from(new Uint8Array(hash))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("")
+}
+
+async function findAndPrintHashes() {
+  console.log("\n📦 Calculating checksums...")
+  try {
+    const files = await fs.readdir(distDir)
+    for (const file of files) {
+      const ext = path.extname(file).toLowerCase()
+      if (ext === ".exe" || ext === ".zip") {
+        const filePath = path.join(distDir, file)
+        const sha256 = await getSha256(filePath)
+        console.log(`   ${file}: ${sha256}`)
+      }
+    }
+  } catch (e) {
+    console.warn(`⚠️ Could not calculate hashes: ${e.message}`)
+  }
+}
+
 function buildElectron() {
   console.log("🚀 Building Electron app...")
   execSync("npm run build:vite && electron-builder", { stdio: "inherit" })
@@ -90,6 +129,16 @@ const shouldBuildRegistry = args.includes("--registry") || args.length === 0
 const shouldBuildApp = args.includes("--build") || args.length === 0
 
 ;(async () => {
-  if (shouldBuildRegistry) await buildRegistry()
-  if (shouldBuildApp) buildElectron()
+  if (shouldBuildRegistry) {
+    const answer = await askQuestion("Do you want to update the registry files? (y/N): ")
+    if (answer === "y" || answer === "yes") {
+      await buildRegistry()
+    } else {
+      console.log("⏭️  Skipping registry update")
+    }
+  }
+  if (shouldBuildApp) {
+    buildElectron()
+    await findAndPrintHashes()
+  }
 })()

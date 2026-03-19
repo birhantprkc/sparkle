@@ -59,7 +59,7 @@ function Apps() {
   const [chocolateyChecking, setChocolateyChecking] = useState<boolean>(false)
   const [chocolateyInstalling, setChocolateyInstalling] = useState<boolean>(false)
 
-  const { addApp, apps: installingApps } = useAppInstallStore()
+  const { addApp, apps: installingApps, setAction } = useAppInstallStore()
 
   const router = useNavigate()
 
@@ -226,6 +226,9 @@ function Apps() {
 
   const handleAppAction = async (type: string, appsToUse = selectedApps) => {
     if (appsToUse.length === 0) return
+
+    const actionType = type as "install" | "uninstall"
+    setAction(actionType)
 
     appsToUse.forEach((appId) => {
       const app = appsList.find((a) => getAppIdForSource(a) === appId)

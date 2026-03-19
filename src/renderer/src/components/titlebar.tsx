@@ -13,7 +13,8 @@ function TitleBar({
   onToggleSidebar,
   sidebarCollapsed: _sidebarCollapsed,
 }: TitleBarProps): React.ReactElement {
-  const { apps } = useAppInstallStore()
+  const { apps, action } = useAppInstallStore()
+  const actionText = action === "uninstall" ? "Uninstalling" : "Installing"
 
   return (
     <div
@@ -38,7 +39,9 @@ function TitleBar({
         {apps.length > 0 && (
           <Card key={apps.length} className="p-2 text-xs flex items-center gap-2">
             <Loader2 className="animate-spin text-xs w-4 h-4" />
-            {apps.length === 1 ? `Installing ${apps[0].name}` : `Installing ${apps.length} apps`}
+            {apps.length === 1
+              ? `${actionText} ${apps[0].name}`
+              : `${actionText} ${apps.length} apps`}
           </Card>
         )}
       </div>

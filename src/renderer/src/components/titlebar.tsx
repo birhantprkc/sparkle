@@ -1,6 +1,8 @@
-import { Menu, Minus, Square, X } from "lucide-react"
+import { Loader2, Menu, Minus, Square, X } from "lucide-react"
 import { close, minimize, toggleMaximize } from "../lib/electron"
 import sparkleLogo from "../../../../resources/sparklelogo.png"
+import Card from "./ui/Card"
+import useAppInstallStore from "@/store/appInstallStore"
 
 interface TitleBarProps {
   onToggleSidebar: () => void
@@ -11,6 +13,8 @@ function TitleBar({
   onToggleSidebar,
   sidebarCollapsed: _sidebarCollapsed,
 }: TitleBarProps): React.ReactElement {
+  const { apps } = useAppInstallStore()
+
   return (
     <div
       style={{ WebkitAppRegion: "drag" } as any}
@@ -30,7 +34,14 @@ function TitleBar({
           Beta
         </div>
       </div>
-
+      <div>
+        {apps.length > 0 && (
+          <Card key={apps.length} className="p-2 text-xs flex items-center gap-2">
+            <Loader2 className="animate-spin text-xs w-4 h-4" />
+            {apps.length === 1 ? `Installing ${apps[0].name}` : `Installing ${apps.length} apps`}
+          </Card>
+        )}
+      </div>
       <div className="flex" style={{ WebkitAppRegion: "no-drag" } as any}>
         <button
           onClick={minimize}

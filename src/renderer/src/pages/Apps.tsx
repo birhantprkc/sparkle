@@ -17,6 +17,7 @@ import { Upload } from "lucide-react"
 import Card from "@/components/ui/Card"
 import { LargeInput } from "@/components/ui/input"
 import { Dropdown } from "@/components/ui/dropdown"
+import useAppInstallStore from "@/store/appInstallStore"
 import logo from "../../../../resources/sparklelogo.png"
 
 interface AppData {
@@ -43,10 +44,6 @@ interface InvokeResult {
 function Apps() {
   const [search, setSearch] = useState("")
   const [selectedApps, setSelectedApps] = useState<string[]>([])
-  const [loading, setLoading] = useState("")
-  const [currentApp, setCurrentApp] = useState("")
-  const [totalApps, setTotalApps] = useState(0)
-  const [currentIndex, setCurrentIndex] = useState(0)
   const [importModalOpen, setImportModalOpen] = useState(false)
   const [importedApps, setImportedApps] = useState<string[]>([])
   const [selectedImportedApps, setSelectedImportedApps] = useState<string[]>([])
@@ -61,6 +58,8 @@ function Apps() {
   const [chocolateyInstalled, setChocolateyInstalled] = useState<boolean>(true)
   const [chocolateyChecking, setChocolateyChecking] = useState<boolean>(false)
   const [chocolateyInstalling, setChocolateyInstalling] = useState<boolean>(false)
+
+  const { addApp, apps: installingApps } = useAppInstallStore()
 
   const router = useNavigate()
 
@@ -216,36 +215,6 @@ function Apps() {
     loadApps()
     checkWinget()
     checkChocolatey()
-
-    const listeners = {
-      "install-progress": (_event: unknown, message: string) => {
-        console.log(message)
-        setCurrentApp(message)
-        setCurrentIndex((prev) => prev + 1)
-      },
-      "install-complete": () => {
-        setLoading("")
-        setCurrentApp("")
-        setCurrentIndex(0)
-        setTotalApps(0)
-        toast.success("Operation completed successfully!")
-      },
-      "install-error": () => {
-        setLoading("")
-        setCurrentApp("")
-        toast.error("There was an error during the operation. Please try again.")
-      },
-    }
-
-    Object.entries(listeners).forEach(([channel, listener]) => {
-      window.electron.ipcRenderer.on(channel, listener)
-    })
-
-    return () => {
-      Object.keys(listeners).forEach((channel) => {
-        window.electron.ipcRenderer.removeAllListeners(channel)
-      })
-    }
   }, [])
 
   useEffect(() => {
@@ -256,12 +225,14 @@ function Apps() {
   }, [source])
 
   const handleAppAction = async (type: string, appsToUse = selectedApps) => {
-    const actionVerb = type === "install" ? "Installing" : "Uninstalling"
-    setLoading(type)
+    if (appsToUse.length === 0) return
+
+    appsToUse.forEach((appId) => {
+      const app = appsList.find((a) => getAppIdForSource(a) === appId)
+      addApp(appId, app?.name || appId)
+    })
 
     try {
-      if (appsToUse.length === 0) return
-
       invoke({
         channel: "handle-apps",
         payload: {
@@ -270,12 +241,9 @@ function Apps() {
           source: source,
         },
       })
-
-      setTotalApps(appsToUse.length)
-      setCurrentIndex(0)
     } catch (error) {
-      console.error(`Error ${actionVerb.toLowerCase()} apps:`, error)
-      log.error(`Error ${actionVerb.toLowerCase()} apps:`, error)
+      console.error(`Error ${type === "install" ? "installing" : "uninstalling"} apps:`, error)
+      log.error(`Error ${type === "install" ? "installing" : "uninstalling"} apps:`, error)
     }
   }
 
@@ -331,25 +299,6 @@ function Apps() {
             >
               Install Selected
             </Button>
-          </div>
-        </div>
-      </Modal>
-
-      <Modal open={!!loading} onClose={() => {}}>
-        <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-6 shadow-xl">
-          <div className="flex items-center gap-4">
-            <div className="relative">
-              <div className="w-10 h-10 border-4 rounded-full animate-spin border-t-sparkle-primary border-sparkle-accent"></div>
-            </div>
-            <div>
-              <h3 className="text-lg font-medium text-sparkle-text">
-                {loading === "install" ? "Installing" : "Uninstalling"} {currentApp || "Apps"}
-                <p className="text-sm text-sparkle-text-secondary  mt-1 mb-1">
-                  {totalApps > 0 && ` (${currentIndex} of ${totalApps})`}
-                </p>
-              </h3>
-              <p className="text-sm text-sparkle-text-secondary">This may take a few moments</p>
-            </div>
           </div>
         </div>
       </Modal>
@@ -435,7 +384,7 @@ function Apps() {
         <div className="flex gap-3 mt-5 w-auto ml-1 mr-1">
           <Button
             className="text-sparkle-text flex gap-2"
-            disabled={selectedApps.length === 0 || loading !== ""}
+            disabled={selectedApps.length === 0 || installingApps.length > 0}
             onClick={() => handleAppAction("install")}
           >
             <Download className="w-5" />
@@ -444,7 +393,7 @@ function Apps() {
           <Button
             className="flex gap-2"
             variant="danger"
-            disabled={selectedApps.length === 0 || loading !== ""}
+            disabled={selectedApps.length === 0 || installingApps.length > 0}
             onClick={() => handleAppAction("uninstall")}
           >
             <Trash className="w-5" />

@@ -14,12 +14,42 @@ import Settings from "./pages/Settings"
 import Backup from "./pages/Backup"
 import FirstTime from "./components/firsttime"
 import UpdateManager from "./components/updatemanager"
+import useAppInstallStore from "./store/appInstallStore"
+import { toast } from "react-toastify"
 
 function App() {
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "system")
   const [sidebarCollapsed, setSidebarCollapsed] = useState(
     localStorage.getItem("sidebarCollapsed") === "true",
   )
+  const { setAppStatus, clearApps } = useAppInstallStore()
+
+  useEffect(() => {
+    const listeners = {
+      "install-progress": (_event: unknown, message: string) => {
+        setAppStatus(message, "installing")
+      },
+      "install-complete": () => {
+        clearApps()
+        toast.success("Operation completed successfully!")
+      },
+      "install-error": () => {
+        clearApps()
+        toast.error("There was an error during the operation. Please try again.")
+      },
+    }
+
+    Object.entries(listeners).forEach(([channel, listener]) => {
+      window.electron.ipcRenderer.on(channel, listener)
+    })
+
+    return () => {
+      Object.keys(listeners).forEach((channel) => {
+        window.electron.ipcRenderer.removeAllListeners(channel)
+      })
+    }
+  }, [setAppStatus, clearApps])
+
   useEffect(() => {
     const applyTheme = (theme) => {
       document.body.classList.remove("light", "purple", "dark", "gray", "classic")

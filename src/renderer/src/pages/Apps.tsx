@@ -17,6 +17,7 @@ import { Upload } from "lucide-react"
 import Card from "@/components/ui/Card"
 import { LargeInput } from "@/components/ui/input"
 import { Dropdown } from "@/components/ui/dropdown"
+import logo from "../../../../resources/sparklelogo.png"
 
 interface AppData {
   name: string
@@ -526,6 +527,7 @@ function Apps() {
                                 <img
                                   src={app.icon}
                                   alt={app.name}
+                                  onError={(e) => (e.currentTarget.src = logo)}
                                   className="w-8 h-8 object-contain rounded-md"
                                 />
                               ) : (

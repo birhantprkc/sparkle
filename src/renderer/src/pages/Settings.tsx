@@ -377,7 +377,7 @@ function Settings() {
                   </div>
                   <div className="text-right">
                     <p className="text-sm text-sparkle-text-secondary">
-                      © {new Date().getFullYear()} Parcoil Network
+                      © {new Date().getFullYear()} Parcoil
                     </p>
                   </div>
                 </div>

@@ -27,8 +27,8 @@ This is a nuspec. It mostly adheres to https://docs.nuget.org/create/Nuspec-Refe
     <packageSourceUrl>https://github.com/Parcoil/Sparkle</packageSourceUrl>
 
     <title>Sparkle</title>
-    <authors>The Parcoil Network</authors>
-    <owners>GitHub Copilot</owners>
+    <authors>Parcoil</authors>
+    <owners>Parcoil</owners>
     <projectUrl>https://getsparkle.net</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/parcoil/sparkle/v2/resources/sparklelogo.png</iconUrl>
     <projectSourceUrl>https://github.com/Parcoil/Sparkle</projectSourceUrl>
@@ -36,8 +36,8 @@ This is a nuspec. It mostly adheres to https://docs.nuget.org/create/Nuspec-Refe
     <licenseUrl>https://github.com/Parcoil/Sparkle/blob/main/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>sparkle tweak windows optimization</tags>
-    <summary>Windows tweaking and optimization tool</summary>
-    <description>Sparkle is a modern Windows tweaking and optimization tool that allows you to apply and manage various system tweaks and improvements.</description>
+    <summary>Windows debloat and optimization tool</summary>
+    <description>Sparkle is a modern Windows debloat and optimization tool that allows you to apply and manage various system tweaks and improvements.</description>
     <!-- <releaseNotes>__REPLACE_OR_REMOVE__MarkDown_Okay</releaseNotes> -->
     <!-- =============================== -->
 

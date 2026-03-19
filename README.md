@@ -8,7 +8,7 @@
 
   <p>
     <img alt="React" src="https://img.shields.io/badge/React-000000?style=for-the-badge&logo=react&labelColor=0c121f&color=0c121f">
-    <img alt="Electron" src="https://img.shields.io/badge/Electron-000000?style=for-the-badge&logo=electron&labelColor=0c121f&color=0c121f">
+   <a href="#-what-if-im-allergic-to-electron"> <img alt="Electron" src="https://img.shields.io/badge/Electron-000000?style=for-the-badge&logo=electron&labelColor=0c121f&color=0c121f"></a>
     <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-000000?style=for-the-badge&logo=typescript&labelColor=0c121f&color=0c121f">
     <img alt="PowerShell" src="https://img.shields.io/badge/PowerShell-000000?style=for-the-badge&logo=gnometerminal&labelColor=0c121f&color=0c121f">
   </p>
@@ -36,28 +36,30 @@ irm https://raw.githubusercontent.com/Parcoil/Sparkle/v2/get.ps1 | iex
   <h3>🚀 Features</h3>
 
   <ul align="left">
-    <li>📈 Apply Tweaks to Optimize your system</li>
-    <li>🗑️ Manage All Temp files in one place</li>
-    <li>🎛️ Install apps with the built-in Winget integration</li>
-    <li>📁 Backup and Revert changes</li>
-    <li>⚙️ View Basic System info</li>
+    <li>📈 Apply Tweaks to Debloat/Optimize your system</li>
+    <li>🗑️ Clean All Temp files in one place</li>
+    <li>📦 Run Utilities Such as "cleanmgr", "sfc /scannow", "chkdisk" and more inside a GUI</li>
+    <li>🌐 Change DNS to Cloudflare, Google, OpenDNS Or a custom one with Sparkle dns mananger</li>
+    <li>🎛️ Install apps with the built-in Winget and <a href="https://chocolatey.org/" >Chocolatey</a> integration</li>
+    <li>📁 Backup and Revert changes with GUI Restore Point manager</li>
+    <li>⚙️ View System Stats</li>
   </ul>
 </div>
 
 <div>
   <h2>📃 Docs</h2>
   <p>You can find the docs <a href="https://docs.getsparkle.net">here</a></p>
-  the docs cover all the tweaks how they work what they do and all of sparkles pages
+  the docs cover all the tweaks, how they work what they do and all of Sparkle's Pages and tools.
 </div>
 
 <div>
   <h3>💖 Credits</h3>
   <ul>
     <li>
-      <a href="https://github.com/ChrisTitusTech/winutil">CTT's WinUtil (Some of the tweaks & part of the inspo for making this v2 of this project)</a>
+      <a href="https://github.com/ChrisTitusTech/winutil">CTT's WinUtil (Some of the tweaks & <b>Part</b> of the inspo for making this v2 of this project)</a>
     </li>
     <li>
-      <a href="https://github.com/Raphire/Win11Debloat">Raphire Win11Debloat ( Debloat script offered in Sparkle debloat script)</a>
+      <a href="https://github.com/Raphire/Win11Debloat">Raphire Win11Debloat ( Secondary Debloat script offered in Sparkle debloat script)</a>
     </li>
   </ul>
 

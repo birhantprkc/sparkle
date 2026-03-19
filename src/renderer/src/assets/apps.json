@@ -1324,6 +1324,7 @@
       "name": "Rainmeter",
       "id": "Rainmeter.Rainmeter",
       "chocolatey": "rainmeter",
+      "category": "utilities",
       "info": "A powerful desktop customization tool.",
       "link": "https://www.rainmeter.net/?ref=sparkle",
       "icon": "https://www.rainmeter.net/favicon.ico"

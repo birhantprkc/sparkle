@@ -108,11 +108,11 @@ function Nav({ collapsed }) {
           >
             <div>{tabIcons[id]}</div>
             {!collapsed && <span className="text-sm">{label}</span>}
-            {!collapsed && id === "utilities" && (
+            {/* {!collapsed && id === "utilities" && (
               <span className="text-xs bg-sparkle-primary text-sparkle-bg px-1.5 py-0.5 rounded-full">
                 New
               </span>
-            )}
+            )} */}
           </Button>
         ))}
       </div>

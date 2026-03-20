@@ -7,7 +7,7 @@
       "category": "browsers",
       "info": "A fast, private and secure web browsers.",
       "link": "https://www.mozilla.org/en-US/firefox/new/?ref=sparkle",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Firefox_logo%2C_2019.svg/1024px-Firefox_logo%2C_2019.svg.png"
+      "icon": "https://www.firefox.com/favicon.ico"
     },
     {
       "name": "Firefox Nightly",
@@ -44,7 +44,7 @@
       "category": "multimedia",
       "info": "Listen to music and podcasts.",
       "link": "https://www.spotify.com/?ref=sparkle",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Spotify_icon.svg/1982px-Spotify_icon.svg.png"
+      "icon": "https://storage.googleapis.com/pr-newsroom-wp/1/2023/05/Spotify_Primary_Logo_RGB_Green.png"
     },
     {
       "name": "Steam",
@@ -511,7 +511,7 @@
       "category": "Privacy & Security",
       "info": "A Free VPN service.",
       "link": "https://protonvpn.com/?ref=sparkle",
-      "icon": "https://seeklogo.com/images/P/proton-vpn-logo-A50452564D-seeklogo.com.png"
+      "icon": "https://m.media-amazon.com/images/I/51gvJaXQh4L.png"
     },
     {
       "name": "Express VPN",
@@ -769,7 +769,7 @@
       "category": "utilities",
       "info": "A powerful uninstaller for Windows.",
       "link": "https://www.bcuninstaller.com/?ref=sparkle",
-      "icon": "https://raw.githubusercontent.com/Klocman/Bulk-Crap-Uninstaller/refs/heads/master/source/BulkCrapUninstaller/logo.ico"
+      "icon": "https://a.fsdn.com/allura/p/bulk-crap-uninstaller/icon?1772837084?&w=90"
     },
     {
       "name": "MiniTool Partition Wizard",
@@ -786,7 +786,7 @@
       "category": "utilities",
       "info": "A powerful tool to customize Windows.",
       "link": "https://windhawk.net/?ref=sparkle",
-      "icon": "https://windhawk.net/static/media/logo-white.07a58d84.svg"
+      "icon": "https://windhawk.net/favicon.ico"
     },
     {
       "name": "Bulk Rename Utility",
@@ -1026,7 +1026,7 @@
       "category": "utilities",
       "info": "A remote desktop app.",
       "link": "https://www.teamviewer.com/en-ca/?ref=sparkle",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/TeamViewer_Logo_Icon_Only.svg/1024px-TeamViewer_Logo_Icon_Only.svg.png"
+      "icon": "https://upload.wikimedia.org/wikipedia/commons/3/31/TeamViewer_Logo_Icon_Only.svg"
     },
     {
       "name": "Ungoogled Chromium",
@@ -1035,7 +1035,7 @@
       "category": "browsers",
       "info": "A Chromium web browser with out google features",
       "link": "https://github.com/ungoogled-software/ungoogled-chromium?ref=sparkle",
-      "icon": "https://flathub.org/_next/image?url=https%3A%2F%2Fdl.flathub.org%2Fmedia%2Fio%2Fgithub%2Fungoogled_software.ungoogled_chromium%2F700e96614a13f9b7b5f196b962900420%2Ficons%2F128x128%2Fio.github.ungoogled_software.ungoogled_chromium.png&w=128&q=100"
+      "icon": "https://imgproxy.flathub.org/insecure/dpr:1/f:avif/q:100/rs:fit:128:128/aHR0cHM6Ly9kbC5mbGF0aHViLm9yZy9tZWRpYS9pby9naXRodWIvdW5nb29nbGVkX3NvZnR3YXJlLnVuZ29vZ2xlZF9jaHJvbWl1bS9kNmMwYjU0OTQwZGExNzI0OTIxNDFhYjFiYmVmZjEwYy9pY29ucy8xMjh4MTI4L2lvLmdpdGh1Yi51bmdvb2dsZWRfc29mdHdhcmUudW5nb29nbGVkX2Nocm9taXVtLnBuZw"
     },
     {
       "name": "LibreWolf",
@@ -1292,7 +1292,7 @@
       "category": "utilities",
       "info": "A free and open source file archiver.",
       "link": "https://nanazip.org/?ref=sparkle",
-      "icon": "https://nanazip.org/favicon.ico"
+      "icon": "https://raw.githubusercontent.com/M2Team/NanaZip/main/Assets/NanaZip.png"
     },
     {
       "name": "Fishstrap",
@@ -1309,7 +1309,7 @@
       "category": "utilities",
       "info": "A powerful tool to flash OS images to SD cards and USB drives.",
       "link": "https://www.balena.io/etcher/?ref=sparkle",
-      "icon": "https://www.balena.io/etcher/static/media/icon.png"
+      "icon": "https://upload.wikimedia.org/wikipedia/commons/2/2d/Etcher-icon.png"
     },
     {
       "name": "Bun",

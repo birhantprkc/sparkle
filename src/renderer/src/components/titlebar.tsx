@@ -37,7 +37,10 @@ function TitleBar({
       </div>
       <div>
         {apps.length > 0 && (
-          <Card key={apps.length} className="p-2 text-xs flex items-center gap-2">
+          <Card
+            key="install-status"
+            className="p-2 text-xs flex items-center gap-2 animate-in fade-in zoom-in duration-300 fill-mode-both"
+          >
             <Loader2 className="animate-spin text-xs w-4 h-4" />
             {apps.length === 1
               ? `${actionText} ${apps[0].name}`

@@ -128,7 +128,9 @@ function Home() {
               aria-label="loading"
             ></div>
           </div>
-          <div className="text-sparkle-text-secondary">Loading system information...</div>
+          <div className="text-sparkle-text-secondary">
+            Loading system information... This may take a while depending on your system.
+          </div>
           <p className="text-sm text-sparkle-primary">
             You may use other parts of sparkle while this loads
           </p>

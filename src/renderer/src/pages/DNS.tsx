@@ -7,8 +7,15 @@ import { toast } from "react-toastify"
 import { Globe, Shield, Settings, RefreshCw, AlertCircle, Info } from "lucide-react"
 import { Cloud } from "lucide-react"
 import log from "electron-log/renderer"
-import { Check } from "lucide-react"
+import { Check, X } from "lucide-react"
 import Card from "@/components/ui/Card"
+
+interface PingResult {
+  name: string
+  server: string
+  latency: number | null
+  status: "success" | "timeout" | "error"
+}
 
 interface DNSProvider {
   id: string
@@ -95,6 +102,8 @@ export default function DNSPage() {
   const [modalOpen, setModalOpen] = useState(false)
   const [customDNS, setCustomDNS] = useState({ primary: "", secondary: "" })
   const [showCustom, setShowCustom] = useState(false)
+  const [pingResults, setPingResults] = useState<PingResult[] | null>(null)
+  const [pingLoading, setPingLoading] = useState(false)
 
   useEffect(() => {
     getCurrentDNS()
@@ -183,6 +192,40 @@ export default function DNSPage() {
     )
   }
 
+  const testAllPing = async () => {
+    setPingLoading(true)
+    setPingResults(null)
+
+    try {
+      const result = await invoke({
+        channel: "dns:ping-all",
+      })
+
+      if (result.success) {
+        const sorted = [...result.data].sort((a, b) => {
+          if (a.latency === null && b.latency === null) return 0
+          if (a.latency === null) return 1
+          if (b.latency === null) return -1
+          return a.latency - b.latency
+        })
+        setPingResults(sorted)
+      } else {
+        toast.error(`Ping test failed: ${result.error}`)
+      }
+    } catch (error: any) {
+      toast.error(`Ping test failed: ${error.message}`)
+      log.error("Failed to ping DNS servers:", error)
+    } finally {
+      setPingLoading(false)
+    }
+  }
+
+  const getLowestPingServer = () => {
+    if (!pingResults) return null
+    const successResults = pingResults.filter((r) => r.latency !== null)
+    return successResults.length > 0 ? successResults[0] : null
+  }
+
   return (
     <>
       <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
@@ -245,6 +288,81 @@ export default function DNSPage() {
                 <AlertCircle className="w-4 h-4" />
                 <span>Loading Network Info, this may take a while...</span>
               </div>
+            )}
+          </Card>
+
+          <Card className="p-4 mb-4">
+            <div className="flex items-center gap-3 mb-3">
+              <h2 className="font-semibold">Find Fastest DNS</h2>
+              <Button
+                onClick={testAllPing}
+                disabled={pingLoading}
+                variant="secondary"
+                size="sm"
+                className="ml-auto"
+              >
+                {pingLoading ? (
+                  <>
+                    <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                    Testing Please Wait...
+                  </>
+                ) : (
+                  <>Test All Servers</>
+                )}
+              </Button>
+              {pingResults && <Button onClick={() => setPingResults(null)}>Clear</Button>}
+            </div>
+
+            {pingResults && (
+              <div className="space-y-2">
+                {getLowestPingServer() && (
+                  <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-3 mb-3">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-green-500 font-medium">
+                        Fastest DNS: {getLowestPingServer()!.name} ({getLowestPingServer()!.server})
+                        - {getLowestPingServer()!.latency}ms
+                      </span>
+                    </div>
+                  </div>
+                )}
+                <div className="space-y-1">
+                  {pingResults.map((result, index) => (
+                    <div
+                      key={result.server}
+                      className={`flex items-center justify-between text-sm p-2 rounded-md ${
+                        index === 0 && result.latency !== null
+                          ? "bg-green-500/10 border border-green-500/30"
+                          : "bg-sparkle-border-secondary"
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        {result.status === "success" ? (
+                          <Check className="w-4 h-4 text-green-500" />
+                        ) : (
+                          <X className="w-4 h-4 text-red-500" />
+                        )}
+                        <span className="font-medium">{result.name}</span>
+                        <span className="text-sparkle-text-secondary">({result.server})</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {result.latency !== null ? (
+                          <span className="text-green-500 font-medium">{result.latency}ms</span>
+                        ) : (
+                          <span className="text-red-500">
+                            {result.status === "timeout" ? "Timeout" : "Error"}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {!pingResults && !pingLoading && (
+              <p className="text-sm text-sparkle-text-secondary">
+                Test all DNS servers to find the one with the lowest ping.
+              </p>
             )}
           </Card>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">

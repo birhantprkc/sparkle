@@ -86,6 +86,13 @@ interface TestDNSProps {
   hostname?: string
 }
 
+interface PingResult {
+  name: string
+  server: string
+  latency: number | null
+  status: "success" | "timeout" | "error"
+}
+
 export const setupDNSHandlers = (): void => {
   ipcMain.handle("dns:get-current", async (): Promise<DNSResult> => {
     try {
@@ -239,6 +246,59 @@ export const setupDNSHandlers = (): void => {
     },
   )
 
+  ipcMain.handle(
+    "dns:ping-all",
+    async (): Promise<{ success: boolean; data?: PingResult[]; error?: string }> => {
+      try {
+        const dnsServers: { name: string; server: string }[] = [
+          { name: "Cloudflare", server: "1.1.1.1" },
+          { name: "Google", server: "8.8.8.8" },
+          { name: "OpenDNS", server: "208.67.222.222" },
+          { name: "Quad9", server: "9.9.9.9" },
+          { name: "AdGuard DNS", server: "94.140.14.14" },
+        ]
+
+        const results: PingResult[] = []
+
+        const pingServer = (
+          server: string,
+        ): Promise<{ latency: number | null; status: "success" | "timeout" | "error" }> => {
+          return new Promise((resolve) => {
+            exec(`ping -n 2 -w 1000 ${server}`, { shell: "cmd.exe" }, (error, stdout) => {
+              if (error) {
+                resolve({ latency: null, status: "error" })
+                return
+              }
+
+              const match =
+                stdout.match(/Average[^\d]*(\d+)ms/i) || stdout.match(/Average = (\d+)ms/i)
+              if (match) {
+                resolve({ latency: parseInt(match[1], 10), status: "success" })
+              } else if (stdout.includes("TTL=") || stdout.includes("ttl=")) {
+                resolve({ latency: null, status: "timeout" })
+              } else {
+                resolve({ latency: null, status: "timeout" })
+              }
+            })
+          })
+        }
+
+        for (const dns of dnsServers) {
+          const pingResult = await pingServer(dns.server)
+          results.push({
+            name: dns.name,
+            server: dns.server,
+            ...pingResult,
+          })
+        }
+
+        return { success: true, data: results }
+      } catch (error: any) {
+        return { success: false, error: error.message }
+      }
+    },
+  )
+
   ipcMain.handle("dns:get-adapters", async (): Promise<DNSResult> => {
     try {
       const script = `
@@ -286,6 +346,7 @@ export const cleanupDNSHandlers = (): void => {
   ipcMain.removeHandler("dns:apply")
   ipcMain.removeHandler("dns:reset")
   ipcMain.removeHandler("dns:test")
+  ipcMain.removeHandler("dns:ping-all")
   ipcMain.removeHandler("dns:get-adapters")
   ipcMain.removeHandler("dns:flush-cache")
 }

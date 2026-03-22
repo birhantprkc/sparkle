@@ -28,6 +28,7 @@ import { LargeInput } from "@/components/ui/input"
 
 type Utility = {
   name: string
+  command?: string
   description: string
   state: boolean
   icon: React.ReactNode
@@ -42,7 +43,8 @@ type Utility = {
 
 const utilities: Utility[] = [
   {
-    name: "Disk Cleaner (cleanmgr)",
+    name: "Disk Cleaner",
+    command: "cleanmgr",
     description: "Free up space by removing unnecessary files.",
     state: true,
     icon: <HardDrive />,
@@ -78,6 +80,7 @@ if (Test-Path $path) {
   },
   {
     name: "System Information",
+    command: "msinfo32",
     description: "View detailed information about your system.",
     state: false,
     icon: <Monitor />,
@@ -204,7 +207,8 @@ if ($ultimatePlanGUID) {
     },
   },
   {
-    name: "Flush DNS Cache (ipconfig /flushdns)",
+    name: "Flush DNS Cache",
+    command: "ipconfig /flushdns",
     description: "Fix connection issues by clearing DNS resolver cache.",
     state: false,
     icon: <GlobeIcon />,
@@ -216,7 +220,8 @@ Write-Output "DNS cache flushed."
 `,
   },
   {
-    name: "Release IP (ipconfig /release)",
+    name: "Release IP",
+    command: "ipconfig /release",
     description: "Release your current IP address and disconnect from the network temporarily.",
     state: false,
     icon: <NetworkIcon />,
@@ -228,7 +233,8 @@ Write-Output "IP address released. You are temporarily disconnected from the net
 `,
   },
   {
-    name: "Renew IP (ipconfig /renew)",
+    name: "Renew IP",
+    command: "ipconfig /renew",
     description: "Request a new IP address from the DHCP server.",
     state: false,
     icon: <NetworkIcon />,
@@ -253,7 +259,8 @@ Write-Output "Bluetooth services restarted."
 `,
   },
   {
-    name: "System File Checker (sfc /scannow)",
+    name: "System File Checker",
+    command: "sfc /scannow",
     description: "Repair corrupted system files to improve stability.",
     state: false,
     icon: <Wrench />,
@@ -265,7 +272,8 @@ Start-Process powershell -ArgumentList "-NoExit", "-Command", "sfc /scannow; Wri
 `,
   },
   {
-    name: "DISM Health Restore (dism /restorehealth)",
+    name: "DISM Health Restore",
+    command: "dism /restorehealth",
     description: "Use DISM to repair the Windows image and fix system issues.",
     state: false,
     icon: <Star />,
@@ -277,7 +285,8 @@ Start-Process powershell -ArgumentList "-NoExit", "-Command", "dism /online /cle
 `,
   },
   {
-    name: "Check Disk (chkdsk)",
+    name: "Check Disk",
+    command: "chkdsk",
     description: "Check and fix disk errors on your system.",
     state: false,
     icon: <HardDrive />,
@@ -302,7 +311,8 @@ Write-Output "Audio service restarted."
 `,
   },
   {
-    name: "Network Reset (netsh)",
+    name: "Network Reset",
+    command: "netsh",
     description: "Reset your network stack to fix connectivity problems.",
     state: false,
     icon: <WifiIcon />,
@@ -565,7 +575,12 @@ function Utilities() {
                 <Card className="p-4 flex items-center gap-4" key={util.name}>
                   {util.icon}
                   <div>
-                    <h1>{util.name}</h1>
+                    <div className="flex gap-3 items-center">
+                      <h1>{util.name}</h1>{" "}
+                      {util.command && (
+                        <p className="text-xs text-sparkle-primary">CMD: {util.command}</p>
+                      )}
+                    </div>
                     <p className="text-sm  text-sparkle-text-secondary">{util.description}</p>
                   </div>
                   <div className="flex justify-end ml-auto">

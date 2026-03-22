@@ -2,7 +2,7 @@ import { app, ipcMain, BrowserWindow } from "electron"
 import { autoUpdater, UpdateInfo } from "electron-updater"
 
 export function initAutoUpdater(getMainWindow: () => BrowserWindow | null): void {
-  autoUpdater.autoDownload = false
+  autoUpdater.autoDownload = true
   autoUpdater.disableWebInstaller = false
   autoUpdater.autoInstallOnAppQuit = true
 
@@ -67,6 +67,8 @@ export function initAutoUpdater(getMainWindow: () => BrowserWindow | null): void
       return { ok: false, error: String(error) }
     }
   })
+
+  setTimeout(() => triggerAutoUpdateCheck(), 3000)
 }
 
 export async function triggerAutoUpdateCheck(): Promise<void> {

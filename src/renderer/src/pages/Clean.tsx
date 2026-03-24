@@ -13,6 +13,7 @@ const cleanups = [
   {
     id: "temp",
     label: "Clean Temporary Files",
+    path: "C:\\Windows\\Temp",
     description: "Remove system and user temporary files.",
     script: `
       $systemTemp = "$env:SystemRoot\\Temp"
@@ -34,6 +35,7 @@ const cleanups = [
   {
     id: "prefetch",
     label: "Clean Prefetch Files",
+    path: "C:\\Windows\\Prefetch",
     description: "Delete files from the Windows Prefetch folder.",
     script: `
       $prefetch = "$env:SystemRoot\\Prefetch"
@@ -47,7 +49,8 @@ const cleanups = [
   },
   {
     id: "recyclebin",
-    label: "Empty Recycle Bin (Dangerous)",
+    label: "Empty Recycle Bin",
+    path: "Clear-RecycleBin -Force -ErrorAction SilentlyContinue",
     description: "Permanently remove files from the Recycle Bin.",
     script: `
       $recycleBinSize = 0
@@ -61,6 +64,7 @@ const cleanups = [
   {
     id: "windows-update",
     label: "Clean Windows Update Cache",
+    path: "C:\\Windows\\SoftwareDistribution\\Download",
     description: "Remove Windows Update downloaded installation files.",
     script: `
       $windowsUpdateDownload = "$env:SystemRoot\\SoftwareDistribution\\Download"
@@ -75,6 +79,7 @@ const cleanups = [
   {
     id: "thumbnails",
     label: "Clear Thumbnail Cache",
+    path: "C:\\Users\\<User>\\AppData\\Local\\Microsoft\\Windows\\Explorer",
     description: "Remove cached thumbnail images used by File Explorer.",
     script: `
       $thumbCache = "$env:LOCALAPPDATA\\Microsoft\\Windows\\Explorer"
@@ -83,6 +88,21 @@ const cleanups = [
       if ($thumbFiles) {
           $totalSizeBefore = ($thumbFiles | Measure-Object -Property Length -Sum -ErrorAction SilentlyContinue).Sum
           Remove-Item "$thumbCache\\thumbcache_*.db" -Force -ErrorAction SilentlyContinue
+      }
+      Write-Output $totalSizeBefore
+    `,
+  },
+  {
+    id: "errorreports",
+    label: "Clear Error Reports",
+    path: "C:\\Users\\<User>\\AppData\\Local\\CrashDumps",
+    description: "Remove error report and crash dump files.",
+    script: `
+      $crashDumps = "$env:LOCALAPPDATA\\CrashDumps"
+      $totalSizeBefore = 0
+      if (Test-Path $crashDumps) {
+          $totalSizeBefore = (Get-ChildItem -Path "$crashDumps\\*" -Recurse -Force -ErrorAction SilentlyContinue | Measure-Object -Property Length -Sum -ErrorAction SilentlyContinue).Sum
+          Remove-Item "$crashDumps\\*" -Force -Recurse -ErrorAction SilentlyContinue
       }
       Write-Output $totalSizeBefore
     `,
@@ -175,7 +195,7 @@ function Clean() {
         </Card>
 
         <Card className="flex flex-col divide-y divide-sparkle-border p-0">
-          {cleanups.map(({ id, label, description }, idx) => {
+          {cleanups.map(({ id, label, description, path }, idx) => {
             const isSelected = selected.includes(id)
             return (
               <div
@@ -186,9 +206,15 @@ function Clean() {
                   <span className="text-base font-semibold text-sparkle-text truncate">
                     {label}
                   </span>
+
                   <span className="text-xs text-sparkle-text-secondary mt-0.5 truncate">
                     {description}
-                    {cleanupResults[id] ? ` (${formatBytes(cleanupResults[id])} cleared)` : ""}
+                    <p className="text-xs text-sparkle-text-muted ml-0.5 truncate">
+                      {path || "Path not specified"}
+                    </p>
+                    <p className="text-sparkle-primary font-semibold ">
+                      {cleanupResults[id] ? ` (${formatBytes(cleanupResults[id])} cleared)` : ""}
+                    </p>
                   </span>
                 </div>
                 <div className="ml-4 flex items-center">
@@ -211,13 +237,13 @@ function Clean() {
           })}
         </Card>
 
-        <div className="flex justify-end mt-2">
+        <div className="flex justify-end mt-2 mb-15">
           <Button
             onClick={runSelectedCleanups}
             disabled={isCleaning || selected.length === 0}
             size="md"
             variant="primary"
-            className="min-w-[180px] flex items-center justify-center gap-2 text-base font-semibold"
+            className="min-w-45 flex items-center justify-center gap-2 text-base font-semibold"
           >
             {isCleaning ? (
               <>

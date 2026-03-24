@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import RootDiv from "@/components/rootdiv"
-import { Cpu, HardDrive, Zap, MemoryStick, Gpu } from "lucide-react"
+import { Cpu, HardDrive, Zap, MemoryStick, Gpu, Star } from "lucide-react"
 import InfoCard from "@/components/infocard"
 import { invoke } from "@/lib/electron"
 import Button from "@/components/ui/button"
@@ -11,6 +11,8 @@ import Greeting from "@/components/greeting"
 import { MonitorCog } from "lucide-react"
 import { Wrench } from "lucide-react"
 import Card from "@/components/ui/Card"
+import DiscordIcon from "@/components/discordicon"
+import GithubIcon from "@/components/githubicon"
 function Home() {
   const systemInfo = useSystemStore((state) => state.systemInfo)
   const setSystemInfo = useSystemStore((state) => state.setSystemInfo)
@@ -239,6 +241,33 @@ function Home() {
             </Button>
           </div>
         </Card>
+        <div className="flex gap-0">
+          <a
+            href="https://discord.com/invite/En5YJYWj3Z"
+            target="_blank"
+            className="text-sparkle-primary hover:underline flex items-center justify-center mt-6 mx-auto "
+          >
+            <DiscordIcon className="mr-2 w-5 h-5 fill-sparkle-primary" />
+            Join Our Discord
+          </a>
+          <a
+            href="https://github.com/parcoil/sparkle"
+            target="_blank"
+            className="text-sparkle-primary hover:underline flex items-center justify-center mt-6 mx-auto "
+          >
+            <GithubIcon className="mr-2 w-5 h-5 fill-sparkle-primary" />
+            View Source on GitHub
+          </a>
+          <a
+            href="https://github.com/thedogecraft/sparkle#-contributing"
+            target="_blank"
+            className="text-sparkle-primary hover:underline flex items-center justify-center mt-6 mx-auto "
+          >
+            <Star className="mr-2 w-5 h-5 fill-sparkle-primary" />
+            Contribute on GitHub
+          </a>
+        </div>
+
         <p className="text-xs text-sparkle-text-secondary text-center mt-4">
           {usingCache ? "Loading latest system data..." : ""}
         </p>

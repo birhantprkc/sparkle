@@ -5,19 +5,14 @@ hide:
 
 <img src="https://raw.githubusercontent.com/Parcoil/logos/refs/heads/main/logos/sparklelogo.png" width="120" height="120">
 
-# :material-hand-wave: Welcome to the Sparkle documentation
+# Welcome to the Sparkle documentation
 
-The ultimate Windows optimizer — fast, private, and lightweight.
+A Windows app to debloat and optimize your PC
 
-[:material-download: Get Sparkle](https://getsparkle.net){ .md-button .md-button--primary }
+<!-- The ultimate Windows optimizer - fast, private, and lightweight. -->
+
+[:material-download: Get Sparkle](https://github.com/parcoil/sparkle/releases/latest){ .md-button .md-button--primary }
 [:material-github: GitHub](https://github.com/Parcoil/Sparkle){ .md-button }
-
----
-
-!!! info "New Here?"
-
-    Looking to install Sparkle?
-    Go to [**getsparkle.net**](https://getsparkle.net){target=\_blank}
 
 ---
 
@@ -26,8 +21,8 @@ The ultimate Windows optimizer — fast, private, and lightweight.
 Sparkle is a **free and open-source Windows optimization tool**.  
 It helps you:
 
-- Debloat unwanted apps
-- Improve privacy by disabling tracking
+- Debloat/Remove unwanted apps
+- Improve privacy by disabling Microsoft tracking
 - Boost performance
 - Keep your system clean & fast
 
@@ -85,7 +80,7 @@ It helps you:
 <div class="grid cards" markdown>
 
 - [:material-tune: **View Tweaks**](tweaks)  
-   View all of the tweaks in Dparkle
+   View all of the tweaks in Sparkle
 
 - [:material-code-braces: **Creating Tweaks**](creating-tweaks)  
    Build your own custom tweak scripts.
@@ -104,3 +99,5 @@ It helps you:
 
     Join our [Discord Server](https://discord.gg/En5YJYWj3Z)
     or open an issue on [GitHub](https://github.com/Parcoil/Sparkle/issues).
+
+*Some Tweaks cannot be unapplied and require manual app reinstalls or manual setting changes.

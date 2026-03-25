@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `remove-onedrive`
 - **Description**: Removes OneDrive from the system
+- **Risk Level**: <span style="color:#ff9800">Caution</span>
 
 
 

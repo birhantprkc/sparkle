@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `disable-hibernation`
 - **Description**: Disables the hibernation feature to free up disk space and improve shutdown speed
+- **Risk Level**: <span style="color:#ff9800">Caution</span>
 
 
 

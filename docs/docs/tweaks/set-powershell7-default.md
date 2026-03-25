@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `set-powershell7-default`
 - **Description**: Sets PowerShell 7 as the default profile in Windows Terminal (installs PS7 if missing)
+- **Risk Level**: <span style="color:#4caf50">Safe</span>
 
 
 

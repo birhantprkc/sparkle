@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `enable-optimization-for-windowed-games`
 - **Description**: Enables Optimization For Windowed Games on windows
+- **Risk Level**: <span style="color:#4caf50">Safe</span>
 
 
 

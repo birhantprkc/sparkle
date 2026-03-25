@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `revert-context-menu`
 - **Description**: Reverts the context menu to the default Windows 10 context menu.
+- **Risk Level**: <span style="color:#4caf50">Safe</span>
 
 
 

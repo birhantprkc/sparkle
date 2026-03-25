@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `disable-wifi-sense`
 - **Description**: Disables Wifi Sense to prevent sharing of Wi-Fi networks with contacts
+- **Risk Level**: <span style="color:#4caf50">Safe</span>
 
 
 

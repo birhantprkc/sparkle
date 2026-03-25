@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `disable-telemetry`
 - **Description**: Disables Windows telemetry and data collection for improved privacy and performance.
+- **Risk Level**: <span style="color:#4caf50">Safe</span>
 
 
 

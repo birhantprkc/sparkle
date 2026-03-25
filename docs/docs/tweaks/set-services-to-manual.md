@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `set-services-to-manual`
 - **Description**: Sets various Windows services to Manual startup type to improve performance.
+- **Risk Level**: <span style="color:#ff9800">Caution</span>
 
 
 

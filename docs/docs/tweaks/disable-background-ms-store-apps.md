@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `disable-background-ms-store-apps`
 - **Description**: Disables Microsoft Store apps from running in the background
+- **Risk Level**: <span style="color:#4caf50">Safe</span>
 
 
 

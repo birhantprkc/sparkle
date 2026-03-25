@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `disable-location-tracking`
 - **Description**: Disables Windows location tracking.
+- **Risk Level**: <span style="color:#4caf50">Safe</span>
 
 
 

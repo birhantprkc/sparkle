@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `enable-hags`
 - **Description**: Enables HAGS (Hardware Accelerated GPU Scheduling)
+- **Risk Level**: <span style="color:#4caf50">Safe</span>
 
 
 

@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `hide-taskview-and-widgets`
 - **Description**: Hides the Taskview and Widgets buttons on the taskbar.
+- **Risk Level**: <span style="color:#4caf50">Safe</span>
 
 
 

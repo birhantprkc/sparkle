@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `enable-game-mode`
 - **Description**: Enables Game Mode on windows
+- **Risk Level**: <span style="color:#4caf50">Safe</span>
 
 
 

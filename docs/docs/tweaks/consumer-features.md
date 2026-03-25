@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `consumer-features`
 - **Description**: Prevents Windows from automatically installing games, third-party apps, or app links from the Microsoft Store.
+- **Risk Level**: <span style="color:#4caf50">Safe</span>
 
 
 

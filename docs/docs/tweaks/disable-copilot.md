@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `disable-copilot`
 - **Description**: Removes Microsoft's Copilot feature. (will fail if copilot is not installed)
+- **Risk Level**: <span style="color:#4caf50">Safe</span>
 
 
 

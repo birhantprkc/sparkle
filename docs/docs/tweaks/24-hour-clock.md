@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `24-hour-clock`
 - **Description**: Changes clock to display 24-hour format.
+- **Risk Level**: <span style="color:#4caf50">Safe</span>
 
 
 

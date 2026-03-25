@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `disable-mouse-acceleration`
 - **Description**: Disables mouse acceleration for a more consistent and precise mouse movement experience. Great for gaming
+- **Risk Level**: <span style="color:#4caf50">Safe</span>
 
 
 

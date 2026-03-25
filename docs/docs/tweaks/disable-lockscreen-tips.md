@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `disable-lockscreen-tips`
 - **Description**: Disables tips on the lockscreen.
+- **Risk Level**: <span style="color:#4caf50">Safe</span>
 
 
 

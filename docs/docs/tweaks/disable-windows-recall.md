@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `disable-windows-recall`
 - **Description**: Disables the Windows Recall feature for better privacy.
+- **Risk Level**: <span style="color:#4caf50">Safe</span>
 
 
 

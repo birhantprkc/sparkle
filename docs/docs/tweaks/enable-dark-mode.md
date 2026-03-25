@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `enable-dark-mode`
 - **Description**: Enables dark mode for Windows. Great for unactivated systems.
+- **Risk Level**: <span style="color:#4caf50">Safe</span>
 
 
 

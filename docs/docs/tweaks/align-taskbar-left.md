@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `align-taskbar-left`
 - **Description**: Aligns the taskbar to the left side of the screen.
+- **Risk Level**: <span style="color:#4caf50">Safe</span>
 
 
 

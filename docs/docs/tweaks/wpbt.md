@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `wpbt`
 - **Description**: Prevents your computer vendor from executing programs at boot, reducing potential security risks.
+- **Risk Level**: <span style="color:#ff9800">Caution</span>
 
 
 

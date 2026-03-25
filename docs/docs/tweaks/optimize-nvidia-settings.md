@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `optimize-nvidia-settings`
 - **Description**: Changes Nvidia Control Panel settings to improve gaming performance
+- **Risk Level**: <span style="color:#4caf50">Safe</span>
 
 !!! info "Irreversible"
     This tweak cannot be reversed and must be undone manually.

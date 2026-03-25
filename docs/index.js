@@ -60,6 +60,15 @@ for (const folder of subfolders) {
     })
     .join("\n\n")
 
+    const riskLevel = tweak.risk || "unknown"
+    const formattedRiskLevel = riskLevel[0].toUpperCase() + riskLevel.slice(1)
+
+    const riskColor =
+      riskLevel === "safe" ? "#4caf50" :
+      riskLevel === "risky" ? "#f44336" :
+      riskLevel === "caution" ? "#ff9800" :
+      "#9e9e9e"
+
   const mdContent = `
 
 # ${tweak.title || folder}
@@ -67,6 +76,7 @@ for (const folder of subfolders) {
 ## Overview
 - **ID/URL**: \`${tweak.name || folder}\`
 - **Description**: ${tweak.description || ""}
+- **Risk Level**: <span style="color:${riskColor}">${formattedRiskLevel}</span>
 
 ${
   tweak.reversible === false

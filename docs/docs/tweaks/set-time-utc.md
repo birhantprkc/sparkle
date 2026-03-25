@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `set-time-utc`
 - **Description**: Sets the system time to UTC, Great for dual booting
+- **Risk Level**: <span style="color:#4caf50">Safe</span>
 
 
 

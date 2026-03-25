@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `disable-defender-rtp`
 - **Description**: Disables Defender Real-time Protection
+- **Risk Level**: <span style="color:#f44336">Risky</span>
 
 
 

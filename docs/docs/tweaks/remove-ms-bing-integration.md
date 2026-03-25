@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `remove-ms-bing-integration`
 - **Description**: Removes Bing apps and disables Bing web search in Windows Search.
+- **Risk Level**: <span style="color:#4caf50">Safe</span>
 
 
 

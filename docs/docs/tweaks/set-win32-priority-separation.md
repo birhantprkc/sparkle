@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `set-win32-priority-separation`
 - **Description**: Optimizes foreground app performance by modifying system process priority behavior.
+- **Risk Level**: <span style="color:#4caf50">Safe</span>
 
 
 

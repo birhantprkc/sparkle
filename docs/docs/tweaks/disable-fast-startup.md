@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `disable-fast-startup`
 - **Description**: Disables Windows Fast Startup to improve system stability
+- **Risk Level**: <span style="color:#4caf50">Safe</span>
 
 
 

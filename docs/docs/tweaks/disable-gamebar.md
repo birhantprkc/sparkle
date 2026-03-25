@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `disable-gamebar`
 - **Description**: Disables The Xbox gamebar 
+- **Risk Level**: <span style="color:#ff9800">Caution</span>
 
 
 

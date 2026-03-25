@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `debloat-windows`
 - **Description**: Choose between Sparkle Debloat script or Raphire's Win11Debloat script to remove built-in Windows apps and bloatware.
+- **Risk Level**: <span style="color:#4caf50">Safe</span>
 
 !!! info "Irreversible"
     This tweak cannot be reversed and must be undone manually.

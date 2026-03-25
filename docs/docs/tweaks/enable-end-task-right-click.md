@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `enable-end-task-right-click`
 - **Description**: Enables the "End Task" option in the taskbar context menu
+- **Risk Level**: <span style="color:#4caf50">Safe</span>
 
 
 

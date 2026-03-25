@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `menu-show-delay-zero`
 - **Description**: Removes the delay when opening menus.
+- **Risk Level**: <span style="color:#4caf50">Safe</span>
 
 
 

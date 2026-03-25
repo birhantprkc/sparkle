@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `ultimate-performance-plan`
 - **Description**: Enables And Applys The Windows Ultimate Powerplan for better performance
+- **Risk Level**: <span style="color:#ff9800">Caution</span>
 
 
 

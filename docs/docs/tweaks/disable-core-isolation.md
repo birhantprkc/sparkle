@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `disable-core-isolation`
 - **Description**: Disables Core Isolation Memory Integrity to improve system performance
+- **Risk Level**: <span style="color:#ff9800">Caution</span>
 
 
 

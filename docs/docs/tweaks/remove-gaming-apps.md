@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `remove-gaming-apps`
 - **Description**: Removes Xbox app, Xbox Game Bar, and Xbox Game Overlay
+- **Risk Level**: <span style="color:#ff9800">Caution</span>
 
 !!! info "Irreversible"
     This tweak cannot be reversed and must be undone manually.

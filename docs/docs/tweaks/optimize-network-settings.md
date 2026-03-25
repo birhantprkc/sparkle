@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `optimize-network-settings`
 - **Description**: Changes various Windows settings to improve network latency and speeds.
+- **Risk Level**: <span style="color:#4caf50">Safe</span>
 
 
 

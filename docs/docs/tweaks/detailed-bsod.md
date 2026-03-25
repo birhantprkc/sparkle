@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `detailed-bsod`
 - **Description**: Adds detailed information to the Blue Screen of Death (BSOD) screen
+- **Risk Level**: <span style="color:#4caf50">Safe</span>
 
 
 

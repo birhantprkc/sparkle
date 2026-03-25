@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `disable-dynamic-ticking`
 - **Description**: Improves system responsiveness and reduces latency by disabling dynamic timer ticks.
+- **Risk Level**: <span style="color:#f44336">Risky</span>
 
 
 

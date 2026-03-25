@@ -3,6 +3,7 @@
 ## Overview
 - **ID/URL**: `show-seconds-in-taskbar-clock`
 - **Description**: Enables the seconds next to the clock in the taskbar
+- **Risk Level**: <span style="color:#4caf50">Safe</span>
 
 
 

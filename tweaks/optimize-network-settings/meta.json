@@ -1,6 +1,7 @@
 {
   "title": "Optimize Network Settings",
   "name": "optimize-network-settings",
+  "risk": "safe",
   "category": ["Network", "Gaming"],
   "restart": true,
   "updatedversion": "2.9.0",

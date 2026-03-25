@@ -1,6 +1,7 @@
 {
   "title": "Disable Hibernation",
   "name": "disable-hibernation",
+  "risk": "caution",
   "category": ["Performance", "General"],
   "warning": "Not Recommended for laptops!",
   "description": "Disables the hibernation feature to free up disk space and improve shutdown speed",

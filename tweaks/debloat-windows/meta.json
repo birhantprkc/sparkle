@@ -1,6 +1,7 @@
 {
   "title": "Debloat Windows",
   "name": "debloat-windows",
+  "risk": "safe",
   "description": "Choose between Sparkle Debloat script or Raphire's Win11Debloat script to remove built-in Windows apps and bloatware.",
   "reversible": false,
   "updatedversion": "2.14.0",

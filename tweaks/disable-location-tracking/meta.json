@@ -1,6 +1,7 @@
 {
   "title": "Disable Location Tracking",
   "name": "disable-location-tracking",
+  "risk": "safe",
   "category": ["Privacy"],
   "recommended": true,
   "description": "Disables Windows location tracking.",

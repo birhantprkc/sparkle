@@ -1,6 +1,7 @@
 {
   "title": "Revert Context Menu",
   "name": "revert-context-menu",
+  "risk": "safe",
   "category": ["General", "Appearance"],
   "recommended": true,
   "description": "Reverts the context menu to the default Windows 10 context menu.",

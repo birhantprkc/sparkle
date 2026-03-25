@@ -10,6 +10,8 @@ import {
   Zap,
   Paintbrush,
   ExternalLink,
+  Check,
+  ShieldCheck,
 } from "lucide-react"
 import { toast } from "react-toastify"
 import RootDiv from "@/components/rootdiv"
@@ -607,9 +609,40 @@ function Tweaks() {
                                   </div>
                                 </Tooltip>
                               ))}
+                              {tweak.risk && (
+                                <Tooltip
+                                  content={
+                                    tweak.risk === "safe" ? "Safe to use" : "Use with caution"
+                                  }
+                                  delay={0.3}
+                                  side="right"
+                                >
+                                  <div className="p-1.5 bg-sparkle-accent rounded-lg hover:bg-sparkle-bg transition-colors text-sparkle-text">
+                                    {tweak.risk === "safe" && (
+                                      <div className="flex gap-2">
+                                        <ShieldCheck className="w-4 h-4 text-green-500" />{" "}
+                                        <p className="text-xs">Safe</p>
+                                      </div>
+                                    )}
+                                    {tweak.risk === "risky" && (
+                                      <div className="flex gap-2">
+                                        <AlertTriangle className="w-4 h-4 text-red-500" />{" "}
+                                        <p className="text-xs">Risky</p>
+                                      </div>
+                                    )}
+                                    {tweak.risk === "caution" && (
+                                      <div className="flex gap-2">
+                                        <AlertTriangle className="w-4 h-4 text-yellow-500" />{" "}
+                                        <p className="text-xs">Caution</p>
+                                      </div>
+                                    )}
+                                  </div>
+                                </Tooltip>
+                              )}
                             </>
                           </div>
                         )}
+
                         <div className="flex items-center m-0 gap-2">
                           <Button
                             variant="secondary"

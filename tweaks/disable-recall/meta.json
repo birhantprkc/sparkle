@@ -1,6 +1,7 @@
 {
   "name": "disable-windows-recall",
   "title": "Disable Windows Recall",
+  "risk": "safe",
   "description": "Disables the Windows Recall feature for better privacy.",
   "category": ["Privacy"],
   "reversible": true,

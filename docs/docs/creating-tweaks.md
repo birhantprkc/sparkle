@@ -48,6 +48,7 @@ Each tweak **must** have a `meta.json`. The available properties are:
 | **links**             | `object[]` (optional)              | Related resources with `name` and `url` properties.                              |
 | **updatedversion**    | `string` (optional)                | Version string when the tweak was last updated. Appears in the UI.              |
 | **addedversion**      | `string` (optional)                | Version string when the tweak was added. Appears in the UI.                     |
+| **risk**              | `string` (optional)                | Risk level of the tweak: `safe`, `caution`, or `risky`. Shows an icon in the UI. |
 
 ---
 
@@ -85,6 +86,7 @@ Here’s an example of a `meta.json` for a tweak:
   "modal": "Disabling animations can improve performance but may reduce visual effects.",
   "category": ["Performance", "Appearance"],
   "warning": "Some apps may not display smoothly.",
+  "risk": "safe",
   "restart": true,
   "recommended": true,
   "deepDescription": "Detailed description here...",

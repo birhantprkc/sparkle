@@ -1,6 +1,7 @@
 {
   "title": "Set Services to Manual",
   "name": "set-services-to-manual",
+  "risk": "caution",
   "category": ["Performance", "Gaming"],
   "recommended": true,
   "description": "Sets various Windows services to Manual startup type to improve performance.",

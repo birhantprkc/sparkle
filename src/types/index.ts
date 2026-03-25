@@ -44,6 +44,7 @@ export interface Tweak {
   recommended?: boolean
   addedversion?: string
   updatedversion?: string
+  risk?: "safe" | "risky" | "caution"
   meta: TweakMeta
 }
 

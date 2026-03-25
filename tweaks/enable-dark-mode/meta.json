@@ -1,5 +1,6 @@
 {
   "title": "Enable Dark Mode",
+  "risk": "safe",
   "name": "enable-dark-mode",
   "category": ["General", "Appearance"],
   "description": "Enables dark mode for Windows. Great for unactivated systems.",

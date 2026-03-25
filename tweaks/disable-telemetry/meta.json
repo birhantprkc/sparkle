@@ -1,6 +1,7 @@
 {
   "title": "Disable Telemetry",
   "name": "disable-telemetry",
+  "risk": "safe",
   "recommended": true,
   "addedversion": "2.14.0",
   "top": true,

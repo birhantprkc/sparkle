@@ -1,6 +1,7 @@
 {
   "title": "Enable Optimization For Windowed Games",
   "name": "enable-optimization-for-windowed-games",
+  "risk": "safe",
   "category": ["General", "Performance", "Gaming"],
   "restart": true,
   "description": "Enables Optimization For Windowed Games on windows",

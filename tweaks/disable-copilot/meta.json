@@ -1,6 +1,7 @@
 {
   "title": "Disable Copilot",
   "name": "disable-copilot",
+  "risk": "safe",
   "category": ["Performance", "Privacy"],
   "recommended": true,
   "description": "Removes Microsoft's Copilot feature. (will fail if copilot is not installed)",

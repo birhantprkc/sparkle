@@ -1,6 +1,7 @@
 {
   "title": "Disable Dynamic Ticking",
   "name": "disable-dynamic-ticking",
+  "risk": "risky",
   "category": ["Performance"],
   "warning": "May increase power consumption",
   "description": "Improves system responsiveness and reduces latency by disabling dynamic timer ticks.",

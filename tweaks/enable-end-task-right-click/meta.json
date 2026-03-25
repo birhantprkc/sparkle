@@ -1,6 +1,7 @@
 {
   "title": "Enable End Task With Right Click",
   "name": "enable-end-task-right-click",
+  "risk": "safe",
   "category": ["General"],
   "recommended": true,
   "description": "Enables the \"End Task\" option in the taskbar context menu",

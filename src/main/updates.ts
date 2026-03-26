@@ -6,6 +6,10 @@ export function initAutoUpdater(getMainWindow: () => BrowserWindow | null): void
   autoUpdater.disableWebInstaller = false
   autoUpdater.autoInstallOnAppQuit = true
 
+  if (!app.isPackaged) {
+    autoUpdater.forceDevUpdateConfig = true
+  }
+
   autoUpdater.on("update-available", (info: UpdateInfo) => {
     const win = getMainWindow()
     win?.webContents.send("updater:available", {

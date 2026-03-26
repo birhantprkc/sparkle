@@ -79,6 +79,9 @@ It helps you:
 
 <div class="grid cards" markdown>
 
+- [:material-information-outline: **What Are Tweaks?**](what-are-tweaks)  
+   Learn what tweaks are and how they work.
+
 - [:material-tune: **View Tweaks**](tweaks)  
    View all of the tweaks in Sparkle
 

@@ -136,11 +136,13 @@ ${tweak.links ? `## Links\n${tweak.links.map((link) => `- [${link.name}](${link.
 
 const tweaksIndex = `
 ---
-title: "All Tweaks"
+title: "List of All Tweaks"
 ---
 
-# Sparkle Tweaks
+# All Sparkle Tweaks
 A collection of tweaks to customize and enhance your Windows experience using Sparkle.
+
+_New to tweaks? Read [What Are Tweaks?](./what-are-tweaks) for an overview._
 
 _This page is auto-generated._
 

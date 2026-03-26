@@ -1,6 +1,8 @@
 import { app, ipcMain, BrowserWindow } from "electron"
 import { autoUpdater, UpdateInfo } from "electron-updater"
 
+const CHECK_INTERVAL = 5 * 60 * 1000
+
 export function initAutoUpdater(getMainWindow: () => BrowserWindow | null): void {
   autoUpdater.autoDownload = true
   autoUpdater.disableWebInstaller = false
@@ -73,6 +75,7 @@ export function initAutoUpdater(getMainWindow: () => BrowserWindow | null): void
   })
 
   setTimeout(() => triggerAutoUpdateCheck(), 3000)
+  setInterval(() => triggerAutoUpdateCheck(), CHECK_INTERVAL)
 }
 
 export async function triggerAutoUpdateCheck(): Promise<void> {

@@ -154,7 +154,8 @@ layer(base);
 
 @layer base {
   html {
-    font-family: "Poppins", sans-serif;
+    font-family: "Poppins", "Noto Sans", sans-serif;
+    font-synthesis: none;
   }
 }
 @layer utilities {

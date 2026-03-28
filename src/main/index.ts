@@ -26,7 +26,7 @@ const store = new Store()
 
 let trayInstance: any = null
 if (store.get("showTray") === undefined) {
-  store.set("showTray", true)
+  store.set("showTray", false)
 }
 
 ipcMain.handle("tray:get", () => {

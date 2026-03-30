@@ -3,9 +3,8 @@ import fs from "fs/promises"
 import fsSync from "fs"
 import path from "path"
 import { exec } from "child_process"
-
-import { logo } from "./index"
-import { executePowerShell } from "./powershell"
+import { logo } from "@main/index"
+import { executePowerShell } from "@main/powershell"
 import si from "systeminformation"
 import log from "electron-log"
 
@@ -252,6 +251,11 @@ export const setupTweaksHandlers = (): void => {
   ipcMain.handle("nvidia-inspector", (_: any, _args: any): Promise<string> => {
     return NvidiaProfileInspector()
   })
+
+  ipcMain.handle("tweak:active", (): Record<string, boolean> | {} => {
+    return getActiveTweaks()
+  })
+  console.log("[Sparkle main/tweakHandler.ts]: Tweak handlers setup complete")
 }
 
 const getActiveTweaks = (): Record<string, boolean> | {} => {
@@ -264,10 +268,6 @@ const getActiveTweaks = (): Record<string, boolean> | {} => {
     return {}
   }
 }
-
-ipcMain.handle("tweak:active", (): Record<string, boolean> | {} => {
-  return getActiveTweaks()
-})
 
 export const cleanupTweaksHandlers = (): void => {
   ipcMain.removeHandler("tweak-states:load")

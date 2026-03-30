@@ -1,5 +1,5 @@
 import { ipcMain, IpcMainInvokeEvent } from "electron"
-import { executePowerShell } from "./powershell"
+import { executePowerShell } from "@main/powershell"
 import { exec } from "child_process"
 import log from "electron-log"
 
@@ -339,6 +339,7 @@ export const setupDNSHandlers = (): void => {
       return { success: false, error: error.message }
     }
   })
+  console.log("[Sparkle main/dnsHandler.ts]: DNS handlers setup complete")
 }
 
 export const cleanupDNSHandlers = (): void => {

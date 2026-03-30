@@ -6,7 +6,7 @@ import fs from "fs"
 import path from "path"
 import log from "electron-log"
 import { shell } from "electron"
-import { executePowerShell } from "./powershell"
+import { executePowerShell } from "@main/powershell"
 import type { SystemInfo } from "../types"
 
 console.log = log.log
@@ -520,36 +520,51 @@ function ensureWinget(): Promise<PowerShellResult> {
 }
 
 export { ensureWinget }
-ipcMain.handle("restart", restartSystem)
-ipcMain.handle("open-log-folder", openLogFolder)
-ipcMain.handle("clear-sparkle-cache", clearSparkleCache)
-ipcMain.handle("get-system-info", getSystemInfo)
-ipcMain.handle("get-user-name", getUserName)
-ipcMain.handle("restart-explorer", restartExplorer)
-ipcMain.handle("check-winget", async () => {
-  try {
-    const result = await executePowerShell(null, {
-      script: `
-        try {
-          $null = winget --version 2>&1
-          if ($LASTEXITCODE -eq 0) {
-            Write-Output "installed"
-          } else {
+
+export const setupSystemHandlers = (): void => {
+  ipcMain.handle("restart", restartSystem)
+  ipcMain.handle("open-log-folder", openLogFolder)
+  ipcMain.handle("clear-sparkle-cache", clearSparkleCache)
+  ipcMain.handle("get-system-info", getSystemInfo)
+  ipcMain.handle("get-user-name", getUserName)
+  ipcMain.handle("restart-explorer", restartExplorer)
+  ipcMain.handle("check-winget", async () => {
+    try {
+      const result = await executePowerShell(null, {
+        script: `
+          try {
+            $null = winget --version 2>&1
+            if ($LASTEXITCODE -eq 0) {
+              Write-Output "installed"
+            } else {
+              Write-Output "not-installed"
+            }
+          } catch {
             Write-Output "not-installed"
           }
-        } catch {
-          Write-Output "not-installed"
-        }
-      `,
-      name: "Check-Winget",
-    })
-    return {
-      success: result.success,
-      installed: result.success && result.output && result.output.trim() === "installed",
+        `,
+        name: "Check-Winget",
+      })
+      return {
+        success: result.success,
+        installed: result.success && result.output && result.output.trim() === "installed",
+      }
+    } catch (error) {
+      console.error("Failed to check Winget:", error)
+      return { success: false, installed: false, error: (error as any).message }
     }
-  } catch (error) {
-    console.error("Failed to check Winget:", error)
-    return { success: false, installed: false, error: (error as any).message }
-  }
-})
-ipcMain.handle("install-winget", ensureWinget)
+  })
+  ipcMain.handle("install-winget", ensureWinget)
+  console.log("[Sparkle main/system.ts]: System handlers setup complete")
+}
+
+export const cleanupSystemHandlers = (): void => {
+  ipcMain.removeHandler("restart")
+  ipcMain.removeHandler("open-log-folder")
+  ipcMain.removeHandler("clear-sparkle-cache")
+  ipcMain.removeHandler("get-system-info")
+  ipcMain.removeHandler("get-user-name")
+  ipcMain.removeHandler("restart-explorer")
+  ipcMain.removeHandler("check-winget")
+  ipcMain.removeHandler("install-winget")
+}

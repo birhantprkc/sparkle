@@ -45,24 +45,10 @@ interface BackupResult {
   points?: any[]
 }
 
-ipcMain.handle("create-sparkle-restore-point", async (): Promise<BackupResult> => {
-  const label = `SparkleBackup-${getTimestamp()}`
-  try {
-    await runPowerShell(`Checkpoint-Computer -Description '${label}'`)
-    await changeRestorePointCooldown()
-    return { success: true, label }
-  } catch (error: any) {
-    console.error(error)
-    return { success: false, error: error.message }
-  }
-})
-
-ipcMain.handle(
-  "create-restore-point",
-  async (_event: IpcMainInvokeEvent, name?: string): Promise<BackupResult> => {
+export const setupBackupHandlers = (): void => {
+  ipcMain.handle("create-sparkle-restore-point", async (): Promise<BackupResult> => {
+    const label = `SparkleBackup-${getTimestamp()}`
     try {
-      const label = name ? `${name}-${getTimestamp()}` : `ManualRestore-${getTimestamp()}`
-
       await runPowerShell(`Checkpoint-Computer -Description '${label}'`)
       await changeRestorePointCooldown()
       return { success: true, label }
@@ -70,68 +56,94 @@ ipcMain.handle(
       console.error(error)
       return { success: false, error: error.message }
     }
-  },
-)
+  })
 
-ipcMain.handle(
-  "delete-all-restore-points",
-  async (_event: IpcMainInvokeEvent, _sequenceNumber?: number): Promise<BackupResult> => {
+  ipcMain.handle(
+    "create-restore-point",
+    async (_event: IpcMainInvokeEvent, name?: string): Promise<BackupResult> => {
+      try {
+        const label = name ? `${name}-${getTimestamp()}` : `ManualRestore-${getTimestamp()}`
+
+        await runPowerShell(`Checkpoint-Computer -Description '${label}'`)
+        await changeRestorePointCooldown()
+        return { success: true, label }
+      } catch (error: any) {
+        console.error(error)
+        return { success: false, error: error.message }
+      }
+    },
+  )
+
+  ipcMain.handle(
+    "delete-all-restore-points",
+    async (_event: IpcMainInvokeEvent, _sequenceNumber?: number): Promise<BackupResult> => {
+      try {
+        await runPowerShell(`vssadmin delete shadows /all /quiet`)
+        await changeRestorePointCooldown()
+        return { success: true }
+      } catch (error: any) {
+        console.error("Error deleting all restore points:", error)
+        return { success: false, error: error.message }
+      }
+    },
+  )
+
+  ipcMain.handle("get-restore-points", async (): Promise<BackupResult> => {
     try {
-      await runPowerShell(`vssadmin delete shadows /all /quiet`)
+      const output = await runPowerShell(
+        "Get-ComputerRestorePoint | Select-Object SequenceNumber, Description, CreationTime, EventType, RestorePointType | ConvertTo-Json",
+      )
       await changeRestorePointCooldown()
-      return { success: true }
-    } catch (error: any) {
-      console.error("Error deleting all restore points:", error)
-      return { success: false, error: error.message }
-    }
-  },
-)
 
-ipcMain.handle("get-restore-points", async (): Promise<BackupResult> => {
-  try {
-    const output = await runPowerShell(
-      "Get-ComputerRestorePoint | Select-Object SequenceNumber, Description, CreationTime, EventType, RestorePointType | ConvertTo-Json",
-    )
-    await changeRestorePointCooldown()
-
-    let points: any[] = []
-    try {
-      points = JSON.parse(output)
-      if (!Array.isArray(points)) points = [points]
-    } catch {
-      points = []
-    }
-    return { success: true, points }
-  } catch (error: any) {
-    console.error(error)
-    return { success: false, error: error.message }
-  }
-})
-
-ipcMain.handle(
-  "restore-restore-point",
-  async (_event: IpcMainInvokeEvent, sequenceNumber: number): Promise<BackupResult> => {
-    try {
-      await runPowerShell(`Restore-Computer -RestorePoint ${sequenceNumber}`)
-      await changeRestorePointCooldown()
-      return { success: true }
+      let points: any[] = []
+      try {
+        points = JSON.parse(output)
+        if (!Array.isArray(points)) points = [points]
+      } catch {
+        points = []
+      }
+      return { success: true, points }
     } catch (error: any) {
       console.error(error)
       return { success: false, error: error.message }
     }
-  },
-)
+  })
 
-ipcMain.handle("delete-old-sparkle-backups", async (): Promise<BackupResult> => {
-  return new Promise((resolve, reject) => {
-    const sparkleRoot = `C:\\Sparkle`
-    if (!fs.existsSync(sparkleRoot)) {
-      return resolve({ success: true, message: "Sparkle folder does not exist" })
-    }
+  ipcMain.handle(
+    "restore-restore-point",
+    async (_event: IpcMainInvokeEvent, sequenceNumber: number): Promise<BackupResult> => {
+      try {
+        await runPowerShell(`Restore-Computer -RestorePoint ${sequenceNumber}`)
+        await changeRestorePointCooldown()
+        return { success: true }
+      } catch (error: any) {
+        console.error(error)
+        return { success: false, error: error.message }
+      }
+    },
+  )
 
-    fs.rm(sparkleRoot, { recursive: true, force: true }, (err) => {
-      if (err) return reject(err)
-      resolve({ success: true, message: "Sparkle folder deleted" })
+  ipcMain.handle("delete-old-sparkle-backups", async (): Promise<BackupResult> => {
+    return new Promise((resolve, reject) => {
+      const sparkleRoot = `C:\\Sparkle`
+      if (!fs.existsSync(sparkleRoot)) {
+        return resolve({ success: true, message: "Sparkle folder does not exist" })
+      }
+
+      fs.rm(sparkleRoot, { recursive: true, force: true }, (err) => {
+        if (err) return reject(err)
+        resolve({ success: true, message: "Sparkle folder deleted" })
+      })
     })
   })
-})
+  console.log("[Sparkle main/backup.ts]: Backup handlers setup complete")
+}
+
+export const cleanupBackupHandlers = (): void => {
+  ipcMain.removeHandler("create-sparkle-restore-point")
+  ipcMain.removeHandler("create-restore-point")
+  ipcMain.removeHandler("delete-all-restore-points")
+  ipcMain.removeHandler("get-restore-points")
+  ipcMain.removeHandler("restore-restore-point")
+  ipcMain.removeHandler("delete-old-sparkle-backups")
+}

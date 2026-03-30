@@ -1,19 +1,15 @@
-import { app, shell, BrowserWindow, ipcMain } from "electron"
+import { app, shell, BrowserWindow, ipcMain, Tray } from "electron"
 import path, { join } from "path"
 import { electronApp, optimizer, is } from "@electron-toolkit/utils"
 import log from "electron-log"
-import "./system"
-import "./powershell"
-
-import "./tweakHandler"
-import "./dnsHandler"
-import "./backup"
-import { createTray } from "./tray"
-import { setupTweaksHandlers } from "./tweakHandler"
-import { setupDNSHandlers } from "./dnsHandler"
+import { createTray } from "@main/tray"
+import { setupPowerShellHandlers } from "@main/powershell"
+import { setupSystemHandlers } from "@main/system"
+import { setupTweaksHandlers } from "@main/tweakHandler"
+import { setupDNSHandlers } from "@main/dnsHandler"
+import { setupBackupHandlers } from "@main/backup"
+import { initAutoUpdater } from "@main/updates"
 import Store from "electron-store"
-
-import { initAutoUpdater } from "./updates.js"
 
 console.log = log.log
 console.error = log.error
@@ -24,7 +20,7 @@ log.initialize()
 
 const store = new Store()
 
-let trayInstance: any = null
+let trayInstance: Tray | null = null
 if (store.get("showTray") === undefined) {
   store.set("showTray", false)
 }
@@ -136,20 +132,19 @@ app
     console.log("[Sparkle]: Auto updater initialized")
     if (store.get("showTray")) {
       console.log("[Sparkle]: Creating tray...")
-      setTimeout(() => {
-        try {
-          trayInstance = createTray(mainWindow!)
-          console.log("[Sparkle]: Tray created")
-        } catch (err: any) {
-          console.error("[Sparkle]: Tray creation failed:", err)
-        }
-      }, 50)
+      try {
+        trayInstance = createTray(mainWindow!)
+        console.log("[Sparkle]: Tray created")
+      } catch (err: any) {
+        console.error("[Sparkle]: Tray creation failed:", err)
+      }
     }
-    setTimeout(() => {
-      setupTweaksHandlers()
-      setupDNSHandlers()
-      console.log("[Sparkle]: Handlers setup complete")
-    }, 0)
+    setupPowerShellHandlers()
+    setupSystemHandlers()
+    setupTweaksHandlers()
+    setupDNSHandlers()
+    setupBackupHandlers()
+    console.log("[Sparkle]: Handlers setup complete")
 
     electronApp.setAppUserModelId("com.parcoil.sparkle")
 

@@ -187,13 +187,38 @@ function Clean() {
             <Icon iconNode={broom} className="text-teal-500" size={28} />
           </div>
           <div className="flex-1">
-            <h2 className="text-2xl font-bold text-sparkle-text mb-1">System Cleanup</h2>
+            <h2 className="text-2xl font-bold text-sparkle-text mb-1">System Cleaner</h2>
             <p className="text-sm text-sparkle-text-secondary">
               Last cleaned: <span className="font-medium">{lastClean}</span>
             </p>
           </div>
         </Card>
-
+        <div className="flex justify-end m-0 p-0">
+          {selected.length > 0 && (
+            <Button onClick={() => setSelected([])} variant="secondary" className="mr-2">
+              Unselect All
+            </Button>
+          )}
+          <Button
+            onClick={runSelectedCleanups}
+            disabled={isCleaning || selected.length === 0}
+            size="md"
+            variant="primary"
+            className="min-w-45 flex items-center justify-center gap-2 text-base font-semibold"
+          >
+            {isCleaning ? (
+              <>
+                <RefreshCw className="animate-spin" size={18} />
+                <span>Cleaning...</span>
+              </>
+            ) : (
+              <>
+                <Icon iconNode={broom} size={18} />
+                <span>Clean Selected</span>
+              </>
+            )}
+          </Button>
+        </div>
         <Card className="flex flex-col divide-y divide-sparkle-border p-0">
           {cleanups.map(({ id, label, description, path }, idx) => {
             const isSelected = selected.includes(id)
@@ -236,28 +261,6 @@ function Clean() {
             )
           })}
         </Card>
-
-        <div className="flex justify-end mt-2 mb-15">
-          <Button
-            onClick={runSelectedCleanups}
-            disabled={isCleaning || selected.length === 0}
-            size="md"
-            variant="primary"
-            className="min-w-45 flex items-center justify-center gap-2 text-base font-semibold"
-          >
-            {isCleaning ? (
-              <>
-                <RefreshCw className="animate-spin" size={18} />
-                <span>Cleaning...</span>
-              </>
-            ) : (
-              <>
-                <Icon iconNode={broom} size={18} />
-                <span>Clean Selected</span>
-              </>
-            )}
-          </Button>
-        </div>
       </div>
     </RootDiv>
   )

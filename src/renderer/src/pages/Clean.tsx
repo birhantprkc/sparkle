@@ -192,33 +192,33 @@ function Clean() {
               Last cleaned: <span className="font-medium">{lastClean}</span>
             </p>
           </div>
-        </Card>
-        <div className="flex justify-end m-0 p-0">
-          {selected.length > 0 && (
-            <Button onClick={() => setSelected([])} variant="secondary" className="mr-2">
-              Unselect All
-            </Button>
-          )}
-          <Button
-            onClick={runSelectedCleanups}
-            disabled={isCleaning || selected.length === 0}
-            size="md"
-            variant="primary"
-            className="min-w-45 flex items-center justify-center gap-2 text-base font-semibold"
-          >
-            {isCleaning ? (
-              <>
-                <RefreshCw className="animate-spin" size={18} />
-                <span>Cleaning...</span>
-              </>
-            ) : (
-              <>
-                <Icon iconNode={broom} size={18} />
-                <span>Clean Selected</span>
-              </>
+          <div className="flex items-center">
+            {selected.length > 0 && (
+              <Button onClick={() => setSelected([])} variant="secondary" className="mr-2">
+                Unselect All
+              </Button>
             )}
-          </Button>
-        </div>
+            <Button
+              onClick={runSelectedCleanups}
+              disabled={isCleaning || selected.length === 0}
+              size="md"
+              variant="primary"
+              className="min-w-45 flex items-center justify-center gap-2 text-base font-semibold"
+            >
+              {isCleaning ? (
+                <>
+                  <RefreshCw className="animate-spin" size={18} />
+                  <span>Cleaning...</span>
+                </>
+              ) : (
+                <>
+                  <Icon iconNode={broom} size={18} />
+                  <span>Clean Selected</span>
+                </>
+              )}
+            </Button>
+          </div>
+        </Card>
         <Card className="flex flex-col divide-y divide-sparkle-border p-0">
           {cleanups.map(({ id, label, description, path }, idx) => {
             const isSelected = selected.includes(id)

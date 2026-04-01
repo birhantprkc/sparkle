@@ -121,7 +121,7 @@ async function findAndPrintHashes() {
 
 function buildElectron() {
   console.log("🚀 Building Electron app...")
-  execSync("npm run build:vite && electron-builder", { stdio: "inherit" })
+  execSync("pnpm run build:vite && electron-builder", { stdio: "inherit" })
 }
 
 const args = process.argv.slice(2)

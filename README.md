@@ -115,17 +115,17 @@ cd Sparkle</code></pre>
   </li>
   <li>
     <b>Install dependencies:</b>
-    <pre><code>npm i</code></pre>
+    <pre><code>pnpm i</code></pre>
   </li>
   <li>
     <b>Start the app in development mode:</b>
-    <pre><code>npm run dev</code></pre>
+    <pre><code>pnpm dev</code></pre>
     <i>This will launch Sparkle with hot reload for both the Electron main and renderer processes.</i>
   </li>
   <br/>
   <li>
     <b>Build for production:</b>
-    <pre><code>npm build</code></pre>
+    <pre><code>pnpm build</code></pre>
     <i>This will generate optimized production builds.</i>
   </li>
 </ol>

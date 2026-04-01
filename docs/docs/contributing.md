@@ -53,10 +53,10 @@ git clone https://github.com/parcoil/sparkle.git
 cd sparkle
 
 # Install dependencies
-npm install
+pnpm install
 
 # Start development mode (Admin Recomended. Some things only work with admin)
-npm run dev
+pnpm dev
 ```
 
 ## Community

@@ -10,14 +10,14 @@
     "start": "electron-vite preview",
     "dev": "electron-vite dev -w",
     "build": "node build.js",
-    "build:registry": "npm run build -- --registry",
-    "build:electron": "npm run build:vite && electron-builder",
+    "build:registry": "pnpm run build -- --registry",
+    "build:electron": "pnpm run build:vite && electron-builder",
     "build:vite": "electron-vite build",
     "postinstall": "electron-builder install-app-deps",
-    "build:unpack": "npm run build && electron-builder --dir",
+    "build:unpack": "pnpm run build && electron-builder --dir",
     "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
     "typecheck:web": "tsc --noEmit -p tsconfig.web.json --composite false",
-    "typecheck": "npm run typecheck:node && npm run typecheck:web"
+    "typecheck": "pnpm run typecheck:node && pnpm run typecheck:web"
   },
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.2",
@@ -42,10 +42,9 @@
     "@types/node": "^25.0.8",
     "@types/react": "^19.2.8",
     "@types/react-dom": "^19.2.3",
-    "@types/systeminformation": "^3.23.1",
     "@vitejs/plugin-react": "^4.7.0",
     "electron": "^41.0.3",
-    "electron-builder": "^26.8.1",
+    "electron-builder": "26.8.2",
     "electron-vite": "^5.0.0",
     "postcss": "^8.5.6",
     "prettier": "^3.6.2",
@@ -151,5 +150,5 @@
     },
     "npmRebuild": false
   },
-  "packageManager": "npm@11.8.0"
+  "packageManager": "pnpm@10.29.3"
 }

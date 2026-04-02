@@ -1,9 +1,9 @@
 import Button from "@/components/ui/button"
 import Toggle from "@/components/ui/Toggle"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { invoke } from "@/lib/electron"
 import RootDiv from "@/components/rootdiv"
-import { RefreshCw, Icon } from "lucide-react"
+import { RefreshCw, Icon, FileX, Gauge, Trash2, Download, Image, Bug } from "lucide-react"
 import { broom } from "@lucide/lab"
 import { toast } from "react-toastify"
 import log from "electron-log/renderer"
@@ -15,6 +15,7 @@ const cleanups = [
     label: "Clean Temporary Files",
     path: "C:\\Windows\\Temp",
     description: "Remove system and user temporary files.",
+    icon: <FileX className="w-5 h-5" />,
     script: `
       $systemTemp = "$env:SystemRoot\\Temp"
       $userTemp = [System.IO.Path]::GetTempPath()
@@ -31,12 +32,26 @@ const cleanups = [
       
       Write-Output $totalSizeBefore
     `,
+    sizeScript: `
+      $systemTemp = "$env:SystemRoot\\Temp"
+      $userTemp = [System.IO.Path]::GetTempPath()
+      $foldersToClean = @($systemTemp, $userTemp)
+      $totalSize = 0
+      foreach ($folder in $foldersToClean) {
+          if (Test-Path $folder) {
+              $folderSize = (Get-ChildItem -Path $folder -Recurse -Force -ErrorAction SilentlyContinue | Measure-Object -Property Length -Sum -ErrorAction SilentlyContinue).Sum
+              $totalSize += if ($folderSize) { $folderSize } else { 0 }
+          }
+      }
+      Write-Output $totalSize
+    `,
   },
   {
     id: "prefetch",
     label: "Clean Prefetch Files",
     path: "C:\\Windows\\Prefetch",
     description: "Delete files from the Windows Prefetch folder.",
+    icon: <Gauge className="w-5 h-5" />,
     script: `
       $prefetch = "$env:SystemRoot\\Prefetch"
       $totalSizeBefore = 0
@@ -46,18 +61,36 @@ const cleanups = [
       }
       Write-Output $totalSizeBefore
     `,
+    sizeScript: `
+      $prefetch = "$env:SystemRoot\\Prefetch"
+      $totalSize = 0
+      if (Test-Path $prefetch) {
+          $totalSize = (Get-ChildItem -Path "$prefetch\\*" -Force -ErrorAction SilentlyContinue | Measure-Object -Property Length -Sum -ErrorAction SilentlyContinue).Sum
+      }
+      Write-Output $totalSize
+    `,
   },
   {
     id: "recyclebin",
     label: "Empty Recycle Bin",
-    path: "Clear-RecycleBin -Force -ErrorAction SilentlyContinue",
+    path: "Recycle Bin",
     description: "Permanently remove files from the Recycle Bin.",
+    icon: <Trash2 className="w-5 h-5" />,
     script: `
       $recycleBinSize = 0
       $shell = New-Object -ComObject Shell.Application
       $recycleBin = $shell.Namespace(0xA)
       $recycleBinSize = ($recycleBin.Items() | Measure-Object -Property Size -Sum).Sum
+      if ($null -eq $recycleBinSize) { $recycleBinSize = 0 }
       Clear-RecycleBin -Force -ErrorAction SilentlyContinue
+      Write-Output $recycleBinSize
+    `,
+    sizeScript: `
+      $recycleBinSize = 0
+      $shell = New-Object -ComObject Shell.Application
+      $recycleBin = $shell.Namespace(0xA)
+      $recycleBinSize = ($recycleBin.Items() | Measure-Object -Property Size -Sum).Sum
+      if ($null -eq $recycleBinSize) { $recycleBinSize = 0 }
       Write-Output $recycleBinSize
     `,
   },
@@ -66,6 +99,7 @@ const cleanups = [
     label: "Clean Windows Update Cache",
     path: "C:\\Windows\\SoftwareDistribution\\Download",
     description: "Remove Windows Update downloaded installation files.",
+    icon: <Download className="w-5 h-5" />,
     script: `
       $windowsUpdateDownload = "$env:SystemRoot\\SoftwareDistribution\\Download"
       $totalSizeBefore = 0
@@ -75,12 +109,21 @@ const cleanups = [
       }
       Write-Output $totalSizeBefore
     `,
+    sizeScript: `
+      $windowsUpdateDownload = "$env:SystemRoot\\SoftwareDistribution\\Download"
+      $totalSize = 0
+      if (Test-Path $windowsUpdateDownload) {
+          $totalSize = (Get-ChildItem -Path "$windowsUpdateDownload\\*" -Recurse -Force -ErrorAction SilentlyContinue | Measure-Object -Property Length -Sum -ErrorAction SilentlyContinue).Sum
+      }
+      Write-Output $totalSize
+    `,
   },
   {
     id: "thumbnails",
     label: "Clear Thumbnail Cache",
     path: "C:\\Users\\<User>\\AppData\\Local\\Microsoft\\Windows\\Explorer",
     description: "Remove cached thumbnail images used by File Explorer.",
+    icon: <Image className="w-5 h-5" />,
     script: `
       $thumbCache = "$env:LOCALAPPDATA\\Microsoft\\Windows\\Explorer"
       $totalSizeBefore = 0
@@ -91,12 +134,22 @@ const cleanups = [
       }
       Write-Output $totalSizeBefore
     `,
+    sizeScript: `
+      $thumbCache = "$env:LOCALAPPDATA\\Microsoft\\Windows\\Explorer"
+      $totalSize = 0
+      $thumbFiles = Get-ChildItem "$thumbCache\\thumbcache_*.db" -ErrorAction SilentlyContinue
+      if ($thumbFiles) {
+          $totalSize = ($thumbFiles | Measure-Object -Property Length -Sum -ErrorAction SilentlyContinue).Sum
+      }
+      Write-Output $totalSize
+    `,
   },
   {
     id: "errorreports",
     label: "Clear Error Reports",
     path: "C:\\Users\\<User>\\AppData\\Local\\CrashDumps",
     description: "Remove error report and crash dump files.",
+    icon: <Bug className="w-5 h-5" />,
     script: `
       $crashDumps = "$env:LOCALAPPDATA\\CrashDumps"
       $totalSizeBefore = 0
@@ -105,6 +158,14 @@ const cleanups = [
           Remove-Item "$crashDumps\\*" -Force -Recurse -ErrorAction SilentlyContinue
       }
       Write-Output $totalSizeBefore
+    `,
+    sizeScript: `
+      $crashDumps = "$env:LOCALAPPDATA\\CrashDumps"
+      $totalSize = 0
+      if (Test-Path $crashDumps) {
+          $totalSize = (Get-ChildItem -Path "$crashDumps\\*" -Recurse -Force -ErrorAction SilentlyContinue | Measure-Object -Property Length -Sum -ErrorAction SilentlyContinue).Sum
+      }
+      Write-Output $totalSize
     `,
   },
 ]
@@ -117,6 +178,8 @@ function Clean() {
   )
   const [isCleaning, setIsCleaning] = useState(false)
   const [cleanupResults, setCleanupResults] = useState({})
+  const [currentSizes, setCurrentSizes] = useState<Record<string, number>>({})
+  const [loadingSizes, setLoadingSizes] = useState(false)
 
   const toggleCleanup = (id: string) => {
     setSelected((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]))
@@ -128,6 +191,37 @@ function Clean() {
     const i = Math.floor(Math.log(bytes) / Math.log(1024))
     return `${(bytes / Math.pow(1024, i)).toFixed(2)} ${sizes[i]}`
   }
+
+  async function fetchSizes(silent = false) {
+    if (!silent) setLoadingSizes(true)
+    const newSizes: Record<string, number> = {}
+    for (const cleanup of cleanups) {
+      if (!cleanup.sizeScript) continue
+      try {
+        const result = await invoke({
+          channel: "run-powershell",
+          payload: { script: cleanup.sizeScript, name: `size-${cleanup.id}` },
+        })
+        const resultStr = result?.output || "0"
+        newSizes[cleanup.id] = parseInt(resultStr.trim(), 10) || 0
+      } catch (err) {
+        log.error(`Failed to fetch size for ${cleanup.id}: ${err}`)
+        newSizes[cleanup.id] = 0
+      }
+    }
+    setCurrentSizes(newSizes)
+    if (!silent) setLoadingSizes(false)
+  }
+
+  useEffect(() => {
+    fetchSizes()
+  }, [])
+
+  const totalSize = Object.values(currentSizes).reduce((sum, size) => sum + (size || 0), 0)
+  const totalFreed = Object.values(cleanupResults as Record<string, number>).reduce(
+    (sum: number, size) => sum + (size || 0),
+    0,
+  )
 
   async function runSelectedCleanups() {
     setIsCleaning(true)
@@ -173,6 +267,7 @@ function Clean() {
       setLastClean(now)
       localStorage.setItem("last-clean", now)
       setCleanupResults(newResults)
+      fetchSizes(true)
     }
 
     setLoadingQueue([])
@@ -191,11 +286,36 @@ function Clean() {
             <p className="text-sm text-sparkle-text-secondary">
               Last cleaned: <span className="font-medium">{lastClean}</span>
             </p>
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-1">
+              <p className="text-sm text-sparkle-text-secondary">
+                {loadingSizes ? (
+                  "Calculating total size..."
+                ) : (
+                  <>
+                    Total size:{" "}
+                    <span className="font-medium text-teal-500">{formatBytes(totalSize)}</span>
+                  </>
+                )}
+              </p>
+              {totalFreed > 0 && (
+                <p className="text-sm text-green-500">
+                  Total freed: <span className="font-medium">{formatBytes(totalFreed)}</span>
+                </p>
+              )}
+            </div>
           </div>
           <div className="flex items-center">
-            {selected.length > 0 && (
+            {selected.length > 0 ? (
               <Button onClick={() => setSelected([])} variant="secondary" className="mr-2">
                 Unselect All
+              </Button>
+            ) : (
+              <Button
+                onClick={() => setSelected(cleanups.map((c) => c.id))}
+                variant="secondary"
+                className="mr-2"
+              >
+                Select All
               </Button>
             )}
             <Button
@@ -219,28 +339,52 @@ function Clean() {
             </Button>
           </div>
         </Card>
-        <Card className="flex flex-col divide-y divide-sparkle-border p-0">
-          {cleanups.map(({ id, label, description, path }, idx) => {
+        <Card className="flex flex-col divide-y divide-sparkle-border p-0 mb-10">
+          {cleanups.map(({ id, label, description, path, icon }, idx) => {
             const isSelected = selected.includes(id)
+            const currentSize = currentSizes[id]
+            const freedSpace = cleanupResults[id]
             return (
               <div
                 key={id}
-                className={`relative flex items-center justify-between px-6 py-4 ${idx === 0 ? "rounded-t-xl" : ""} ${idx === cleanups.length - 1 ? "rounded-b-xl" : ""} group`}
+                className={`relative flex items-center justify-between px-6 py-5 ${idx === 0 ? "rounded-t-xl" : ""} ${idx === cleanups.length - 1 ? "rounded-b-xl" : ""} group hover:bg-sparkle-card/50 transition-colors`}
               >
-                <div className="flex flex-col flex-1 min-w-0">
-                  <span className="text-base font-semibold text-sparkle-text truncate">
-                    {label}
-                  </span>
-
-                  <span className="text-xs text-sparkle-text-secondary mt-0.5 truncate">
-                    {description}
-                    <p className="text-xs text-sparkle-text-muted ml-0.5 truncate">
-                      {path || "Path not specified"}
-                    </p>
-                    <p className="text-sparkle-primary font-semibold ">
-                      {cleanupResults[id] ? ` (${formatBytes(cleanupResults[id])} cleared)` : ""}
-                    </p>
-                  </span>
+                <div className="flex items-center gap-4 flex-1 min-w-0">
+                  <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-sparkle-border/50 text-sparkle-text-secondary">
+                    {icon}
+                  </div>
+                  <div className="flex flex-col flex-1 min-w-0">
+                    <div className="flex items-center gap-3">
+                      <span className="text-base font-semibold text-sparkle-text truncate">
+                        {label}
+                      </span>
+                      {freedSpace ? (
+                        <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-green-500/20 text-green-500">
+                          {formatBytes(freedSpace)} freed
+                        </span>
+                      ) : null}
+                    </div>
+                    <span className="text-sm text-sparkle-text-secondary mt-1">{description}</span>
+                    <div className="flex items-center gap-4 mt-2">
+                      <span className="text-xs text-sparkle-text-muted flex items-center gap-1">
+                        <span className="font-medium">Size:</span>
+                        {loadingSizes ? (
+                          <span className="text-sparkle-text-secondary">Calculating...</span>
+                        ) : currentSize !== undefined ? (
+                          <span className="text-teal-500 font-medium">
+                            {formatBytes(currentSize)}
+                          </span>
+                        ) : (
+                          <span className="text-sparkle-text-secondary">Unknown</span>
+                        )}
+                      </span>
+                      {path && path !== "Recycle Bin" && (
+                        <span className="text-xs text-sparkle-text-muted truncate max-w-xs">
+                          {path}
+                        </span>
+                      )}
+                    </div>
+                  </div>
                 </div>
                 <div className="ml-4 flex items-center">
                   <Toggle

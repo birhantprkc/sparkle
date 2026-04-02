@@ -46,6 +46,7 @@ function RestorePointsTab() {
 
   const [customModalOpen, setCustomModalOpen] = useState(false)
   const [customName, setCustomName] = useState("")
+  const [confirmDeleteAll, setConfirmDeleteAll] = useState(false)
 
   const fetchRestorePoints = async () => {
     setLoading(true)
@@ -131,6 +132,7 @@ function RestorePointsTab() {
     setProcessing(false)
   }
   const handleDeleteAll = async () => {
+    setConfirmDeleteAll(false)
     setProcessing(true)
     await invoke({ channel: "delete-all-restore-points" })
     toast.success("All restore points deleted successfully.")
@@ -156,8 +158,8 @@ function RestorePointsTab() {
           <div className="flex flex-wrap gap-2 justify-end">
             <Button
               variant="danger"
-              onClick={handleDeleteAll}
-              disabled={loading || processing}
+              onClick={() => setConfirmDeleteAll(true)}
+              disabled={loading || processing || restorePoints.length === 0}
               className="flex items-center gap-2"
             >
               <Trash size={16} /> Delete All
@@ -328,6 +330,34 @@ function RestorePointsTab() {
             <p className="text-xs text-center text-sparkle-text-muted">
               This may take a while depending on your hardware
             </p>
+          </div>
+        </div>
+      </Modal>
+      <Modal open={confirmDeleteAll} onClose={() => !processing && setConfirmDeleteAll(false)}>
+        <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-6 shadow-xl max-w-lg w-full mx-4 pb-0">
+          <h3 className="text-lg font-medium text-sparkle-text">Delete All Restore Points</h3>
+          <div className="p-4 pr-0">
+            <p className="text-sparkle-text-secondary mb-4">
+              Are you sure you want to delete all {restorePoints.length} restore point
+              {restorePoints.length !== 1 ? "s" : ""}? This action cannot be undone and will remove
+              all system restore points from your computer.
+            </p>
+            <div className="flex justify-end gap-3">
+              <Button
+                variant="secondary"
+                onClick={() => !processing && setConfirmDeleteAll(false)}
+                disabled={processing}
+              >
+                Cancel
+              </Button>
+              <Button variant="danger" onClick={handleDeleteAll} disabled={processing}>
+                {processing ? (
+                  <Loader2 size={16} className="animate-spin" />
+                ) : (
+                  `Delete All (${restorePoints.length})`
+                )}
+              </Button>
+            </div>
           </div>
         </div>
       </Modal>

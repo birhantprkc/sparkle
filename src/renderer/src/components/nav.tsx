@@ -37,7 +37,7 @@ const tabs = {
   tweaks: { label: "Tweaks", path: "/tweaks" },
   utilities: { label: "Utilities", path: "/utilities" },
   clean: { label: "Cleaner", path: "/clean" },
-  backup: { label: "Restore Points", path: "/backup" },
+  backup: { label: "Restore", path: "/backup" },
   dns: { label: "DNS Manager", path: "/dns" },
   apps: { label: "Apps", path: "/apps" },
   settings: { label: "Settings", path: "/settings" },

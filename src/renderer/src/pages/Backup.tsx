@@ -1,5 +1,14 @@
 import { useEffect, useState } from "react"
-import { RefreshCw, PlusCircle, Shield, RotateCcw, Loader2, Search } from "lucide-react"
+import {
+  RefreshCw,
+  PlusCircle,
+  Shield,
+  RotateCcw,
+  Loader2,
+  Search,
+  Wrench,
+  Undo2,
+} from "lucide-react"
 import RootDiv from "@/components/rootdiv"
 import { invoke } from "@/lib/electron"
 import Button from "@/components/ui/button"
@@ -8,8 +17,19 @@ import { toast } from "react-toastify"
 import { Trash } from "lucide-react"
 import log from "electron-log/renderer"
 import { LargeInput } from "@/components/ui/input"
+import { Tweak } from "@/types/index"
 
-export default function RestorePointManager() {
+type RestorePoint = {
+  SequenceNumber: number
+  Description: string
+  CreationTime: string
+  EventType: number
+  RestorePointType: number
+}
+
+type RestorePointList = RestorePoint[]
+
+function RestorePointsTab() {
   const [restorePoints, setRestorePoints] = useState<RestorePointList>([])
   const [loading, setLoading] = useState(true)
   const [processing, setProcessing] = useState(false)
@@ -23,16 +43,6 @@ export default function RestorePointManager() {
     type: null,
     restorePoint: null,
   })
-
-  type RestorePoint = {
-    SequenceNumber: number
-    Description: string
-    CreationTime: string
-    EventType: number
-    RestorePointType: number
-  }
-
-  type RestorePointList = RestorePoint[]
 
   const [customModalOpen, setCustomModalOpen] = useState(false)
   const [customName, setCustomName] = useState("")
@@ -130,130 +140,123 @@ export default function RestorePointManager() {
   const filteredRestorePoints = restorePoints.filter((rp: RestorePoint) =>
     (rp.Description || "").toLowerCase().includes(searchQuery.toLowerCase()),
   )
-  console.log(restorePoints)
   return (
     <>
-      <RootDiv>
-        <div className="h-full max-w-full space-y-6">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-            <div className="relative w-full md:w-64 ml-1 mt-1">
-              <LargeInput
-                placeholder="Search Restore Points..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                icon={Search}
-              />
-            </div>
-
-            <div className="flex flex-wrap gap-2 justify-end">
-              <Button
-                variant="danger"
-                onClick={handleDeleteAll}
-                disabled={loading || processing}
-                className="flex items-center gap-2"
-              >
-                <Trash size={16} /> Delete All
-              </Button>
-              <Button
-                variant="secondary"
-                onClick={fetchRestorePoints}
-                className="flex items-center gap-2"
-                disabled={loading || processing}
-              >
-                <RefreshCw size={16} /> Refresh
-              </Button>
-              <Button
-                variant="primary"
-                onClick={handleCreateRestorePoint}
-                className="flex items-center gap-2"
-                disabled={loading || processing}
-              >
-                {processing ? (
-                  <Loader2 size={16} className="animate-spin" />
-                ) : (
-                  <PlusCircle size={16} />
-                )}
-                Quick Restore Point
-              </Button>
-              <Button
-                variant="primary"
-                onClick={() => setCustomModalOpen(true)}
-                disabled={loading || processing}
-              >
-                Custom Restore Point
-              </Button>
-            </div>
+      <div className="h-full max-w-full space-y-6">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div className="relative w-full md:w-64 ml-1 mt-1">
+            <LargeInput
+              placeholder="Search Restore Points..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              icon={Search}
+            />
           </div>
 
-          {loading ? (
-            <div className="flex items-center justify-center h-96">
-              <Loader2 size={32} className="text-sparkle-primary animate-spin" />
-            </div>
-          ) : filteredRestorePoints.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-12 text-center bg-sparkle-card border border-sparkle-border rounded-lg">
-              <div className="p-4 bg-sparkle-secondary rounded-full mb-4">
-                <Shield size={28} className="text-sparkle-text" />
-              </div>
-              <h3 className="text-lg font-medium mb-2 text-sparkle-text">
-                No Restore Points Found
-              </h3>
-              <p className="text-sparkle-text-secondary max-w-sm mb-4">
-                {searchQuery
-                  ? "No restore points match your search."
-                  : "Create a restore point to preserve your system state. You can restore your system to any point when needed."}
-              </p>
-              {!searchQuery && (
-                <Button
-                  variant="primary"
-                  icon={<PlusCircle size={16} />}
-                  onClick={handleCreateRestorePoint}
-                  disabled={processing}
-                >
-                  Create a Quick Restore Point
-                </Button>
+          <div className="flex flex-wrap gap-2 justify-end">
+            <Button
+              variant="danger"
+              onClick={handleDeleteAll}
+              disabled={loading || processing}
+              className="flex items-center gap-2"
+            >
+              <Trash size={16} /> Delete All
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={fetchRestorePoints}
+              className="flex items-center gap-2"
+              disabled={loading || processing}
+            >
+              <RefreshCw size={16} /> Refresh
+            </Button>
+            <Button
+              variant="primary"
+              onClick={handleCreateRestorePoint}
+              className="flex items-center gap-2"
+              disabled={loading || processing}
+            >
+              {processing ? (
+                <Loader2 size={16} className="animate-spin" />
+              ) : (
+                <PlusCircle size={16} />
               )}
-            </div>
-          ) : (
-            <div className="bg-sparkle-card border border-sparkle-border rounded-lg overflow-hidden">
-              <div className="max-h-96 overflow-y-auto">
-                <table className="w-full text-sm text-left">
-                  <thead className="text-xs text-sparkle-text-secondary uppercase bg-sparkle-card sticky top-0">
-                    <tr>
-                      <th className="px-6 py-4">Description</th>
-                      <th className="px-6 py-4 w-32 text-center">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredRestorePoints.map((rp, index) => (
-                      <tr key={index} className="border-t border-sparkle-border">
-                        <td className="px-6 py-4 font-medium text-sparkle-text">
-                          {rp.Description}
-                        </td>
-                        <td className="px-14 py-4 text-center">
-                          <Button
-                            variant="outline"
-                            className="p-2! gap-2"
-                            onClick={() => handleRestore(rp)}
-                            disabled={processing}
-                            title="Restore System"
-                          >
-                            <RotateCcw size={16} />
-                            Restore
-                          </Button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
-          <p className="text-center text-sparkle-text-muted mt-4">
-            Listing restore points is a beta feature and may be unreliable, but creating restore
-            points works as expected.
-          </p>
+              Quick Restore Point
+            </Button>
+            <Button
+              variant="primary"
+              onClick={() => setCustomModalOpen(true)}
+              disabled={loading || processing}
+            >
+              Custom Restore Point
+            </Button>
+          </div>
         </div>
-      </RootDiv>
+
+        {loading ? (
+          <div className="flex items-center justify-center h-96">
+            <Loader2 size={32} className="text-sparkle-primary animate-spin" />
+          </div>
+        ) : filteredRestorePoints.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-12 text-center bg-sparkle-card border border-sparkle-border rounded-lg">
+            <div className="p-4 bg-sparkle-secondary rounded-full mb-4">
+              <Shield size={28} className="text-sparkle-text" />
+            </div>
+            <h3 className="text-lg font-medium mb-2 text-sparkle-text">No Restore Points Found</h3>
+            <p className="text-sparkle-text-secondary max-w-sm mb-4">
+              {searchQuery
+                ? "No restore points match your search."
+                : "Create a restore point to preserve your system state. You can restore your system to any point when needed."}
+            </p>
+            {!searchQuery && (
+              <Button
+                variant="primary"
+                icon={<PlusCircle size={16} />}
+                onClick={handleCreateRestorePoint}
+                disabled={processing}
+              >
+                Create a Quick Restore Point
+              </Button>
+            )}
+          </div>
+        ) : (
+          <div className="bg-sparkle-card border border-sparkle-border rounded-lg overflow-hidden">
+            <div className="max-h-96 overflow-y-auto">
+              <table className="w-full text-sm text-left">
+                <thead className="text-xs text-sparkle-text-secondary uppercase bg-sparkle-card sticky top-0">
+                  <tr>
+                    <th className="px-6 py-4">Description</th>
+                    <th className="px-6 py-4 w-32 text-center">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredRestorePoints.map((rp, index) => (
+                    <tr key={index} className="border-t border-sparkle-border">
+                      <td className="px-6 py-4 font-medium text-sparkle-text">{rp.Description}</td>
+                      <td className="px-14 py-4 text-center">
+                        <Button
+                          variant="outline"
+                          className="p-2! gap-2"
+                          onClick={() => handleRestore(rp)}
+                          disabled={processing}
+                          title="Restore System"
+                        >
+                          <RotateCcw size={16} />
+                          Restore
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+        <p className="text-center text-sparkle-text-muted mt-4">
+          Listing restore points is a beta feature and may be unreliable, but creating restore
+          points works as expected.
+        </p>
+      </div>
       <Modal
         open={modalState.isOpen}
         onClose={() =>
@@ -329,5 +332,304 @@ export default function RestorePointManager() {
         </div>
       </Modal>
     </>
+  )
+}
+
+function AppliedTweaksTab() {
+  const [tweaks, setTweaks] = useState<Tweak[]>([])
+  const [toggleStates, setToggleStates] = useState<Record<string, boolean>>({})
+  const [loading, setLoading] = useState(true)
+  const [processing, setProcessing] = useState(false)
+  const [undoingTweak, setUndoingTweak] = useState<string | null>(null)
+  const [confirmUndoAll, setConfirmUndoAll] = useState(false)
+
+  const loadData = async () => {
+    setLoading(true)
+    try {
+      const [fetchedTweaks, savedStates] = await Promise.all([
+        invoke({ channel: "tweaks:fetch" }),
+        invoke({ channel: "tweak-states:load" }),
+      ])
+      setTweaks(fetchedTweaks)
+      if (savedStates) {
+        setToggleStates(JSON.parse(savedStates))
+      }
+    } catch (error) {
+      toast.error("Failed to load applied tweaks.")
+      log.error("Failed to load applied tweaks:", error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    loadData()
+  }, [])
+
+  const appliedTweaks = tweaks.filter((t) => toggleStates[t.name])
+
+  const appliedTweakFiltered = appliedTweaks.filter(
+    (t) => t.reversible === true || t.reversible === undefined,
+  )
+
+  const saveToggleStates = async (newStates: Record<string, boolean>) => {
+    await invoke({ channel: "tweak-states:save", payload: JSON.stringify(newStates) })
+  }
+
+  const handleUndo = async (tweak: Tweak) => {
+    setUndoingTweak(tweak.name)
+    setProcessing(true)
+    const loadingToastId = toast.loading(`Undoing tweak: ${tweak.title || tweak.name}`)
+    try {
+      const newStates = { ...toggleStates, [tweak.name]: false }
+      setToggleStates(newStates)
+      await saveToggleStates(newStates)
+
+      const result = await invoke({ channel: "tweak:unapply", payload: tweak.name })
+      if (result?.success) {
+        toast.update(loadingToastId, {
+          render: `Undid tweak: ${tweak.title || tweak.name}`,
+          type: "success",
+          isLoading: false,
+          autoClose: 3000,
+        })
+      } else {
+        toast.update(loadingToastId, {
+          render: `Failed to undo tweak: ${tweak.title || tweak.name}`,
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+        })
+        const reverted = { ...toggleStates, [tweak.name]: true }
+        setToggleStates(reverted)
+        await saveToggleStates(reverted)
+      }
+    } catch (error) {
+      log.error(`Error undoing tweak ${tweak.name}:`, error)
+      toast.update(loadingToastId, {
+        render: `Failed to undo tweak: ${tweak.title || tweak.name}`,
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
+      })
+      const reverted = { ...toggleStates, [tweak.name]: true }
+      setToggleStates(reverted)
+      await saveToggleStates(reverted)
+    }
+    setProcessing(false)
+    setUndoingTweak(null)
+  }
+
+  const handleUndoAll = async () => {
+    setConfirmUndoAll(false)
+    setProcessing(true)
+    const newStates = { ...toggleStates }
+    for (const tweak of appliedTweaks) {
+      if (tweak.reversible === false) continue
+      const loadingToastId = toast.loading(`Undoing tweak: ${tweak.title || tweak.name}`)
+      try {
+        newStates[tweak.name] = false
+        setToggleStates({ ...newStates })
+        await saveToggleStates(newStates)
+
+        const result = await invoke({ channel: "tweak:unapply", payload: tweak.name })
+        if (result?.success) {
+          toast.update(loadingToastId, {
+            render: `Undid tweak: ${tweak.title || tweak.name}`,
+            type: "success",
+            isLoading: false,
+            autoClose: 3000,
+          })
+        } else {
+          toast.update(loadingToastId, {
+            render: `Failed to undo tweak: ${tweak.title || tweak.name}`,
+            type: "error",
+            isLoading: false,
+            autoClose: 3000,
+          })
+          newStates[tweak.name] = true
+          setToggleStates({ ...newStates })
+          await saveToggleStates(newStates)
+        }
+      } catch (error) {
+        log.error(`Error undoing tweak ${tweak.name}:`, error)
+        toast.update(loadingToastId, {
+          render: `Failed to undo tweak: ${tweak.title || tweak.name}`,
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+        })
+        newStates[tweak.name] = true
+        setToggleStates({ ...newStates })
+        await saveToggleStates(newStates)
+      }
+    }
+    setProcessing(false)
+  }
+
+  return (
+    <>
+      <div className="h-full max-w-full space-y-4">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div>
+            <p className="text-sparkle-text-secondary text-sm">
+              {appliedTweaks.length} tweak{appliedTweaks.length !== 1 ? "s" : ""} currently applied
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2 justify-end">
+            <Button
+              variant="secondary"
+              onClick={loadData}
+              className="flex items-center gap-2"
+              disabled={loading || processing}
+            >
+              <RefreshCw size={16} /> Refresh
+            </Button>
+            <Button
+              variant="danger"
+              onClick={() => setConfirmUndoAll(true)}
+              disabled={loading || processing || appliedTweakFiltered.length === 0}
+              className="flex items-center gap-2"
+            >
+              <Undo2 size={16} /> Undo All Tweaks
+            </Button>
+          </div>
+        </div>
+
+        {loading ? (
+          <div className="flex items-center justify-center h-96">
+            <Loader2 size={32} className="text-sparkle-primary animate-spin" />
+          </div>
+        ) : appliedTweaks.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-12 text-center bg-sparkle-card border border-sparkle-border rounded-lg">
+            <div className="p-4 bg-sparkle-secondary rounded-full mb-4">
+              <Wrench size={28} className="text-sparkle-text" />
+            </div>
+            <h3 className="text-lg font-medium mb-2 text-sparkle-text">No Applied Tweaks</h3>
+            <p className="text-sparkle-text-secondary max-w-sm mb-4">
+              You don't have any tweaks applied. Go to the Tweaks page to apply some.
+            </p>
+          </div>
+        ) : (
+          <div className="bg-sparkle-card border border-sparkle-border rounded-lg overflow-hidden">
+            <div className="max-h-96 overflow-y-auto">
+              <table className="w-full text-sm text-left">
+                <thead className="text-xs text-sparkle-text-secondary uppercase bg-sparkle-card sticky top-0">
+                  <tr>
+                    <th className="px-6 py-4">Tweak</th>
+                    <th className="px-6 py-4 w-32 text-center">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {appliedTweaks.map((tweak) => (
+                    <tr key={tweak.name} className="border-t border-sparkle-border">
+                      <td className="px-6 py-4">
+                        <p className="font-medium text-sparkle-text">{tweak.title || tweak.name}</p>
+                        {tweak.description && (
+                          <p className="text-xs text-sparkle-text-secondary mt-0.5">
+                            {tweak.description}
+                          </p>
+                        )}
+                      </td>
+                      <td className="px-14 py-4 text-center">
+                        {tweak.reversible !== false ? (
+                          <Button
+                            variant="outline"
+                            className="p-2! gap-2"
+                            onClick={() => handleUndo(tweak)}
+                            disabled={processing}
+                            title="Undo Tweak"
+                          >
+                            {undoingTweak === tweak.name ? (
+                              <Loader2 size={16} className="animate-spin" />
+                            ) : (
+                              <Undo2 size={16} />
+                            )}
+                            Undo
+                          </Button>
+                        ) : (
+                          <span className="text-sparkle-text-secondary text-xs">
+                            Not reversible
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+      </div>
+      <Modal open={confirmUndoAll} onClose={() => !processing && setConfirmUndoAll(false)}>
+        <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-6 shadow-xl max-w-lg w-full mx-4 pb-0">
+          <h3 className="text-lg font-medium text-sparkle-text">Undo All Tweaks</h3>
+          <div className="p-4 pr-0">
+            <p className="text-sparkle-text-secondary mb-4">
+              Are you sure you want to undo all {appliedTweakFiltered.length} applied tweak
+              {appliedTweakFiltered.length !== 1 ? "s" : ""}? This will run the unapply script for
+              each tweak and may require a restart.
+            </p>
+            <div className="flex justify-end gap-3">
+              <Button
+                variant="secondary"
+                onClick={() => !processing && setConfirmUndoAll(false)}
+                disabled={processing}
+              >
+                Cancel
+              </Button>
+              <Button variant="danger" onClick={handleUndoAll} disabled={processing}>
+                {processing ? (
+                  <Loader2 size={16} className="animate-spin" />
+                ) : (
+                  `Undo All (${appliedTweakFiltered.length})`
+                )}
+              </Button>
+            </div>
+          </div>
+        </div>
+      </Modal>
+    </>
+  )
+}
+
+export default function RestorePointManager() {
+  const [activeTab, setActiveTab] = useState<"restore" | "history">("restore")
+
+  return (
+    <RootDiv>
+      <div className="h-full max-w-full space-y-4">
+        <div className="flex gap-1 bg-sparkle-card border border-sparkle-border rounded-lg p-1 w-fit">
+          <button
+            onClick={() => setActiveTab("restore")}
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-all active:scale-95 ${
+              activeTab === "restore"
+                ? "bg-sparkle-primary text-white shadow"
+                : "text-sparkle-text-secondary hover:text-sparkle-text"
+            }`}
+          >
+            <span className="flex items-center gap-2">
+              <Shield size={16} />
+              Restore Points
+            </span>
+          </button>
+          <button
+            onClick={() => setActiveTab("history")}
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-all active:scale-95 ${
+              activeTab === "history"
+                ? "bg-sparkle-primary text-white shadow"
+                : "text-sparkle-text-secondary hover:text-sparkle-text"
+            }`}
+          >
+            <span className="flex items-center gap-2">
+              <Wrench size={16} />
+              Applied Tweaks (NEW)
+            </span>
+          </button>
+        </div>
+
+        {activeTab === "restore" ? <RestorePointsTab /> : <AppliedTweaksTab />}
+      </div>
+    </RootDiv>
   )
 }

@@ -8,6 +8,7 @@ import {
   Search,
   Wrench,
   Undo2,
+  HelpCircle,
 } from "lucide-react"
 import RootDiv from "@/components/rootdiv"
 import { invoke } from "@/lib/electron"
@@ -372,6 +373,7 @@ function AppliedTweaksTab() {
   const [processing, setProcessing] = useState(false)
   const [undoingTweak, setUndoingTweak] = useState<string | null>(null)
   const [confirmUndoAll, setConfirmUndoAll] = useState(false)
+  const [showWhyNotReversible, setShowWhyNotReversible] = useState(false)
 
   const loadData = async () => {
     setLoading(true)
@@ -590,6 +592,15 @@ function AppliedTweaksTab() {
             </div>
           </div>
         )}
+        <div className="flex justify-center">
+          <Button
+            variant="outline"
+            onClick={() => setShowWhyNotReversible(true)}
+            className="flex items-center gap-2"
+          >
+            <HelpCircle size={16} /> Why are some tweaks not reversible?
+          </Button>
+        </div>
       </div>
       <Modal open={confirmUndoAll} onClose={() => !processing && setConfirmUndoAll(false)}>
         <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-6 shadow-xl max-w-lg w-full mx-4 pb-0">
@@ -616,6 +627,46 @@ function AppliedTweaksTab() {
                 )}
               </Button>
             </div>
+          </div>
+        </div>
+      </Modal>
+      <Modal open={showWhyNotReversible} onClose={() => setShowWhyNotReversible(false)}>
+        <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-6 shadow-xl max-w-lg w-full mx-4">
+          <h3 className="text-lg font-medium text-sparkle-text mb-4">
+            Why are some tweaks not reversible?
+          </h3>
+          <div className="text-sparkle-text-secondary text-sm leading-6 space-y-3">
+            <p>
+              Some tweaks make changes that can't be automatically reversed by Sparkle. However,
+              most of these changes can still be undone manually:
+            </p>
+            <ul className="list-disc list-inside space-y-2 ml-2">
+              <li>
+                <strong className="text-sparkle-text">Debloating Windows:</strong> Removed apps can
+                be reinstalled from the Microsoft Store
+              </li>
+              <li>
+                <strong className="text-sparkle-text">Optimize NVIDIA Settings:</strong> Settings
+                can be reset through the NVIDIA Control Panel
+              </li>
+              <li>
+                <strong className="text-sparkle-text">Service modifications:</strong> Services can
+                be re-enabled through Windows Services Manager
+              </li>
+            </ul>
+            <p>
+              While these tweaks don't have an automatic undo button, you can always create a
+              restore point before applying them.
+            </p>
+            <p className="text-orange-400 text-xs">
+              Tip: Create a restore point before applying non-reversible tweaks so you have an easy
+              fallback option.
+            </p>
+          </div>
+          <div className="flex justify-end mt-6">
+            <Button variant="primary" onClick={() => setShowWhyNotReversible(false)}>
+              Got it
+            </Button>
           </div>
         </div>
       </Modal>

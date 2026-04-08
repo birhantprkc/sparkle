@@ -1,5 +1,5 @@
 {
-  "version": "2026-03-26T03:58:08.430Z",
+  "version": "2026-04-08T02:43:55.350Z",
   "tweaks": [
     {
       "id": "24-hour-clock",
@@ -485,7 +485,7 @@
     {
       "id": "ultimate-performance-plan",
       "title": "Ultimate Performance Power Plan",
-      "description": "Enables And Applys The Windows Ultimate Powerplan for better performance",
+      "description": "Enables And Applies The Windows Ultimate Powerplan for better performance",
       "category": [
         "Performance",
         "Gaming"

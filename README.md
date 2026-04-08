@@ -96,7 +96,7 @@ That’s totally fine, this project probably isn’t for you.
  You might want to check out [CTT WinUtil](https://github.com/ChrisTitusTech/winutil),  
  A PowerShell based alternative that keeps things nice and lightweight.
 
-this message is inspired by [this](https://github.com/nukeop/nuclear/blob/master/docs/electron.md)
+this message is inspired by [this](https://github.com/nukeop/nuclear/blob/legacy/electron/docs/electron.md)
 
 </details>
 

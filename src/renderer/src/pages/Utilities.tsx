@@ -114,38 +114,6 @@ if (Test-Path $path) { Set-ItemProperty -Path $path -Name "HiberbootEnabled" -Ty
 `,
   },
   {
-    name: "Windows Updates",
-    description: "Control how Windows handles automatic updates.",
-    state: false,
-    icon: <RefreshCwIcon />,
-    type: "dropdown",
-    options: ["Default", "Manual", "Disabled"],
-    checkScript: `
-$service = Get-Service -Name wuauserv -ErrorAction SilentlyContinue
-if ($service.StartType -eq 'Automatic') { Write-Output 'Default' }
-elseif ($service.StartType -eq 'Manual') { Write-Output 'Manual' }
-elseif ($service.StartType -eq 'Disabled') { Write-Output 'Disabled' }
-else { Write-Output 'Unknown' }
-`,
-    applyScript: {
-      Default: `
-Set-Service -Name wuauserv -StartupType Automatic
-Start-Service -Name wuauserv -ErrorAction SilentlyContinue
-Write-Output "Windows Update set to Default (Automatic)."
-`,
-      Manual: `
-Set-Service -Name wuauserv -StartupType Manual
-Stop-Service -Name wuauserv -Force -ErrorAction SilentlyContinue
-Write-Output "Windows Update set to Manual."
-`,
-      Disabled: `
-Stop-Service -Name wuauserv -Force -ErrorAction SilentlyContinue
-Set-Service -Name wuauserv -StartupType Disabled
-Write-Output "Windows Update service disabled."
-`,
-    },
-  },
-  {
     name: "Graphics Driver",
     description: "Restart your graphics driver to fix display issues.",
     state: false,
@@ -169,7 +137,7 @@ if ($gpus) {
   },
   {
     name: "Windows Search and UI",
-    description: "Restart your Windows Search and UI to fix display issues.",
+    description: "Restart your Windows Search and UI to fix display issues. (May take a while)",
     state: false,
     icon: <Monitor />,
     type: "button",

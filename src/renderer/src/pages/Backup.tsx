@@ -704,7 +704,7 @@ export default function RestorePointManager() {
           >
             <span className="flex items-center gap-2">
               <Wrench size={16} />
-              Applied Tweaks (NEW)
+              Revert Applied Tweaks (NEW)
             </span>
           </button>
         </div>

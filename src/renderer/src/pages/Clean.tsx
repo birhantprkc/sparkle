@@ -224,6 +224,7 @@ function Clean() {
   )
 
   async function runSelectedCleanups() {
+    toast.dismiss()
     setIsCleaning(true)
     setLoadingQueue([])
     setCleanupResults({})

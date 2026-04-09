@@ -11,7 +11,6 @@ import {
   Computer,
   Volume2Icon,
   WifiIcon,
-  RefreshCwIcon,
   Wrench,
   Star,
   NetworkIcon,
@@ -390,6 +389,7 @@ function Utilities() {
   }, [])
 
   const handleToggleChange = async (util: Utility, newState: boolean) => {
+    toast.dismiss()
     const previousState = toggleStates[util.name]
     setToggleStates((prev) => ({ ...prev, [util.name]: newState }))
 
@@ -430,6 +430,7 @@ function Utilities() {
   }
 
   const handleDropdownChange = async (util: Utility, value: string) => {
+    toast.dismiss()
     const previousValue = dropdownValues[util.name]
     setDropdownValues((prev) => ({ ...prev, [util.name]: value }))
 
@@ -471,6 +472,7 @@ function Utilities() {
   }
 
   const handleButtonClick = async (util: Utility) => {
+    toast.dismiss()
     if (util.runScript) {
       const loadingToastId = toast.loading(`Running ${util.name}...`)
       try {

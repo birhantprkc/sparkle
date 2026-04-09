@@ -81,6 +81,7 @@ function RestorePointsTab() {
   }, [])
 
   const handleCreateRestorePoint = async () => {
+    toast.dismiss()
     setProcessing(true)
     try {
       await invoke({ channel: "create-sparkle-restore-point" })
@@ -409,6 +410,7 @@ function AppliedTweaksTab() {
   }
 
   const handleUndo = async (tweak: Tweak) => {
+    toast.dismiss()
     setUndoingTweak(tweak.name)
     setProcessing(true)
     const loadingToastId = toast.loading(`Undoing tweak: ${tweak.title || tweak.name}`)
@@ -453,6 +455,7 @@ function AppliedTweaksTab() {
   }
 
   const handleUndoAll = async () => {
+    toast.dismiss()
     setConfirmUndoAll(false)
     setProcessing(true)
     const newStates = { ...toggleStates }
@@ -494,6 +497,8 @@ function AppliedTweaksTab() {
         newStates[tweak.name] = true
         setToggleStates({ ...newStates })
         await saveToggleStates(newStates)
+      } finally {
+        toast.dismiss(loadingToastId)
       }
     }
     setProcessing(false)

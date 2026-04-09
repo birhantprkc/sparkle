@@ -125,6 +125,7 @@ export default function DNSPage() {
   }
 
   const applyDNS = async (provider) => {
+    toast.dismiss()
     setLoading(true)
     const toastId = toast.loading(`Applying ${provider.name} DNS...`)
 

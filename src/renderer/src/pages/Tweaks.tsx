@@ -10,7 +10,6 @@ import {
   Zap,
   Paintbrush,
   ExternalLink,
-  Check,
   ShieldCheck,
 } from "lucide-react"
 import { toast } from "react-toastify"
@@ -115,6 +114,7 @@ function Tweaks() {
   }
 
   const applyTweak = async (tweak, _) => {
+    toast.dismiss()
     const newState = !toggleStates[tweak.name]
     const newStates = {
       ...toggleStates,
@@ -187,6 +187,7 @@ function Tweaks() {
   }
 
   const applyNonReversibleTweak = async (tweak, _) => {
+    toast.dismiss()
     const newStates = {
       ...toggleStates,
       [tweak.name]: true,
@@ -258,6 +259,7 @@ function Tweaks() {
   }
 
   const applyRecommendedTweaks = async () => {
+    toast.dismiss()
     setIsApplyingRecommended(true)
     setIsRecommendedModalOpen(false)
 

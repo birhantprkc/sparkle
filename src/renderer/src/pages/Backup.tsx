@@ -606,6 +606,11 @@ function AppliedTweaksTab() {
             <HelpCircle size={16} /> Why are some tweaks not reversible?
           </Button>
         </div>
+        {appliedTweaks.length > 0 && (
+          <p className="text-center text-amber-600 text-sm">
+            Note: Some undo scripts reinstall apps, so this process may take a while.
+          </p>
+        )}
       </div>
       <Modal open={confirmUndoAll} onClose={() => !processing && setConfirmUndoAll(false)}>
         <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-6 shadow-xl max-w-lg w-full mx-4 pb-0">

@@ -117,7 +117,7 @@ function createWindow(): void {
     },
   )
 }
-
+app.commandLine.appendSwitch("no-sandbox")
 app
   .whenReady()
   .then(() => {

@@ -11,6 +11,7 @@ import {
   RefreshCw,
   Settings,
   Wrench,
+  WifiOff,
 } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
@@ -20,6 +21,7 @@ import DiscordIcon from "./discordicon"
 import GithubIcon from "./githubicon"
 import Button from "./ui/button"
 import Modal from "./ui/modal"
+import useOnlineStore from "../store/online"
 
 const tabIcons = {
   home: <Home size={20} />,
@@ -52,6 +54,26 @@ function Nav({ collapsed }) {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const [indicatorStyle, setIndicatorStyle] = useState({ top: 0, height: 0 })
   const [showRestartModal, setShowRestartModal] = useState(false)
+  const [showOfflineModal, setShowOfflineModal] = useState(false)
+  const [hasShownOfflineModal, setHasShownOfflineModal] = useState(false)
+  const { online, checkOnline } = useOnlineStore()
+
+  const disabledTabs = ["dns", "apps"]
+
+  useEffect(() => {
+    checkOnline()
+    const interval = setInterval(checkOnline, 5000)
+    return () => clearInterval(interval)
+  }, [checkOnline])
+
+  useEffect(() => {
+    if (!online && !hasShownOfflineModal) {
+      setShowOfflineModal(true)
+      setHasShownOfflineModal(true)
+    } else if (online) {
+      setHasShownOfflineModal(false)
+    }
+  }, [online, hasShownOfflineModal])
 
   const getActiveTab = () => {
     const path = location.pathname
@@ -93,28 +115,35 @@ function Nav({ collapsed }) {
             transition: "top 0.2s ease, height 0.2s ease",
           }}
         />
-        {Object.entries(tabs).map(([id, { label, path }]) => (
-          <Button
-            variant=""
-            key={id}
-            ref={(el) => (tabRefs.current[id] = el)}
-            onClick={() => navigate(path)}
-            className={clsx(
-              `flex items-center gap-3 py-2 rounded-lg transition-all duration-200 border relative ${collapsed ? "px-2 justify-center" : "px-3"}`,
-              activeTab === id
-                ? "border-transparent text-sparkle-primary"
-                : "text-sparkle-text-secondary hover:bg-sparkle-border-secondary hover:text-sparkle-text border-transparent",
-            )}
-          >
-            <div>{tabIcons[id]}</div>
-            {!collapsed && <span className="text-sm">{label}</span>}
-            {/* {!collapsed && id === "utilities" && (
-              <span className="text-xs bg-sparkle-primary text-sparkle-bg px-1.5 py-0.5 rounded-full">
-                New
-              </span>
-            )} */}
-          </Button>
-        ))}
+        {Object.entries(tabs).map(([id, { label, path }]) => {
+          const isDisabled = !online && disabledTabs.includes(id)
+          return (
+            <Button
+              variant=""
+              key={id}
+              ref={(el) => (tabRefs.current[id] = el)}
+              onClick={() => {
+                if (isDisabled) {
+                  setShowOfflineModal(true)
+                } else {
+                  navigate(path)
+                }
+              }}
+              disabled={isDisabled}
+              className={clsx(
+                `flex items-center gap-3 py-2 rounded-lg transition-all duration-200 border relative ${collapsed ? "px-2 justify-center" : "px-3"}`,
+                activeTab === id
+                  ? "border-transparent text-sparkle-primary"
+                  : isDisabled
+                    ? "opacity-50 cursor-not-allowed text-sparkle-text-secondary border-transparent"
+                    : "text-sparkle-text-secondary hover:bg-sparkle-border-secondary hover:text-sparkle-text border-transparent",
+              )}
+            >
+              <div>{tabIcons[id]}</div>
+              {!collapsed && <span className="text-sm">{label}</span>}
+            </Button>
+          )
+        })}
       </div>
       {needsRestart && (
         <button
@@ -148,6 +177,46 @@ function Nav({ collapsed }) {
               variant="danger"
             >
               Restart
+            </Button>
+          </div>
+        </div>
+      </Modal>
+      <Modal open={showOfflineModal} onOpenChange={setShowOfflineModal}>
+        <div className="bg-sparkle-card p-6 rounded-2xl border border-sparkle-border text-sparkle-text w-[90vw] max-w-md">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="p-2 bg-red-500/20 rounded-full">
+              <WifiOff className="w-6 h-6 text-red-500" />
+            </div>
+            <h2 className="text-lg font-semibold">You're Offline</h2>
+          </div>
+          <p className="text-sparkle-text-secondary mb-4">
+            Some features require an internet connection to work. The following features have been
+            disabled:
+          </p>
+          <ul className="list-disc list-inside text-sparkle-text-secondary mb-4 space-y-1">
+            <li>
+              <span className="font-medium text-sparkle-text">DNS Manager</span> - Requires internet
+              to change DNS servers
+            </li>
+            <li>
+              <span className="font-medium text-sparkle-text">Apps</span> - Requires internet to
+              install/uninstall apps
+            </li>
+            <li>
+              <span className="font-medium text-sparkle-text">Some Tweaks</span> - May fail without
+              internet
+            </li>
+            <li>
+              <span className="font-medium text-sparkle-text">Auto Updates</span> - Will fail
+              without internet
+            </li>
+          </ul>
+          <p className="text-sm text-sparkle-text-secondary mb-4">
+            Please reconnect to the internet to use these features.
+          </p>
+          <div className="flex justify-end">
+            <Button onClick={() => setShowOfflineModal(false)} variant="secondary">
+              Understood
             </Button>
           </div>
         </div>

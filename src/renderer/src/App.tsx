@@ -15,6 +15,8 @@ import Backup from "./pages/Backup"
 import FirstTime from "./components/firsttime"
 import UpdateManager from "./components/updatemanager"
 import useAppInstallStore from "./store/appInstallStore"
+import useOnlineStore from "./store/online"
+
 import { toast } from "react-toastify"
 
 function App() {
@@ -23,6 +25,7 @@ function App() {
     localStorage.getItem("sidebarCollapsed") === "true",
   )
   const { setAppStatus, clearApps } = useAppInstallStore()
+  const { setOnline } = useOnlineStore()
 
   useEffect(() => {
     const listeners = {
@@ -96,6 +99,16 @@ function App() {
     setSidebarCollapsed(newCollapsed)
     localStorage.setItem("sidebarCollapsed", newCollapsed.toString())
   }
+  useEffect(() => {
+    const handleOnline = () => setOnline(true)
+    const handleOffline = () => setOnline(false)
+    window.addEventListener("online", handleOnline)
+    window.addEventListener("offline", handleOffline)
+    return () => {
+      window.removeEventListener("online", handleOnline)
+      window.removeEventListener("offline", handleOffline)
+    }
+  }, [setOnline])
 
   return (
     <div className="flex flex-col h-screen bg-sparkle-bg text-sparkle-text overflow-hidden">

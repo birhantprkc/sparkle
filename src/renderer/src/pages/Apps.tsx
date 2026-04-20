@@ -69,6 +69,9 @@ function Apps() {
       if (source === "Chocolatey") {
         return (app as any).chocolatey !== undefined
       }
+      if (source === "Winget") {
+        return (app as any).id !== undefined
+      }
       return true
     })
 

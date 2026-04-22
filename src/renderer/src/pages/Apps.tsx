@@ -1,7 +1,7 @@
 import { useState, useMemo, Suspense } from "react"
 import data from "../assets/apps.json"
 import RootDiv from "@/components/rootdiv"
-import { Search } from "lucide-react"
+import { Search, X } from "lucide-react"
 import Button from "@/components/ui/button"
 import Checkbox from "@/components/ui/Checkbox"
 import Modal from "@/components/ui/modal"
@@ -54,6 +54,7 @@ function Apps() {
   const [source, setSource] = useState<"Chocolatey" | "Winget">(
     (localStorage.getItem("defaultPackageManager") as "Chocolatey" | "Winget") || "Winget",
   )
+  const [showSelectedAppsModal, setShowSelectedAppsModal] = useState(false)
 
   const [chocolateyInstalled, setChocolateyInstalled] = useState<boolean>(true)
   const [chocolateyChecking, setChocolateyChecking] = useState<boolean>(false)
@@ -255,6 +256,41 @@ function Apps() {
 
   return (
     <>
+      <Modal open={showSelectedAppsModal} onClose={() => setShowSelectedAppsModal(false)}>
+        <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-6 shadow-xl max-w-lg w-full mx-4">
+          <h3 className="text-xl font-semibold text-sparkle-text mb-3">
+            Selected Apps ({selectedApps.length})
+          </h3>
+
+          <div className="text-sparkle-text-secondary text-sm leading-6 whitespace-pre-wrap max-h-64 overflow-y-auto custom-scrollbar mb-6">
+            {selectedApps.length > 0 ? (
+              <ul className="space-y-2 max-h-60 overflow-y-auto custom-scrollbar">
+                {selectedApps.map((appId) => {
+                  const app = appsList.find((a) => getAppIdForSource(a) === appId)
+                  return (
+                    <div className="flex  items-center gap-2" key={appId}>
+                      <li key={appId} className="flex items-center gap-2 text-sparkle-text">
+                        {app?.name || appId}
+                      </li>
+                      <p title="Remove App from Selection">
+                        <X onClick={() => toggleApp(appId)} className="w-4 h-4 cursor-pointer" />
+                      </p>
+                    </div>
+                  )
+                })}
+              </ul>
+            ) : (
+              <p className="text-sparkle-text-secondary italic">No apps selected</p>
+            )}
+          </div>
+
+          <div className="flex justify-end gap-3">
+            <Button variant="secondary" onClick={() => setShowSelectedAppsModal(false)}>
+              Close
+            </Button>
+          </div>
+        </div>
+      </Modal>
       <Modal open={importModalOpen} onClose={() => setImportModalOpen(false)}>
         <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-6 shadow-xl max-w-lg w-full mx-4">
           <h3 className="text-xl font-semibold text-sparkle-text mb-3">
@@ -388,6 +424,15 @@ function Apps() {
         )}
 
         <div className="flex gap-3 mt-5 w-auto ml-1 mr-1">
+          {selectedApps.length > 0 && (
+            <Button
+              variant="outline"
+              className="flex gap-2 text-sm h-auto py-1 px-2"
+              onClick={() => setShowSelectedAppsModal(true)}
+            >
+              {selectedApps.length} app{selectedApps.length !== 1 ? "s" : ""} selected
+            </Button>
+          )}
           <Button
             className="text-sparkle-text flex gap-2"
             disabled={selectedApps.length === 0 || installingApps.length > 0}

@@ -48,15 +48,18 @@ function Apps() {
   const [importedApps, setImportedApps] = useState<string[]>([])
   const [selectedImportedApps, setSelectedImportedApps] = useState<string[]>([])
   const [appsList, setAppsList] = useState<AppData[]>([])
-  const [wingetInstalled, setWingetInstalled] = useState<boolean>(true)
+  const [wingetInstalled, setWingetInstalled] = useState<boolean | null>(null)
   const [wingetChecking, setWingetChecking] = useState<boolean>(false)
   const [wingetInstalling, setWingetInstalling] = useState<boolean>(false)
   const [source, setSource] = useState<"Chocolatey" | "Winget">(
     (localStorage.getItem("defaultPackageManager") as "Chocolatey" | "Winget") || "Winget",
   )
   const [showSelectedAppsModal, setShowSelectedAppsModal] = useState(false)
+  const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(
+    !localStorage.getItem("hasSeenAppsWelcomeModal"),
+  )
 
-  const [chocolateyInstalled, setChocolateyInstalled] = useState<boolean>(true)
+  const [chocolateyInstalled, setChocolateyInstalled] = useState<boolean | null>(null)
   const [chocolateyChecking, setChocolateyChecking] = useState<boolean>(false)
   const [chocolateyInstalling, setChocolateyInstalling] = useState<boolean>(false)
 
@@ -142,6 +145,13 @@ function Apps() {
     } finally {
       setWingetChecking(false)
     }
+  }
+
+  const handleSourceSelect = (selectedSource: "Chocolatey" | "Winget") => {
+    setSource(selectedSource)
+    localStorage.setItem("defaultPackageManager", selectedSource)
+    localStorage.setItem("hasSeenAppsWelcomeModal", "true")
+    setShowWelcomeModal(false)
   }
 
   const installWinget = async (): Promise<void> => {
@@ -256,6 +266,78 @@ function Apps() {
 
   return (
     <>
+      <Modal open={showWelcomeModal} onClose={() => setShowWelcomeModal(false)}>
+        <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-6 shadow-xl max-w-lg w-full mx-4">
+          <h3 className="text-xl font-semibold text-sparkle-text mb-3">
+            Welcome to The Apps Page!
+          </h3>
+
+          <div className="text-sparkle-text-secondary text-sm leading-6 mb-6">
+            <p className="mb-4">
+              Sparkle can install apps using either{" "}
+              <strong className="text-sparkle-primary">Winget</strong> or{" "}
+              <strong className="text-sparkle-primary">Chocolatey</strong>.{" "}
+              <p className="text-sparkle-secondary">
+                Please select your preferred package manager:
+              </p>
+            </p>
+
+            <div className="space-y-3">
+              <button
+                onClick={() => handleSourceSelect("Winget")}
+                className={`w-full p-4 rounded-lg border transition-all text-left bg-sparkle-accent border-sparkle-text-muted hover:bg-sparkle-bg cursor-pointer hover:scale-[102%]`}
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-medium text-sparkle-text">Winget</h4>
+                    <p className="text-sm text-sparkle-text-secondary">
+                      Microsoft's official package manager
+                    </p>
+                  </div>
+                  {wingetInstalled && (
+                    <span className="text-green-500 text-sm font-medium">Installed</span>
+                  )}
+                  {!wingetInstalled && !wingetChecking && (
+                    <span className="text-amber-500 text-sm font-medium">Not installed</span>
+                  )}
+                </div>
+              </button>
+
+              <button
+                onClick={() => handleSourceSelect("Chocolatey")}
+                className={`w-full p-4 rounded-lg border transition-all text-left bg-sparkle-accent border-sparkle-text-muted hover:bg-sparkle-bg cursor-pointer hover:scale-[102%]`}
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-medium text-sparkle-text">Chocolatey</h4>
+                    <p className="text-sm text-sparkle-text-secondary">
+                      Community package manager for Windows
+                    </p>
+                  </div>
+                  {chocolateyInstalled && (
+                    <span className="text-green-500 text-sm font-medium">Installed</span>
+                  )}
+                  {!chocolateyInstalled && !chocolateyChecking && (
+                    <span className="text-amber-500 text-sm font-medium">Not installed</span>
+                  )}
+                </div>
+              </button>
+            </div>
+
+            {(wingetChecking || chocolateyChecking) && (
+              <p className="text-sm text-sparkle-text-secondary mt-4 text-center">
+                Checking package manager status...
+              </p>
+            )}
+          </div>
+
+          <div className="flex justify-end gap-3">
+            <Button variant="secondary" onClick={() => setShowWelcomeModal(false)}>
+              Skip for now
+            </Button>
+          </div>
+        </div>
+      </Modal>
       <Modal open={showSelectedAppsModal} onClose={() => setShowSelectedAppsModal(false)}>
         <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-6 shadow-xl max-w-lg w-full mx-4">
           <h3 className="text-xl font-semibold text-sparkle-text mb-3">
@@ -352,7 +434,7 @@ function Apps() {
           onChange={(e) => setSearch(e.target.value)}
         />
 
-        {!wingetInstalled && (
+        {wingetInstalled === false && (
           <Card className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-4 w-full mt-5 flex gap-4 items-center">
             <div className="p-3 bg-amber-500/10 rounded-lg">
               <Download className="text-amber-500" size={24} />
@@ -387,7 +469,7 @@ function Apps() {
           </Card>
         )}
 
-        {source === "Chocolatey" && !chocolateyInstalled && (
+        {source === "Chocolatey" && chocolateyInstalled === false && (
           <Card className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-4 w-full mt-5 flex gap-4 items-center">
             <div className="p-3 bg-amber-500/10 rounded-lg">
               <Download className="text-amber-500" size={24} />

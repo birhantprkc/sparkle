@@ -31,6 +31,7 @@ The Utilities page offers 14 different system utilities. Each utility automatica
 | **Check Disk** | Check and fix disk errors on your system. | Button - "Check" |
 | **Restart Audio Service** | Fix sound issues by restarting Windows Audio. | Button - "Restart" |
 | **Network Reset** | Reset your network stack to fix connectivity problems. | Button - "Reset" |
+| **Windows Search and UI** | Restart Windows Search and UI to fix display issues. | Button - "Restart" |
 
 ## How It Works
 

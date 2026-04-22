@@ -43,6 +43,7 @@ function Tweaks() {
   const [recommendedTweaksToApply, setRecommendedTweaksToApply] = useState<Tweak[]>([])
   const [selectedRecommendedTweaks, setSelectedRecommendedTweaks] = useState<Set<string>>(new Set())
   const [isApplyingRecommended, setIsApplyingRecommended] = useState(false)
+  const [isAltHeld, setIsAltHeld] = useState(false)
 
   const { setNeedsRestart } = useRestartStore()
   const systemInfo = useSystemStore((state) => state.systemInfo)
@@ -70,6 +71,21 @@ function Tweaks() {
   useEffect(() => {
     loadTweaks()
     loadToggleStates()
+  }, [])
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.altKey) setIsAltHeld(true)
+    }
+    const handleKeyUp = (e: KeyboardEvent) => {
+      if (!e.altKey) setIsAltHeld(false)
+    }
+    window.addEventListener("keydown", handleKeyDown)
+    window.addEventListener("keyup", handleKeyUp)
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown)
+      window.removeEventListener("keyup", handleKeyUp)
+    }
   }, [])
 
   const loadTweaks = async () => {
@@ -248,6 +264,36 @@ function Tweaks() {
     }
 
     await applyNonReversibleTweak(tweak, index)
+  }
+
+  const forceReapplyTweak = async (tweak: Tweak) => {
+    toast.dismiss()
+    const loadingToastId = toast.loading(`Reapplying tweak: ${tweak.title}`)
+
+    try {
+      await invoke({
+        channel: "tweak:apply",
+        payload: tweak.name,
+      })
+      if (tweak.restart) {
+        setNeedsRestart(true)
+      }
+      toast.update(loadingToastId, {
+        render: `Reapplied tweak: ${tweak.title}`,
+        type: "success",
+        isLoading: false,
+        autoClose: 3000,
+      })
+    } catch (error) {
+      console.error(`Error reapplying tweak ${tweak.title}:`, error)
+      log.error(`Error reapplying tweak ${tweak.title}:`, error)
+      toast.update(loadingToastId, {
+        render: `Failed to reapply tweak: ${tweak.title}`,
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
+      })
+    }
   }
 
   const handleApplyRecommended = async () => {
@@ -530,7 +576,7 @@ function Tweaks() {
                   Showing {sortedTweaks.length} of {tweaks.length} tweaks
                 </p>
               </div>
-              <div>
+              <div className="flex gap-5 items-center">
                 {presets.length > 0 && tweaks.some((t) => presets[0].tweaks.includes(t.name)) && (
                   <Button
                     variant="secondary"
@@ -540,6 +586,11 @@ function Tweaks() {
                     Apply Recommended Tweaks
                   </Button>
                 )}
+                <p className="text-sm text-sparkle-text-muted">
+                  Tip: Hold{" "}
+                  <kbd className="p-1 pt-0.5 pb-0.5 rounded-lg bg-sparkle-border">Alt</kbd> and
+                  click "Reapply" to force reapply it.
+                </p>
               </div>
             </div>
           </div>
@@ -660,6 +711,7 @@ function Tweaks() {
                           >
                             <ExternalLink className="w-3 h-3" /> Docs
                           </Button>
+
                           {(() => {
                             const compatibility = isTweakCompatible(tweak)
                             return (
@@ -708,6 +760,20 @@ function Tweaks() {
                       <div className="flex flex-col flex-1 overflow-hidden">
                         <p className="text-sparkle-text-secondary text-sm flex-1 overflow-y-auto custom-scrollbar pr-1">
                           {tweak.description}
+                          {toggleStates[tweak.name] && isAltHeld && (
+                            <Button
+                              variant="primary"
+                              className="px-2! py-1! text-xs flex items-center gap-1 fixed mt-2"
+                              title="Force reapply tweak"
+                              onClick={(e) => {
+                                e.preventDefault()
+                                e.stopPropagation()
+                                forceReapplyTweak(tweak)
+                              }}
+                            >
+                              <RefreshCw className="w-3 h-3" /> Reapply
+                            </Button>
+                          )}
                         </p>
                       </div>
                     </div>

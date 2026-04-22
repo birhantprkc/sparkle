@@ -25,7 +25,7 @@
       "category": "browsers",
       "info": "The most popular web browsers.",
       "link": "https://www.google.com/chrome/?ref=sparkle",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Google_Chrome_icon_%28February_2022%29.svg/2048px-Google_Chrome_icon_%28February_2022%29.svg.png"
+      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Google_Chrome_icon_%28February_2022%29.svg/3840px-Google_Chrome_icon_%28February_2022%29.svg.png"
     },
     {
       "name": "Discord",
@@ -62,7 +62,7 @@
       "category": "games",
       "info": "A Games Store",
       "link": "https://www.epicgames.com/?ref=sparkle",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Epic_Games_logo.svg/1200px-Epic_Games_logo.svg.png"
+      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Epic_Games_logo.svg/960px-Epic_Games_logo.svg.png"
     },
     {
       "name": "EA App",
@@ -106,7 +106,7 @@
       "category": "development",
       "info": "A code editor that runs on your computer.",
       "link": "https://code.visualstudio.com/?ref=sparkle",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Visual_Studio_Code_1.35_icon.svg/2048px-Visual_Studio_Code_1.35_icon.svg.png"
+      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Visual_Studio_Code_1.35_icon.svg/500px-Visual_Studio_Code_1.35_icon.svg.png"
     },
     {
       "name": "Visual Studio Code Insiders",
@@ -115,7 +115,7 @@
       "category": "development",
       "info": "A code editor that runs on your computer.",
       "link": "https://code.visualstudio.com/insiders/?ref=sparkle",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Visual_Studio_Code_Insiders_1.36_icon.svg/1200px-Visual_Studio_Code_Insiders_1.36_icon.svg.png"
+      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Visual_Studio_Code_Insiders_1.36_icon.svg/250px-Visual_Studio_Code_Insiders_1.36_icon.svg.png"
     },
     {
       "name": "Visual Studio",
@@ -123,7 +123,7 @@
       "category": "development",
       "info": "A code editor that runs on your computer.",
       "link": "https://visualstudio.microsoft.com/?ref=sparkle",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Visual_Studio_Icon_2019.svg/2060px-Visual_Studio_Icon_2019.svg.png"
+      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Visual_Studio_Icon_2022.svg/500px-Visual_Studio_Icon_2022.svg.png"
     },
     {
       "name": "Visual Studio Installer",
@@ -149,7 +149,7 @@
       "category": "development",
       "info": "A code editor that runs on your computer.",
       "link": "https://notepad-plus-plus.org/?ref=sparkle",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Notepad%2B%2B_Logo.svg/2048px-Notepad%2B%2B_Logo.svg.png"
+      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Notepad%2B%2B_Logo.svg/250px-Notepad%2B%2B_Logo.svg.png"
     },
     {
       "name": "Sublime Text",
@@ -167,7 +167,7 @@
       "category": "browsers",
       "info": "A fast, private and secure web browsers.",
       "link": "https://brave.com/?ref=sparkle",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Brave_lion_icon.svg/1200px-Brave_lion_icon.svg.png"
+      "icon": "https://brave.com/static-assets/images/brave-logo-sans-text.svg"
     },
     {
       "name": "Brave Nightly",
@@ -194,7 +194,7 @@
       "category": "browsers",
       "info": "A fast, private and secure web browser for gamers.",
       "link": "https://www.opera.com/gx?ref=sparkle",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Opera_GX_Icon.svg/2048px-Opera_GX_Icon.svg.png"
+      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Opera_GX_Icon.svg/960px-Opera_GX_Icon.svg.png"
     },
     {
       "name": "Vivaldi",
@@ -229,7 +229,7 @@
       "category": "communication",
       "info": "A messaging app.",
       "link": "https://telegram.org/?ref=sparkle",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/2048px-Telegram_logo.svg.png"
+      "icon": "https://cdn.worldvectorlogo.com/logos/telegram-2019-logo.svg"
     },
     {
       "name": "7-Zip",
@@ -256,7 +256,7 @@
       "category": "development",
       "info": "A code editor that runs on your computer.",
       "link": "https://desktop.github.com/?ref=sparkle",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Github-desktop-logo-symbol.svg/1200px-Github-desktop-logo-symbol.svg.png"
+      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Github-desktop-logo-symbol.svg/1280px-Github-desktop-logo-symbol.svg.png"
     },
     {
       "name": "Logitech GHUB",
@@ -326,7 +326,7 @@
       "category": "utilities",
       "info": "A remote desktop app.",
       "link": "https://rustdesk.com/?ref=sparkle",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Rustdesk.svg/2048px-Rustdesk.svg.png"
+      "icon": "https://avatars.githubusercontent.com/u/71636191?v=4"
     },
     {
       "name": "Rufus",
@@ -440,7 +440,7 @@
       "category": "development",
       "info": "A FAST programming language.",
       "link": "https://www.rust-lang.org/?ref=sparkle",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Rust_programming_language_black_logo.svg/1200px-Rust_programming_language_black_logo.svg.png"
+      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Rust_programming_language_black_logo.svg/960px-Rust_programming_language_black_logo.svg.png"
     },
     {
       "name": "Notion",
@@ -449,7 +449,7 @@
       "category": "productivity",
       "info": "All-in-one workspace for your notes, tasks, wikis, and databases.",
       "link": "https://www.notion.so/?ref=sparkle",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Notion-logo.svg/1200px-Notion-logo.svg.png"
+      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Notion-logo.svg/3840px-Notion-logo.svg.png"
     },
     {
       "name": "Dropbox",
@@ -458,7 +458,7 @@
       "category": "productivity",
       "info": "Organize all your team's content, tune out distractions, and get everyone coordinated with the world's first smart workspace.",
       "link": "https://www.dropbox.com/?ref=sparkle",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Dropbox_Icon.svg/1200px-Dropbox_Icon.svg.png"
+      "icon": "https://static.wikia.nocookie.net/logopedia/images/2/29/Dropbox_Icon_%282021-%29.svg/revision/latest/scale-to-width-down/250?cb=20240425013049"
     },
     {
       "name": "Microsoft Office",
@@ -601,7 +601,7 @@
       "category": "development",
       "info": "A Vim-fork focused on extensibility and agility.",
       "link": "https://neovim.io/?ref=sparkle",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Neovim-mark.svg/1200px-Neovim-mark.svg.png"
+      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Neovim-mark.svg/1280px-Neovim-mark.svg.png"
     },
     {
       "name": "PowerToys",
@@ -619,7 +619,7 @@
       "category": "utilities",
       "info": "A free implementation of SSH and Telnet for Windows and Unix platforms.",
       "link": "https://www.putty.org/?ref=sparkle",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/PuTTY_Icon.svg/2048px-PuTTY_Icon.svg.png"
+      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/PuTTY_Icon.svg/1280px-PuTTY_Icon.svg.png"
     },
     {
       "name": "Virtual Desktop Streamer",
@@ -645,7 +645,7 @@
       "category": "browsers",
       "info": "A web browser that protects your privacy.",
       "link": "https://www.torproject.org/?ref=sparkle",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Tor-logo-2011-flat.svg/2048px-Tor-logo-2011-flat.svg.png"
+      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Tor_Browser_icon.svg/1280px-Tor_Browser_icon.svg.png"
     },
     {
       "name": "Display Driver Uninstaller",
@@ -698,7 +698,7 @@
       "category": "utilities",
       "info": "A torrent client.",
       "link": "https://www.qbittorrent.org/?ref=sparkle",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/New_qBittorrent_Logo.svg/2048px-New_qBittorrent_Logo.svg.png"
+      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/New_qBittorrent_Logo.svg/3840px-New_qBittorrent_Logo.svg.png"
     },
     {
       "name": "Bitwarden",
@@ -1169,7 +1169,7 @@
       "category": "python",
       "info": "Programming language",
       "link": "https://www.python.org?ref=sparkle",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1869px-Python-logo-notext.svg.png"
+      "icon": "https://www.python.org/favicon.ico"
     },
     {
       "name": "Python 3.9",
@@ -1178,7 +1178,7 @@
       "category": "python",
       "info": "Programming language",
       "link": "https://www.python.org?ref=sparkle",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1869px-Python-logo-notext.svg.png"
+      "icon": "https://www.python.org/favicon.ico"
     },
     {
       "name": "Python 3.10",

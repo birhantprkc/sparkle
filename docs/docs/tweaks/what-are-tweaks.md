@@ -63,6 +63,18 @@ Sparkle provides several safeguards when using tweaks:
 
 ---
 
+## Reapplying Tweaks <span style="color: #ff9800;">(Sparkle 2.18.0+  Required)</span>
+
+After applying a tweak, you can force it to reapply at any time:
+
+1. Find the tweak in the Tweaks page (it shows a toggle in the on position)
+2. **Hold the Alt key** and the "Reapply" button will appear
+3. Click "Reapply" to run the tweak's apply script again
+
+This is useful if you've modified system settings manually and want the tweak to reapply its changes, or if a tweak didn't apply correctly the first time.
+
+---
+
 ## Browsing Tweaks
 
 You can explore all available tweaks in two ways:

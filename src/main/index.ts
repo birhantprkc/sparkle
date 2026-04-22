@@ -84,6 +84,7 @@ function createWindow(): void {
         preload: join(__dirname, "../preload/index.js"),
         devTools: app.isPackaged ? false : true,
         sandbox: false,
+        spellcheck: false,
       },
     })
     console.log("[Sparkle]: BrowserWindow created")

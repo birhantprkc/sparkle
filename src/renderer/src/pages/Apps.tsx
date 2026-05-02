@@ -190,7 +190,7 @@ function Apps() {
     setChocolateyInstalling(true)
     try {
       await invoke({ channel: "install-chocolatey" })
-      toast.success("Chocolatey installation completed!")
+      toast.success("Chocolatey installed! Please restart Sparkle to continue.", { autoClose: false })
       await checkChocolatey()
     } catch (error) {
       console.error("Error installing Chocolatey:", error)

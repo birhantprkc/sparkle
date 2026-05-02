@@ -16,6 +16,9 @@ function TitleBar({
   const { apps, action } = useAppInstallStore()
   const actionText = action === "uninstall" ? "Uninstalling" : "Installing"
 
+  const currentApp = apps.find((app) => app.status === "installing")
+  const remainingCount = apps.filter((app) => app.status === "pending").length
+
   return (
     <div
       style={{ WebkitAppRegion: "drag" } as any}
@@ -44,7 +47,9 @@ function TitleBar({
             <Loader2 className="animate-spin text-xs w-4 h-4" />
             {apps.length === 1
               ? `${actionText} ${apps[0].name}`
-              : `${actionText} ${apps.length} apps`}
+              : currentApp
+                ? `${actionText} ${currentApp.name}, ${remainingCount} Left`
+                : `${actionText} ${apps.length} apps`}
           </Card>
         )}
       </div>

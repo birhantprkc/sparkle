@@ -21,12 +21,21 @@ const useAppInstallStore = create<AppInstallState>((set) => ({
   action: null,
   addApp: (id, name) =>
     set((state) => ({
-      apps: [...state.apps, { id, name, status: "installing" }],
+      apps: [...state.apps, { id, name, status: "pending" }],
     })),
   setAppStatus: (id, status) =>
-    set((state) => ({
-      apps: state.apps.map((app) => (app.id === id ? { ...app, status } : app)),
-    })),
+    set((state) => {
+      if (status === "installing") {
+        return {
+          apps: state.apps.map((app) =>
+            app.id === id ? { ...app, status: "installing" as const } : app.status === "installing" ? { ...app, status: "complete" as const } : app,
+          ),
+        }
+      }
+      return {
+        apps: state.apps.map((app) => (app.id === id ? { ...app, status } : app)),
+      }
+    }),
   removeApp: (id) =>
     set((state) => ({
       apps: state.apps.filter((app) => app.id !== id),

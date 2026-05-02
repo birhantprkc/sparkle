@@ -1,13 +1,16 @@
 import os from "os"
 import { ipcMain } from "electron"
 import si from "systeminformation"
-import { exec } from "child_process"
+import { exec, execFile } from "child_process"
+import util from "util"
 import fs from "fs"
 import path from "path"
 import log from "electron-log"
 import { shell } from "electron"
 import { executePowerShell } from "@main/powershell"
 import type { SystemInfo } from "../types"
+
+const execFilePromise = util.promisify(execFile)
 
 console.log = log.log
 console.error = log.error
@@ -530,28 +533,12 @@ export const setupSystemHandlers = (): void => {
   ipcMain.handle("restart-explorer", restartExplorer)
   ipcMain.handle("check-winget", async () => {
     try {
-      const result = await executePowerShell(null, {
-        script: `
-          try {
-            $null = winget --version 2>&1
-            if ($LASTEXITCODE -eq 0) {
-              Write-Output "installed"
-            } else {
-              Write-Output "not-installed"
-            }
-          } catch {
-            Write-Output "not-installed"
-          }
-        `,
-        name: "Check-Winget",
-      })
-      return {
-        success: result.success,
-        installed: result.success && result.output && result.output.trim() === "installed",
-      }
-    } catch (error) {
-      console.error("Failed to check Winget:", error)
-      return { success: false, installed: false, error: (error as any).message }
+      await execFilePromise("winget", ["--version"])
+      console.log("Winget is installed")
+      return { success: true, installed: true }
+    } catch {
+      console.log("Winget is not installed")
+      return { success: true, installed: false }
     }
   })
   ipcMain.handle("install-winget", ensureWinget)

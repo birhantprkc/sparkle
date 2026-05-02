@@ -73,19 +73,16 @@ async function runPowerShellInWindow(_, { script, name = "script", noExit = true
 export const setupPowerShellHandlers = (): void => {
   ipcMain.handle("run-powershell-window", runPowerShellInWindow)
   ipcMain.handle("run-powershell", executePowerShell)
-  ipcMain.handle("check-chocolatey", async (event) => {
+  ipcMain.handle("check-chocolatey", async () => {
     try {
-      const result = await executePowerShell(event, {
-        script: "Test-Path -Path 'C:\\ProgramData\\chocolatey\\bin\\choco.exe'",
-        name: "check-chocolatey",
-      })
-
-      if (result.success) {
-        const isInstalled = (result.output as string).trim().toLowerCase() === "true"
-        return { success: true, installed: isInstalled }
+      const chocoPath = path.join("C:\\ProgramData\\chocolatey\\bin\\choco.exe")
+      const installed = fs.existsSync(chocoPath)
+      if (installed) {
+        console.log("Chocolatey is installed:", chocoPath)
       } else {
-        return { success: false, installed: false }
+        console.log("Chocolatey is not installed")
       }
+      return { success: true, installed }
     } catch (error) {
       console.error("Error checking Chocolatey installation:", error)
       return { success: false, installed: false }

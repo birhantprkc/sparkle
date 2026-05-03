@@ -383,6 +383,50 @@ function Settings() {
                 </div>
               </SettingCard>
             </SettingSection>
+            <SettingSection title="Developer Options">
+              <p className="text-xs mt-0 text-sparkle-text-secondary">
+                It is not recommended to modify these options unless you are a developer or
+                contributor.
+              </p>
+              <SettingCard>
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <h3 className="text-base font-medium text-sparkle-text mb-1">
+                      Reset Package Manager Modal
+                    </h3>
+                    <p className="text-sm text-sparkle-text-secondary">
+                      Reset the package manager modal located on the apps page to appear on next
+                      visit
+                    </p>
+                  </div>
+                  <Button
+                    variant="secondary"
+                    onClick={() => {
+                      localStorage.removeItem("hasSeenAppsWelcomeModal")
+                      toast.success("Package manager modal will be shown on next visit")
+                    }}
+                  >
+                    Reset Modal
+                  </Button>
+                </div>
+                <div className="flex items-center justify-between mt-4">
+                  <div className="flex-1">
+                    <h3 className="text-base font-medium text-sparkle-text mb-1">Open Devtools</h3>
+                    <p className="text-sm text-sparkle-text-secondary">
+                      Open the developer tools for debugging. Not recommended for regular users.
+                    </p>
+                  </div>
+                  <Button
+                    variant="secondary"
+                    onClick={() => {
+                      invoke({ channel: "open-devtools" })
+                    }}
+                  >
+                    Open Devtools
+                  </Button>
+                </div>
+              </SettingCard>
+            </SettingSection>
           </div>
         </div>
       </RootDiv>

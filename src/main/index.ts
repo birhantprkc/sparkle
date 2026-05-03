@@ -177,6 +177,12 @@ app
       }
     })
 
+    ipcMain.handle("open-devtools", () => {
+      if (mainWindow) {
+        mainWindow.webContents.openDevTools()
+      }
+    })
+
     app.on("activate", function () {
       if (BrowserWindow.getAllWindows().length === 0) createWindow()
     })

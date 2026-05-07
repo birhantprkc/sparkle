@@ -1337,6 +1337,15 @@
       "info": "A powerful uninstaller for Windows.",
       "link": "https://www.geekuninstaller.com/?ref=sparkle",
       "icon": "https://www.geekuninstaller.com/favicon.ico"
+    },
+    {
+      "name": "uv",
+      "id": "astral-sh.uv",
+      "chocolatey": "uv",
+      "category": "development",
+      "info": "A fast and modern package manager for Python.",
+      "link": "https://docs.astral.sh/uv/getting-started/installation/?ref=sparkle",
+      "icon": "https://docs.astral.sh/uv/assets/logo-letter.svg"
     }
   ]
 }

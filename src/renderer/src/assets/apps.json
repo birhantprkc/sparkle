@@ -1346,6 +1346,14 @@
       "info": "A fast and modern package manager for Python.",
       "link": "https://docs.astral.sh/uv/getting-started/installation/?ref=sparkle",
       "icon": "https://docs.astral.sh/uv/assets/logo-letter.svg"
+    },
+    {
+      "name": "YASB",
+      "id": "AmN.yasb",
+      "category": "utilities",
+      "info": "Yet Another Status Bar, a simple and customizable status bar for Windows.",
+      "link": "https://yasb.dev/?ref=sparkle",
+      "icon": "https://cdn.yasb.dev/favicons/favicon.ico"
     }
   ]
 }

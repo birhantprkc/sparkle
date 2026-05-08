@@ -27,6 +27,9 @@ function Settings() {
     return localStorage.getItem("posthogDisabled") === "true"
   })
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+  const [forceLocalApps, setForceLocalApps] = useState(() => {
+    return localStorage.getItem("forceLocalApps") === "true"
+  })
   const [defaultPackageManager, setDefaultPackageManager] = useState<"Chocolatey" | "Winget">(
     (localStorage.getItem("defaultPackageManager") as "Chocolatey" | "Winget") || "Winget",
   )
@@ -191,7 +194,7 @@ function Settings() {
                 </div>
               </SettingCard>
             </SettingSection>
-            <SettingSection title="Package Manager">
+            <SettingSection title="Apps Page">
               <SettingCard>
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
@@ -208,6 +211,30 @@ function Settings() {
                     onChange={(value) => {
                       setDefaultPackageManager(value as "Chocolatey" | "Winget")
                       localStorage.setItem("defaultPackageManager", value)
+                    }}
+                  />
+                </div>
+                <div className="flex items-center justify-between mt-4">
+                  <div className="flex-1">
+                    <h3 className="text-base font-medium text-sparkle-text mb-1">
+                      Force Local{" "}
+                      <code className="bg-sparkle-border rounded-md p-0.5">apps.json</code>
+                    </h3>
+                    <p className="text-sm text-sparkle-text-secondary">
+                      By default, the apps page fetches the latest "apps.json" from github. Enabling
+                      this option forces it to use the local version of "apps.json" which is updated
+                      with Sparkle updates.
+                    </p>
+                  </div>
+                  <Toggle
+                    checked={forceLocalApps}
+                    onChange={() => {
+                      setForceLocalApps((v) => {
+                        const next = !v
+                        localStorage.setItem("forceLocalApps", next.toString())
+                        toast.success("Force local apps.json " + (next ? "Enabled" : "Disabled"))
+                        return next
+                      })
                     }}
                   />
                 </div>

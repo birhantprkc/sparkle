@@ -210,7 +210,7 @@ function Apps() {
     const loadApps = async () => {
       try {
         let appsData: { apps: AppData[] }
-        if (import.meta.env.DEV) {
+        if (import.meta.env.DEV || localStorage.getItem("forceLocalApps") === "true") {
           appsData = data as { apps: AppData[] }
         } else {
           const response = await fetch(

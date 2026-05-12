@@ -572,7 +572,10 @@ function Utilities() {
                     <div className="flex gap-3 items-center">
                       <h1>{util.name}</h1>{" "}
                       {util.command && (
-                        <p className="text-xs text-sparkle-primary">CMD: {util.command}</p>
+                        <p className="text-xs text-sparkle-primary">
+                          CMD:{" "}
+                          <code className="bg-sparkle-border p-0.5 rounded-md">{util.command}</code>
+                        </p>
                       )}
                     </div>
                     <p className="text-sm  text-sparkle-text-secondary">{util.description}</p>

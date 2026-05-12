@@ -53,7 +53,7 @@
       "category": "games",
       "info": "A digital distribution platform for video games.",
       "link": "https://store.steampowered.com/?ref=sparkle",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Steam_icon_logo.svg/2048px-Steam_icon_logo.svg.png"
+      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Steam_icon_logo.svg/960px-Steam_icon_logo.svg.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail&_=20220611141426"
     },
     {
       "name": "Epic Games Launcher",
@@ -131,7 +131,7 @@
       "category": "development",
       "info": "A code editor that runs on your computer.",
       "link": "https://visualstudio.microsoft.com/?ref=sparkle",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Visual_Studio_Icon_2019.svg/2060px-Visual_Studio_Icon_2019.svg.png"
+      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Visual_Studio_Icon_2022.svg/960px-Visual_Studio_Icon_2022.svg.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail"
     },
     {
       "name": "Arduino IDE",
@@ -140,7 +140,7 @@
       "category": "development",
       "info": "Code Editor for Arduino Microcontrollers.",
       "link": "https://www.arduino.cc/en/software/?ref=sparkle",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Arduino_IDE_logo.svg/2048px-Arduino_IDE_logo.svg.png"
+      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Arduino_IDE_logo.svg/960px-Arduino_IDE_logo.svg.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail"
     },
     {
       "name": "Notepad++",
@@ -158,7 +158,7 @@
       "category": "development",
       "info": "A code editor that runs on your computer.",
       "link": "https://www.sublimetext.com/?ref=sparkle",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Breezeicons-apps-48-sublime-text.svg/1200px-Breezeicons-apps-48-sublime-text.svg.png"
+      "icon": "https://www.sublimehq.com/images/sublime_text.png"
     },
     {
       "name": "Brave",
@@ -185,7 +185,7 @@
       "category": "browsers",
       "info": "A fast, private and secure web browsers.",
       "link": "https://www.opera.com/?ref=sparkle",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Opera_2015_icon.svg/2048px-Opera_2015_icon.svg.png"
+      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Opera_2015_icon.svg/960px-Opera_2015_icon.svg.png"
     },
     {
       "name": "Opera GX",
@@ -203,7 +203,7 @@
       "category": "browsers",
       "info": "A fast, private and secure web browsers.",
       "link": "https://vivaldi.com/?ref=sparkle",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Vivaldi_web_browser_logo.svg/1200px-Vivaldi_web_browser_logo.svg.png"
+      "icon": "https://upload.wikimedia.org/wikipedia/commons/e/e4/Vivaldi_web_browser_logo.svg"
     },
     {
       "name": "Zoom",
@@ -317,7 +317,7 @@
       "category": "communication",
       "info": "Collaboration hub that connects your work with the people you work with.",
       "link": "https://slack.com/?ref=sparkle",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Slack_icon_2019.svg/2048px-Slack_icon_2019.svg.png"
+      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Slack_icon_2019.svg/1280px-Slack_icon_2019.svg.png"
     },
     {
       "name": "RustDesk",
@@ -352,7 +352,7 @@
       "category": "multimedia",
       "info": "A free and open source media player.",
       "link": "https://vlc.media/?ref=sparkle",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/VLC_Icon.svg/2048px-VLC_Icon.svg.png"
+      "icon": "https://images.videolan.org/images/VLC-IconSmall.png"
     },
     {
       "name": "Medal",
@@ -369,7 +369,7 @@
       "category": "multimedia",
       "info": "An audio editor.",
       "link": "https://www.audacityteam.org/?ref=sparkle",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Audacity_Logo.svg/2048px-Audacity_Logo.svg.png"
+      "icon": "https://www.audacityteam.org/apple-touch-icon.png"
     },
     {
       "name": "OBS Studio",
@@ -378,7 +378,7 @@
       "category": "multimedia",
       "info": "A free and open source software for video recording and live streaming.",
       "link": "https://obsproject.com/?ref=sparkle",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/OBS_Studio_Logo.svg/1200px-OBS_Studio_Logo.svg.png"
+      "icon": "https://obsproject.com/assets/images/new_icon_small-r.png"
     },
     {
       "name": "MSI Afterburner",
@@ -804,7 +804,7 @@
       "category": "utilities",
       "info": "A free and open source image editor.",
       "link": "https://www.gimp.org/?ref=sparkle",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/The_GIMP_icon_-_v3.0.svg/1200px-The_GIMP_icon_-_v3.0.svg.png"
+      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/The_GIMP_icon_-_gnome.svg/1280px-The_GIMP_icon_-_gnome.svg.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail"
     },
     {
       "name": "Guilded",

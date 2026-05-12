@@ -100,8 +100,6 @@ $appDefinitions = @(
     @{ Package = "Phone Link"; FriendlyName = "Phone Link" }   
 )
 
-$allAppsToRemove = $appDefinitions | ForEach-Object { $_.Package }
-
 $recommendedApps = @(
     "Microsoft.3DBuilder",
     "Microsoft.549981C3F5F10",
@@ -276,7 +274,6 @@ function Show-ScriptSelectionDialog {
     $reader = New-Object System.Xml.XmlNodeReader $xaml
     $window = [Windows.Markup.XamlReader]::Load($reader)
     
-    $radioSparkle = $window.FindName("RadioSparkle")
     $radioRaphire = $window.FindName("RadioRaphire")
     $btnOK = $window.FindName("BtnOK")
     $btnCancel = $window.FindName("BtnCancel")
@@ -710,7 +707,7 @@ try {
             }
             $appsToRemove = Show-AppSelectionDialog
             
-            if ($appsToRemove -eq $null -or $appsToRemove.Count -eq 0) {
+            if ($null -eq $appsToRemove -or $appsToRemove.Count -eq 0) {
                 Write-Host "No apps selected for removal. Operation cancelled." -ForegroundColor Yellow
                 exit 0
             }
@@ -719,7 +716,7 @@ try {
             $script:appsWereRemoved = $true
         }
     }
-    elseif ($ScriptChoice -eq "" -or $ScriptChoice -eq $null) {
+    elseif ($ScriptChoice -eq "" -or $null -eq $ScriptChoice) {
         Write-Host "No script choice provided, entering interactive mode..." -ForegroundColor Yellow
         
         try {
@@ -744,7 +741,7 @@ try {
                 }
                 $appsToRemove = Show-AppSelectionDialog
                 
-                if ($appsToRemove -eq $null -or $appsToRemove.Count -eq 0) {
+                if ($null -eq $appsToRemove -or $appsToRemove.Count -eq 0) {
                     Write-Host "No apps selected for removal. Operation cancelled." -ForegroundColor Yellow
                     exit 0
                 }
@@ -774,7 +771,7 @@ try {
     Width="480"
     WindowStartupLocation="CenterScreen"
     Background="#0c121f"
-        ResizeMode="NoResize">
+    ResizeMode="NoResize">
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="Background" Value="#4f90e6"/>

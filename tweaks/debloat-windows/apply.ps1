@@ -96,7 +96,8 @@ $appDefinitions = @(
     @{ Package = "king.com.BubbleWitch3Saga"; FriendlyName = "Bubble Witch 3 Saga" },
     @{ Package = "king.com.CandyCrushSaga"; FriendlyName = "Candy Crush Saga" },
     @{ Package = "king.com.CandyCrushSodaSaga"; FriendlyName = "Candy Crush Soda Saga" },
-    @{ Package = "9NBLGGH4QGHW"; FriendlyName = "Microsoft Sticky Notes" }   
+    @{ Package = "9NBLGGH4QGHW"; FriendlyName = "Microsoft Sticky Notes" },
+    @{ Package = "Phone Link"; FriendlyName = "Phone Link" }   
 )
 
 $allAppsToRemove = $appDefinitions | ForEach-Object { $_.Package }
@@ -158,7 +159,8 @@ $recommendedApps = @(
     "TuneInRadio",
     "king.com.BubbleWitch3Saga",
     "king.com.CandyCrushSaga",
-    "king.com.CandyCrushSodaSaga"
+    "king.com.CandyCrushSodaSaga",
+    "Phone Link"
 )
 
 function Get-FriendlyName {

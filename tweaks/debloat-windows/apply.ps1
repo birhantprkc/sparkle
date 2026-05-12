@@ -8,7 +8,7 @@ param(
     [string[]]$AppsToRemove = @()
 )
 
-$version = "1.1.0"
+$version = "1.2.0"
 
 function Test-IsAdmin {
     $currentUser = [Security.Principal.WindowsIdentity]::GetCurrent()
@@ -184,23 +184,23 @@ function Show-ScriptSelectionDialog {
         WindowStartupLocation="CenterScreen"
         Topmost="True"
         ResizeMode="NoResize"
-        Background="#f0f0f0">
+        Background="#0c121f">
     <Window.Resources>
         <Style TargetType="RadioButton">
-            <Setter Property="Foreground" Value="#1e293b"/>
+            <Setter Property="Foreground" Value="#f0f4f8"/>
             <Setter Property="FontSize" Value="13"/>
             <Setter Property="Padding" Value="8,6"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Foreground" Value="#3b82f6"/>
+                    <Setter Property="Foreground" Value="#4f90e6"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
         <Style TargetType="Button">
-            <Setter Property="Background" Value="#f1f5f9"/>
-            <Setter Property="Foreground" Value="#1e293b"/>
-            <Setter Property="BorderBrush" Value="#d5dae2"/>
+            <Setter Property="Background" Value="#243144"/>
+            <Setter Property="Foreground" Value="#f0f4f8"/>
+            <Setter Property="BorderBrush" Value="#1f2a3d"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="18,8"/>
             <Setter Property="FontSize" Value="13"/>
@@ -217,11 +217,11 @@ function Show-ScriptSelectionDialog {
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#3b82f6"/>
+                                <Setter Property="Background" Value="#4f90e6"/>
                                 <Setter Property="Foreground" Value="#ffffff"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#2563eb"/>
+                                <Setter Property="Background" Value="#4f90e6"/>
                                 <Setter Property="Foreground" Value="#ffffff"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
@@ -242,12 +242,12 @@ function Show-ScriptSelectionDialog {
                    Text="Choose your debloat approach:" 
                    FontSize="16" 
                    FontWeight="SemiBold" 
-                   Foreground="#1e293b"
+                   Foreground="#f0f4f8"
                    Margin="0,0,0,20"/>
         
         <Border Grid.Row="1" 
-                Background="#ffffff" 
-                BorderBrush="#d5dae2" 
+                Background="#131c2c" 
+                BorderBrush="#1f2a3d" 
                 BorderThickness="1" 
                 CornerRadius="8"
                 Padding="20"
@@ -311,10 +311,10 @@ function Show-BehaviorChangeWarning {
         WindowStartupLocation="CenterScreen"
         Topmost="True"
         ResizeMode="NoResize"
-        Background="#f0f0f0">
+        Background="#0c121f">
     <Window.Resources>
         <Style TargetType="Button">
-            <Setter Property="Background" Value="#3b82f6"/>
+            <Setter Property="Background" Value="#4f90e6"/>
             <Setter Property="Foreground" Value="#ffffff"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Padding" Value="24,10"/>
@@ -332,10 +332,10 @@ function Show-BehaviorChangeWarning {
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#60a5fa"/>
+                                <Setter Property="Background" Value="#4f90e6"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#2563eb"/>
+                                <Setter Property="Background" Value="#4f90e6"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -356,12 +356,12 @@ function Show-BehaviorChangeWarning {
             <TextBlock Text="Behavior Has Changed!"
                        FontSize="18" 
                        FontWeight="SemiBold" 
-                       Foreground="#1e293b"
+                       Foreground="#f0f4f8"
                        VerticalAlignment="Center"/>
         </StackPanel>
         
         <Border Grid.Row="1" 
-                Background="#fef3c7" 
+                Background="#131c2c" 
                 BorderBrush="#f59e0b" 
                 BorderThickness="1" 
                 CornerRadius="8"
@@ -371,11 +371,11 @@ function Show-BehaviorChangeWarning {
                 <TextBlock Text="The app selection has been inverted:" 
                            FontSize="14" 
                            FontWeight="SemiBold" 
-                           Foreground="#92400e"
+                           Foreground="#aab4c3"
                            Margin="0,0,0,10"/>
                 <TextBlock Text="- Previously: You selected apps to KEEP"
                            FontSize="13" 
-                           Foreground="#92400e"
+                           Foreground="#aab4c3"
                            Margin="0,0,0,4"/>
                 <TextBlock Text="- Now: Select apps to REMOVE"
                            FontSize="13" 
@@ -384,7 +384,7 @@ function Show-BehaviorChangeWarning {
                            Margin="0,0,0,10"/>
                 <TextBlock Text="This change gives you more direct control over what gets removed from your system, and allows us to set recommended defaults for removal. It also lets us add more features to this script in the future."
                            FontSize="13" 
-                           Foreground="#92400e"
+                           Foreground="#aab4c3"
                            TextWrapping="Wrap"/>
             </StackPanel>
         </Border>
@@ -444,23 +444,23 @@ function Show-AppSelectionDialog {
     Height="750" Width="650" 
     WindowStartupLocation="CenterScreen"
     ResizeMode="NoResize"
-    Background="#f0f0f0">
+    Background="#0c121f">
     <Window.Resources>
         <Style TargetType="CheckBox">
-            <Setter Property="Foreground" Value="#334155"/>
+            <Setter Property="Foreground" Value="#f0f4f8"/>
             <Setter Property="FontSize" Value="13"/>
             <Setter Property="Padding" Value="8,5"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Foreground" Value="#1e293b"/>
+                    <Setter Property="Foreground" Value="#f0f4f8"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
         <Style TargetType="Button">
-            <Setter Property="Background" Value="#f1f5f9"/>
-            <Setter Property="Foreground" Value="#1e293b"/>
-            <Setter Property="BorderBrush" Value="#d5dae2"/>
+            <Setter Property="Background" Value="#243144"/>
+            <Setter Property="Foreground" Value="#f0f4f8"/>
+            <Setter Property="BorderBrush" Value="#1f2a3d"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="16,8"/>
             <Setter Property="FontSize" Value="13"/>
@@ -477,11 +477,11 @@ function Show-AppSelectionDialog {
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#3b82f6"/>
+                                <Setter Property="Background" Value="#4f90e6"/>
                                 <Setter Property="Foreground" Value="#ffffff"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#2563eb"/>
+                                <Setter Property="Background" Value="#4f90e6"/>
                                 <Setter Property="Foreground" Value="#ffffff"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
@@ -490,7 +490,7 @@ function Show-AppSelectionDialog {
             </Setter>
         </Style>
         <Style x:Key="SecondaryButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-            <Setter Property="Background" Value="#ffffff"/>
+            <Setter Property="Background" Value="#131c2c"/>
         </Style>
     </Window.Resources>
     
@@ -507,19 +507,19 @@ function Show-AppSelectionDialog {
                    Text="Select apps to remove" 
                    FontSize="18" 
                    FontWeight="SemiBold" 
-                   Foreground="#1e293b"
+                   Foreground="#f0f4f8"
                    Margin="0,0,0,6"/>
         
         <TextBlock Grid.Row="1" 
                    Text="Check the apps you want to remove. Unchecked apps will remain installed." 
                    FontSize="13" 
-                   Foreground="#64748b"
+                   Foreground="#7e92a9"
                    TextWrapping="Wrap"
                    Margin="0,0,0,12"/>
 
         <Border Grid.Row="2" 
-                Background="#ffffff" 
-                BorderBrush="#d5dae2" 
+                Background="#131c2c" 
+                BorderBrush="#1f2a3d" 
                 BorderThickness="1" 
                 CornerRadius="8"
                 Margin="0,0,0,12">
@@ -552,8 +552,8 @@ function Show-AppSelectionDialog {
             <Button x:Name="BtnSelectRecommended" 
                     Content="Select Recommended" 
                     Width="165"
-                    Background="#dbeafe"
-                    Foreground="#1e40af"/>
+                    Background="#243144"
+                    Foreground="#f0f4f8"/>
         </StackPanel>
         
         <StackPanel Grid.Row="4" 
@@ -773,11 +773,11 @@ try {
     Height="200" 
     Width="480"
     WindowStartupLocation="CenterScreen"
-    Background="#f0f0f0"
-    ResizeMode="NoResize">
+    Background="#0c121f"
+        ResizeMode="NoResize">
     <Window.Resources>
         <Style TargetType="Button">
-            <Setter Property="Background" Value="#3b82f6"/>
+            <Setter Property="Background" Value="#4f90e6"/>
             <Setter Property="Foreground" Value="#ffffff"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Padding" Value="24,10"/>
@@ -794,10 +794,10 @@ try {
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#60a5fa"/>
+                                <Setter Property="Background" Value="#4f90e6"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#2563eb"/>
+                                <Setter Property="Background" Value="#4f90e6"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -816,12 +816,12 @@ try {
             <TextBlock Text="Debloat Complete" 
                       FontSize="20"
                       FontWeight="SemiBold"
-                      Foreground="#2dac7d"
+                      Foreground="#3db58a"
                       HorizontalAlignment="Center"
                       Margin="0,0,0,10"/>
             <TextBlock Text="Your system has been successfully optimized." 
                       FontSize="14"
-                      Foreground="#64748b"
+                      Foreground="#7e92a9"
                       HorizontalAlignment="Center"
                       TextAlignment="Center"
                       TextWrapping="Wrap"

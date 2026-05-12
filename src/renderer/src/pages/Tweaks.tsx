@@ -760,7 +760,7 @@ function Tweaks() {
                       <div className="flex flex-col flex-1 overflow-hidden">
                         <p className="text-sparkle-text-secondary text-sm flex-1 overflow-y-auto custom-scrollbar pr-1">
                           {tweak.description}
-                          {toggleStates[tweak.name] && isAltHeld && (
+                          {toggleStates[tweak.name] && isAltHeld && tweak.reversible !== false && (
                             <Button
                               variant="primary"
                               className="px-2! py-1! text-xs flex items-center gap-1 fixed mt-2"

@@ -33,7 +33,9 @@ function Settings() {
   const [defaultPackageManager, setDefaultPackageManager] = useState<"Chocolatey" | "Winget">(
     (localStorage.getItem("defaultPackageManager") as "Chocolatey" | "Winget") || "Winget",
   )
-
+  const [hideAppIcons, setHideAppIcons] = useState<boolean>(
+    localStorage.getItem("hideAppsPageAppIcons") === "true",
+  )
   const checkForUpdates = async () => {
     try {
       setChecking(true)
@@ -211,6 +213,28 @@ function Settings() {
                     onChange={(value) => {
                       setDefaultPackageManager(value as "Chocolatey" | "Winget")
                       localStorage.setItem("defaultPackageManager", value)
+                    }}
+                  />
+                </div>
+                <div className="flex items-center justify-between mt-4">
+                  <div className="flex-1">
+                    <h3 className="text-base font-medium text-sparkle-text mb-1">
+                      Hide App Icons on Apps Page
+                    </h3>
+                    <p className="text-sm text-sparkle-text-secondary">
+                      Hides the app icons on the apps page, showing only the app names. Reduces
+                      network requests and speeds up loading time, especially on slower connections.
+                    </p>
+                  </div>
+                  <Toggle
+                    checked={hideAppIcons}
+                    onChange={() => {
+                      setHideAppIcons((v) => {
+                        const next = !v
+                        localStorage.setItem("hideAppsPageAppIcons", next.toString())
+                        toast.success("Hide app icons " + (next ? "Enabled" : "Disabled"))
+                        return next
+                      })
                     }}
                   />
                 </div>

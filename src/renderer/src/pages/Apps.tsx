@@ -62,6 +62,9 @@ function Apps() {
   const [chocolateyInstalled, setChocolateyInstalled] = useState<boolean | null>(null)
   const [chocolateyChecking, setChocolateyChecking] = useState<boolean>(false)
   const [chocolateyInstalling, setChocolateyInstalling] = useState<boolean>(false)
+  const [hideAppIcons, setHideAppIcons] = useState<boolean>(
+    localStorage.getItem("hideAppsPageAppIcons") === "true",
+  )
 
   const { addApp, apps: installingApps, setAction } = useAppInstallStore()
 
@@ -190,7 +193,9 @@ function Apps() {
     setChocolateyInstalling(true)
     try {
       await invoke({ channel: "install-chocolatey" })
-      toast.success("Chocolatey installed! Please restart Sparkle to continue.", { autoClose: false })
+      toast.success("Chocolatey installed! Please restart Sparkle to continue.", {
+        autoClose: false,
+      })
       await checkChocolatey()
     } catch (error) {
       console.error("Error installing Chocolatey:", error)
@@ -604,18 +609,20 @@ function Apps() {
                                 onChange={() => toggleApp(appId)}
                               />
                             </div>
-                            <div className="min-w-10 max-w-10 max--h-10 min-h-10 rounded-lg overflow-hidden bg-sparkle-accent flex items-center justify-center">
-                              {app.icon ? (
-                                <img
-                                  src={app.icon}
-                                  alt={app.name}
-                                  onError={(e) => (e.currentTarget.src = logo)}
-                                  className="w-8 h-8 object-contain rounded-md"
-                                />
-                              ) : (
-                                <img src="" alt="" className="w-6 h-6 opacity-50" />
-                              )}
-                            </div>
+                            {hideAppIcons !== true && (
+                              <div className="min-w-10 max-w-10 max--h-10 min-h-10 rounded-lg overflow-hidden bg-sparkle-accent flex items-center justify-center">
+                                {app.icon ? (
+                                  <img
+                                    src={app.icon}
+                                    alt={app.name}
+                                    onError={(e) => (e.currentTarget.src = logo)}
+                                    className="w-8 h-8 object-contain rounded-md"
+                                  />
+                                ) : (
+                                  <img src="" alt="" className="w-6 h-6 opacity-50" />
+                                )}
+                              </div>
+                            )}
                             <div>
                               <h3 className="text-sparkle-text font-medium group-hover:text-sparkle-primary transition">
                                 {app.name}

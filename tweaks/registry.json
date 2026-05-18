@@ -1,5 +1,5 @@
 {
-  "version": "2026-04-22T03:32:50.418Z",
+  "version": "2026-05-18T01:46:17.847Z",
   "tweaks": [
     {
       "id": "24-hour-clock",
@@ -204,6 +204,20 @@
       "reversible": true,
       "docsurl": "https://docs.getsparkle.net/tweaks/disable-mouse-acceleration",
       "source": "https://github.com/Parcoil/Sparkle/blob/v2/tweaks/disable-mouse-acceleration/meta.json"
+    },
+    {
+      "id": "disable-rdp-warnings",
+      "title": "Disable RDP Warnings for Unsigned Files",
+      "description": "Suppresses Windows security warnings when opening unsigned Remote Desktop (.rdp) files.",
+      "category": [
+        "General",
+        "Privacy"
+      ],
+      "recommended": false,
+      "reversible": true,
+      "addedversion": "2.19.0",
+      "docsurl": "https://docs.getsparkle.net/tweaks/disable-rdp-warnings",
+      "source": "https://github.com/Parcoil/Sparkle/blob/v2/tweaks/disable-rdp-warnings/meta.json"
     },
     {
       "id": "disable-windows-recall",

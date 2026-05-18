@@ -1354,6 +1354,15 @@
       "info": "Yet Another Status Bar, a simple and customizable status bar for Windows.",
       "link": "https://yasb.dev/?ref=sparkle",
       "icon": "https://cdn.yasb.dev/favicons/favicon.ico"
+    },
+    {
+      "name": "TortoiseGit",
+      "id": "TortoiseGit.TortoiseGit",
+      "chocolatey": "tortoisegit",
+      "category": "development",
+      "info": "A Git client for Windows that integrates with the File Explorer.",
+      "link": "https://tortoisegit.org/?ref=sparkle",
+      "icon": "https://tortoisegit.org/images/apple-touch-icon.png"
     }
   ]
 }

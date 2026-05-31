@@ -5,7 +5,7 @@ import path from "path"
 import { exec } from "child_process"
 import { logo } from "@main/index"
 import { executePowerShell } from "@main/powershell"
-import si from "systeminformation"
+import { detectGPU } from "@main/gpu"
 import log from "electron-log"
 
 console.log = log.log
@@ -24,12 +24,6 @@ interface Tweak {
   category?: string
   description?: string
   [key: string]: any
-}
-
-interface GPUInfo {
-  hasGPU: boolean
-  isNvidia: boolean
-  model: string | null
 }
 
 const getExePath = (exeName: string): string => {
@@ -105,52 +99,6 @@ const getNipPath = (): string => {
   return path.join(process.resourcesPath, "sparklenvidia.nip")
 }
 
-async function detectGPU(): Promise<GPUInfo> {
-  try {
-    const graphicsData = await si.graphics()
-    if (!graphicsData.controllers || graphicsData.controllers.length === 0) {
-      return { hasGPU: false, isNvidia: false, model: null }
-    }
-
-    const dedicatedControllers = graphicsData.controllers.filter((controller: any) => {
-      const model = (controller.model || "").toLowerCase()
-      const isIntegrated =
-        model.includes("integrated") ||
-        (model.includes("intel") &&
-          (model.includes("hd") || model.includes("uhd") || model.includes("iris"))) ||
-        (model.includes("amd") && model.includes("radeon") && model.includes("graphics"))
-
-      return (
-        !isIntegrated &&
-        (model.includes("nvidia") ||
-          (model.includes("amd") &&
-            (model.includes("radeon") ||
-              model.includes("rx") ||
-              model.includes("vega") ||
-              model.includes("firepro") ||
-              model.includes("instinct"))) ||
-          (model.includes("intel") && model.includes("arc")))
-      )
-    })
-
-    const dedicatedGPU = dedicatedControllers.sort(
-      (a: any, b: any) => (b.vram || 0) - (a.vram || 0),
-    )[0]
-
-    const hasGPU = !!dedicatedGPU
-    const isNvidia = hasGPU && dedicatedGPU.model.toLowerCase().includes("nvidia")
-
-    return {
-      hasGPU,
-      isNvidia,
-      model: dedicatedGPU?.model || null,
-    }
-  } catch (error) {
-    console.error("Error detecting GPU:", error)
-    return { hasGPU: false, isNvidia: false, model: null }
-  }
-}
-
 function isGPUTweak(tweak: Tweak): boolean {
   return !!(tweak.category && tweak.category.includes("GPU"))
 }
@@ -217,16 +165,12 @@ export const setupTweaksHandlers = (): void => {
       throw new Error(`No apply script found for tweak: ${name}`)
     }
 
-    if (isGPUTweak(tweak)) {
+    if (isGPUTweak(tweak) || isNvidiaTweak(tweak)) {
       const gpuInfo = await detectGPU()
-      if (!gpuInfo.hasGPU) {
+      if (isGPUTweak(tweak) && !gpuInfo.hasGPU) {
         throw new Error(`This tweak requires a dedicated GPU, but no compatible GPU was detected.`)
       }
-    }
-
-    if (isNvidiaTweak(tweak)) {
-      const gpuInfo = await detectGPU()
-      if (!gpuInfo.isNvidia) {
+      if (isNvidiaTweak(tweak) && !gpuInfo.isNvidia) {
         throw new Error(`This tweak is only for NVIDIA GPUs, but no NVIDIA GPU was detected.`)
       }
     }

@@ -8,6 +8,7 @@ import path from "path"
 import log from "electron-log"
 import { shell } from "electron"
 import { executePowerShell } from "@main/powershell"
+import { detectGPU } from "@main/gpu"
 import type { SystemInfo } from "../types"
 
 const execFilePromise = util.promisify(execFile)
@@ -15,15 +16,6 @@ const execFilePromise = util.promisify(execFile)
 console.log = log.log
 console.error = log.error
 console.warn = log.warn
-
-interface GPUInfo {
-  model: string
-  vram: string
-  hasGPU: boolean
-  isNvidia: boolean
-  integratedModel: string
-  hasIntegratedGPU: boolean
-}
 
 interface PowerShellResult {
   success: boolean
@@ -38,10 +30,9 @@ interface ClearCacheResult {
 
 async function getSystemInfo(): Promise<SystemInfo> {
   try {
-    const [cpuData, graphicsData, osInfo, memLayout, diskLayout, fsSize, blockDevices] =
+    const [cpuData, osInfo, memLayout, diskLayout, fsSize, blockDevices] =
       await Promise.all([
         si.cpu(),
-        si.graphics(),
         si.osInfo(),
         si.memLayout(),
         si.diskLayout(),
@@ -69,76 +60,7 @@ async function getSystemInfo(): Promise<SystemInfo> {
       }
     }
 
-    let gpuInfo: GPUInfo = {
-      model: "GPU not found",
-      vram: "N/A",
-      hasGPU: false,
-      isNvidia: false,
-      integratedModel: "Not detected",
-      hasIntegratedGPU: false,
-    }
-
-    if (graphicsData.controllers && graphicsData.controllers.length > 0) {
-      const integratedControllers = graphicsData.controllers.filter((controller: any) => {
-        const model = (controller.model || "").toLowerCase()
-        return (
-          model.includes("integrated") ||
-          (model.includes("intel") &&
-            (model.includes("hd") || model.includes("uhd") || model.includes("iris"))) ||
-          (model.includes("amd") && model.includes("radeon") && model.includes("graphics")) ||
-          (model.includes("amd") && model.includes("vega") && !model.includes("rx")) ||
-          model.includes("intel graphics")
-        )
-      })
-
-      const dedicatedControllers = graphicsData.controllers.filter((controller: any) => {
-        const model = (controller.model || "").toLowerCase()
-        const isIntegrated =
-          model.includes("integrated") ||
-          (model.includes("intel") &&
-            (model.includes("hd") || model.includes("uhd") || model.includes("iris"))) ||
-          (model.includes("amd") && model.includes("radeon") && model.includes("graphics")) ||
-          (model.includes("amd") && model.includes("vega") && !model.includes("rx")) ||
-          model.includes("intel graphics")
-
-        return (
-          !isIntegrated &&
-          (model.includes("nvidia") ||
-            (model.includes("amd") &&
-              (model.includes("radeon") ||
-                model.includes("rx") ||
-                model.includes("vega") ||
-                model.includes("firepro") ||
-                model.includes("instinct"))) ||
-            (model.includes("intel") && model.includes("arc")))
-        )
-      })
-
-      const dedicatedGPU = dedicatedControllers.sort(
-        (a: any, b: any) => (b.vram || 0) - (a.vram || 0),
-      )[0]
-
-      const integratedGPU = integratedControllers.sort(
-        (a: any, b: any) => (b.vram || 0) - (a.vram || 0),
-      )[0]
-
-      if (integratedGPU) {
-        gpuInfo.integratedModel = integratedGPU.model || "Unknown Integrated GPU"
-        gpuInfo.hasIntegratedGPU = true
-      }
-
-      if (dedicatedGPU) {
-        const hasGPU = true
-        const isNvidia = dedicatedGPU.model.toLowerCase().includes("nvidia")
-        gpuInfo = {
-          ...gpuInfo,
-          model: dedicatedGPU.model || "Unknown GPU",
-          vram: dedicatedGPU.vram ? `${Math.round(dedicatedGPU.vram / 1024)} GB` : "Unknown",
-          hasGPU,
-          isNvidia,
-        }
-      }
-    }
+    const gpuInfo = await detectGPU()
 
     const versionScript = `(Get-ItemProperty -Path "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion").DisplayVersion`
     const versionPsResult = await executePowerShell(null, {

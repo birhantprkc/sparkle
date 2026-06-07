@@ -1372,6 +1372,15 @@
       "info": "A free and open source audio player for Windows.",
       "link": "https://www.foobar2000.org/?ref=sparkle",
       "icon": "https://upload.wikimedia.org/wikipedia/commons/f/f8/Foobar2000_logo_white.png"
+    },
+    {
+      "name": "Localsend",
+      "id": "localsend",
+      "chocolatey": "localsend",
+      "category": "utilities",
+      "info": "A simple and private file sharing app for Windows.",
+      "link": "https://localsend.org/?ref=sparkle",
+      "icon": "https://avatars.githubusercontent.com/u/120677616?s=200&v=4"
     }
   ]
 }

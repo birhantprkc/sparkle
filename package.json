@@ -17,7 +17,7 @@
     "build:unpack": "pnpm run build && electron-builder --dir",
     "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
     "typecheck:web": "tsc --noEmit -p tsconfig.web.json --composite false",
-    "test": "vitest run",
+    "test": "vitest run  --reporter=verbose",
     "test:watch": "vitest",
     "typecheck": "pnpm run typecheck:node && pnpm run typecheck:web"
   },

@@ -446,6 +446,17 @@ function ensureWinget(): Promise<PowerShellResult> {
 
 export { ensureWinget }
 
+export async function checkWinget(): Promise<{ success: boolean; installed: boolean }> {
+  try {
+    await execFilePromise("winget", ["--version"])
+    console.log("Winget is installed")
+    return { success: true, installed: true }
+  } catch {
+    console.log("Winget is not installed")
+    return { success: true, installed: false }
+  }
+}
+
 export const setupSystemHandlers = (): void => {
   ipcMain.handle("restart", restartSystem)
   ipcMain.handle("open-log-folder", openLogFolder)
@@ -453,16 +464,7 @@ export const setupSystemHandlers = (): void => {
   ipcMain.handle("get-system-info", getSystemInfo)
   ipcMain.handle("get-user-name", getUserName)
   ipcMain.handle("restart-explorer", restartExplorer)
-  ipcMain.handle("check-winget", async () => {
-    try {
-      await execFilePromise("winget", ["--version"])
-      console.log("Winget is installed")
-      return { success: true, installed: true }
-    } catch {
-      console.log("Winget is not installed")
-      return { success: true, installed: false }
-    }
-  })
+  ipcMain.handle("check-winget", async () => checkWinget())
   ipcMain.handle("install-winget", ensureWinget)
   console.log("[Sparkle main/system.ts]: System handlers setup complete")
 }

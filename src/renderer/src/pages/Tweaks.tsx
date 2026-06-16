@@ -774,7 +774,7 @@ function Tweaks() {
                     className="animate-border-spin rounded-xl p-[1px]"
                     style={{
                       background:
-                        "conic-gradient(from var(--angle), #3b82f6, #8b5cf6, #ec4899, #f59e0b, #3b82f6)",
+                        "conic-gradient(from var(--angle), #3b82f6, #22c55e, #eab308, #f97316, #ec4899, #8b5cf6, #3b82f6)",
                     }}
                   >
                     <Card className="border-0 p-0 h-52">{cardBody}</Card>

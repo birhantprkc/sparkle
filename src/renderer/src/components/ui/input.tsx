@@ -29,6 +29,7 @@ function Input({
       className={cn(
         "w-full bg-sparkle-card border border-sparkle-border rounded-lg px-3 py-2 text-sparkle-text",
         "focus:ring-0 focus:outline-hidden focus:border-sparkle-primary transition-colors",
+        "placeholder:text-sparkle-text-secondary disabled:cursor-not-allowed disabled:opacity-50",
         className,
       )}
       placeholder={placeholder}

@@ -17,7 +17,7 @@ import Modal from "@/components/ui/modal"
 import { toast } from "react-toastify"
 import { Trash } from "lucide-react"
 import log from "electron-log/renderer"
-import { LargeInput } from "@/components/ui/input"
+import { Input, LargeInput } from "@/components/ui/input"
 import { Tweak } from "@/types/index"
 
 type RestorePoint = {
@@ -268,7 +268,7 @@ function RestorePointsTab() {
         }
       >
         {modalState.type === "restore" && modalState.restorePoint && (
-          <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-6 shadow-xl max-w-lg w-full mx-4 pb-0">
+          <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-4 shadow-xl max-w-lg w-full mx-4 pb-0">
             <h3 className="text-lg font-medium text-sparkle-text">Restore System</h3>
 
             <div className="p-4 pr-0">
@@ -301,16 +301,15 @@ function RestorePointsTab() {
         )}
       </Modal>
       <Modal open={customModalOpen} onClose={() => !processing && setCustomModalOpen(false)}>
-        <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-6 shadow-xl max-w-lg w-full mx-4 pb-0">
+        <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-4 shadow-xl max-w-lg w-full mx-4 pb-0">
           <h3 className="text-lg font-medium text-sparkle-text">Create Custom Restore Point</h3>
 
           <div className="p-4 space-y-4">
-            <input
+            <Input
               type="text"
               value={customName}
               onChange={(e) => setCustomName(e.target.value)}
               placeholder="Enter restore point name"
-              className="w-full px-3 py-2 bg-sparkle-card border border-sparkle-border rounded-lg text-sparkle-text placeholder-sparkle-text-secondary focus:outline-hidden focus:ring-2 focus:ring-sparkle-primary focus:border-transparent transition-colors"
               disabled={processing}
             />
             <div className="flex justify-end gap-3">
@@ -336,7 +335,7 @@ function RestorePointsTab() {
         </div>
       </Modal>
       <Modal open={confirmDeleteAll} onClose={() => !processing && setConfirmDeleteAll(false)}>
-        <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-6 shadow-xl max-w-lg w-full mx-4 pb-0">
+        <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-4 shadow-xl max-w-lg w-full mx-4 pb-0">
           <h3 className="text-lg font-medium text-sparkle-text">Delete All Restore Points</h3>
           <div className="p-4 pr-0">
             <p className="text-sparkle-text-secondary mb-4">
@@ -613,7 +612,7 @@ function AppliedTweaksTab() {
         )}
       </div>
       <Modal open={confirmUndoAll} onClose={() => !processing && setConfirmUndoAll(false)}>
-        <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-6 shadow-xl max-w-lg w-full mx-4 pb-0">
+        <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-4 shadow-xl max-w-lg w-full mx-4 pb-0">
           <h3 className="text-lg font-medium text-sparkle-text">Undo All Tweaks</h3>
           <div className="p-4 pr-0">
             <p className="text-sparkle-text-secondary mb-4">
@@ -641,7 +640,7 @@ function AppliedTweaksTab() {
         </div>
       </Modal>
       <Modal open={showWhyNotReversible} onClose={() => setShowWhyNotReversible(false)}>
-        <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-6 shadow-xl max-w-lg w-full mx-4">
+        <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-4 shadow-xl max-w-lg w-full mx-4">
           <h3 className="text-lg font-medium text-sparkle-text mb-4">
             Why are some tweaks not reversible?
           </h3>

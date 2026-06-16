@@ -272,7 +272,7 @@ function Apps() {
   return (
     <>
       <Modal open={showWelcomeModal} onClose={() => setShowWelcomeModal(false)}>
-        <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-6 shadow-xl max-w-lg w-full mx-4">
+        <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-4 shadow-xl max-w-lg w-full mx-4">
           <h3 className="text-xl font-semibold text-sparkle-text mb-3">
             Welcome to The Apps Page!
           </h3>
@@ -344,7 +344,7 @@ function Apps() {
         </div>
       </Modal>
       <Modal open={showSelectedAppsModal} onClose={() => setShowSelectedAppsModal(false)}>
-        <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-6 shadow-xl max-w-lg w-full mx-4">
+        <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-4 shadow-xl max-w-lg w-full mx-4">
           <h3 className="text-xl font-semibold text-sparkle-text mb-3">
             Selected Apps ({selectedApps.length})
           </h3>
@@ -379,7 +379,7 @@ function Apps() {
         </div>
       </Modal>
       <Modal open={importModalOpen} onClose={() => setImportModalOpen(false)}>
-        <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-6 shadow-xl max-w-lg w-full mx-4">
+        <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-4 shadow-xl max-w-lg w-full mx-4">
           <h3 className="text-xl font-semibold text-sparkle-text mb-3">
             Import Apps ({importedApps.length})
           </h3>

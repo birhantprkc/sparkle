@@ -162,7 +162,7 @@ function Nav({ collapsed }) {
         </button>
       )}
       <Modal open={showRestartModal} onOpenChange={setShowRestartModal}>
-        <div className="bg-sparkle-card p-6 rounded-2xl border border-sparkle-border text-sparkle-text w-[90vw] max-w-md">
+        <div className="bg-sparkle-card p-4 rounded-2xl border border-sparkle-border text-sparkle-text w-[90vw] max-w-md">
           <h2 className="text-lg font-semibold">Confirm Restart</h2>
           <p>Are you sure you want to restart your computer now?</p>
           <div className="flex gap-2 justify-end">
@@ -182,7 +182,7 @@ function Nav({ collapsed }) {
         </div>
       </Modal>
       <Modal open={showOfflineModal} onOpenChange={setShowOfflineModal}>
-        <div className="bg-sparkle-card p-6 rounded-2xl border border-sparkle-border text-sparkle-text w-[90vw] max-w-md">
+        <div className="bg-sparkle-card p-4 rounded-2xl border border-sparkle-border text-sparkle-text w-[90vw] max-w-md">
           <div className="flex items-center gap-3 mb-4">
             <div className="p-2 bg-red-500/20 rounded-full">
               <WifiOff className="w-6 h-6 text-red-500" />

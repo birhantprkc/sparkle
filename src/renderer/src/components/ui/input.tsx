@@ -9,6 +9,7 @@ interface InputProps {
   className?: string
   placeholder?: string
   Icon?: LucideIcon
+  disabled?: boolean
 }
 
 function Input({
@@ -17,6 +18,7 @@ function Input({
   onChange,
   className,
   placeholder,
+  disabled,
   ...props
 }: InputProps): React.ReactElement {
   return (
@@ -30,6 +32,7 @@ function Input({
         className,
       )}
       placeholder={placeholder}
+      disabled={disabled}
       {...props}
     />
   )

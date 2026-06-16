@@ -230,7 +230,7 @@ export default function DNSPage() {
   return (
     <>
       <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
-        <div className="bg-sparkle-card p-6 rounded-2xl border border-sparkle-border text-sparkle-text w-[90vw] max-w-md">
+        <div className="bg-sparkle-card p-4 rounded-2xl border border-sparkle-border text-sparkle-text w-[90vw] max-w-md">
           <h2 className="text-lg font-semibold mb-4">Confirm DNS Change</h2>
           {selectedProvider && (
             <>

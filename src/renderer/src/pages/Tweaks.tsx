@@ -425,7 +425,7 @@ function Tweaks() {
   return (
     <>
       <Modal open={isRecommendedModalOpen} onClose={() => setIsRecommendedModalOpen(false)}>
-        <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-6 max-w-xl w-full mx-4 max-h-2xl">
+        <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-4 max-w-xl w-full mx-4 max-h-2xl">
           <h3 className="text-xl font-semibold text-sparkle-text mb-3">Apply Recommended Tweaks</h3>
           <div className="text-sparkle-text-secondary text-sm leading-6 whitespace-pre-wrap max-h-64 overflow-y-auto custom-scrollbar mb-6">
             Select the tweaks you want to apply:
@@ -486,7 +486,7 @@ function Tweaks() {
           setIsModalOpen(false)
         }}
       >
-        <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-6 shadow-xl max-w-lg w-full mx-4">
+        <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-4 shadow-xl max-w-lg w-full mx-4">
           <h3 className="text-xl font-semibold text-sparkle-text mb-3">{selectedTweak?.title}</h3>
           <div className="text-sparkle-text-secondary text-sm leading-6 whitespace-pre-wrap max-h-64 overflow-y-auto custom-scrollbar mb-6">
             {modalContent}

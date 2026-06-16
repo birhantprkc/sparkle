@@ -66,7 +66,7 @@ export default function UpdateManager(): React.ReactElement {
 
   return (
     <Modal open={updateOpen} onClose={() => {}}>
-      <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-6 shadow-xl max-w-lg w-full mx-4">
+      <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-4 shadow-xl max-w-lg w-full mx-4">
         <h2 className="text-xl font-semibold mb-2 text-sparkle-primary">
           Update available{updateVersion ? ` (${updateVersion})` : ""}
         </h2>

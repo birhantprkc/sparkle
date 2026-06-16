@@ -107,7 +107,7 @@ function Settings() {
   return (
     <>
       <Modal open={deleteModalOpen} onClose={() => setDeleteModalOpen(false)}>
-        <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-8 shadow-2xl max-w-md w-full mx-4">
+        <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-4 shadow-2xl max-w-md w-full mx-4">
           <div className="text-center mb-6">
             <div className="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg

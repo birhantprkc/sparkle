@@ -599,184 +599,189 @@ function Tweaks() {
             {sortedTweaks.length > 0 ? (
               sortedTweaks.map((tweak, _) => {
                 const originalIndex = tweaks.indexOf(tweak)
-                return (
-                  <Card key={originalIndex} className=" p-0 h-52">
-                    <div className="p-5 flex flex-col h-65">
-                      <div className="flex items-center justify-between mb-3">
-                        {tweak.category && (
-                          <div className="flex items-center gap-2 flex-wrap">
+                const cardBody = (
+                  <div className="p-5 flex flex-col h-65">
+                    <div className="flex items-center justify-between mb-3">
+                      {tweak.category && (
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <>
+                            {tweak.warning && (
+                              <Tooltip content={tweak.warning} delay={0.3} side="right">
+                                <div className="p-1.5 dark:bg-red-900/50 bg-red-300 rounded-lg hover:bg-red-800 dark:hover:bg-red-900/80 transition-colors">
+                                  <AlertTriangle className="w-4 h-4 dark:text-red-400 text-red-600 hover:text-white" />
+                                </div>
+                              </Tooltip>
+                            )}
+                            {tweak.recommended && (
+                              <Tooltip content={"Recommended Tweak"} delay={0.3} side="right">
+                                <div className="p-1.5 bg-green-500/50 rounded-lg hover:bg-green-500/80 transition-colors">
+                                  <Star className="w-4 h-4 text-white fill-white" />
+                                </div>
+                              </Tooltip>
+                            )}
+                            {tweak.addedversion &&
+                              isNewInCurrentVersion(tweak.addedversion, CURRENT_VERSION) && (
+                                <Tooltip
+                                  content={`New in Sparkle ${tweak.addedversion}`}
+                                  delay={0.3}
+                                  side="right"
+                                >
+                                  <div className="p-1.5 bg-pink-500/50 rounded-lg hover:bg-pink-500/80 transition-colors">
+                                    <Plus className="w-4 h-4 text-white" />
+                                  </div>
+                                </Tooltip>
+                              )}
+                            {tweak.updatedversion &&
+                              isUpdatedInCurrentVersion(tweak.updatedversion, CURRENT_VERSION) && (
+                                <Tooltip
+                                  content={`Updated in Sparkle ${tweak.updatedversion}`}
+                                  delay={0.3}
+                                  side="right"
+                                >
+                                  <div className="p-1.5 bg-blue-500/50 rounded-lg hover:bg-blue-500/80 transition-colors">
+                                    <RefreshCw className="w-4 h-4 text-white" />
+                                  </div>
+                                </Tooltip>
+                              )}
+                            {(Array.isArray(tweak.category)
+                              ? tweak.category
+                              : [tweak.category]
+                            ).map((cat) => (
+                              <Tooltip
+                                key={cat}
+                                content={`${cat} Optimization`}
+                                delay={0.3}
+                                side="right"
+                              >
+                                <div className="p-1.5 bg-sparkle-accent rounded-lg hover:bg-sparkle-bg transition-colors text-sparkle-text">
+                                  {categoryIcons[cat] || categoryIcons["General"]}
+                                </div>
+                              </Tooltip>
+                            ))}
+                            {tweak.risk && (
+                              <Tooltip
+                                content={tweak.risk === "safe" ? "Safe to use" : "Use with caution"}
+                                delay={0.3}
+                                side="right"
+                              >
+                                <div className="p-1.5 bg-sparkle-accent rounded-lg hover:bg-sparkle-bg transition-colors text-sparkle-text">
+                                  {tweak.risk === "safe" && (
+                                    <div className="flex gap-2">
+                                      <ShieldCheck className="w-4 h-4 text-green-500" />{" "}
+                                      <p className="text-xs">Safe</p>
+                                    </div>
+                                  )}
+                                  {tweak.risk === "risky" && (
+                                    <div className="flex gap-2">
+                                      <AlertTriangle className="w-4 h-4 text-red-500" />{" "}
+                                      <p className="text-xs">Risky</p>
+                                    </div>
+                                  )}
+                                  {tweak.risk === "caution" && (
+                                    <div className="flex gap-2">
+                                      <AlertTriangle className="w-4 h-4 text-yellow-500" />{" "}
+                                      <p className="text-xs">Caution</p>
+                                    </div>
+                                  )}
+                                </div>
+                              </Tooltip>
+                            )}
+                          </>
+                        </div>
+                      )}
+
+                      <div className="flex items-center m-0 gap-2">
+                        <Button
+                          variant="secondary"
+                          className="px-2! py-1! text-xs flex items-center gap-1"
+                          title="Open Docs"
+                          onClick={(e) => {
+                            e.preventDefault()
+                            e.stopPropagation()
+
+                            const url = `https://docs.getsparkle.net/tweaks/${tweak.name}`
+                            window.open(url, "_blank")
+                          }}
+                        >
+                          <ExternalLink className="w-3 h-3" /> Docs
+                        </Button>
+
+                        {(() => {
+                          const compatibility = isTweakCompatible(tweak)
+                          return (
                             <>
-                              {tweak.warning && (
-                                <Tooltip content={tweak.warning} delay={0.3} side="right">
-                                  <div className="p-1.5 dark:bg-red-900/50 bg-red-300 rounded-lg hover:bg-red-800 dark:hover:bg-red-900/80 transition-colors">
-                                    <AlertTriangle className="w-4 h-4 dark:text-red-400 text-red-600 hover:text-white" />
+                              {!compatibility.compatible && (
+                                <Tooltip content={compatibility.reason} delay={0.3} side="right">
+                                  <div className="p-1.5 bg-orange-500/50 rounded-lg hover:bg-orange-500/80 transition-colors">
+                                    <Monitor className="w-4 h-4 text-orange-300" />
                                   </div>
                                 </Tooltip>
                               )}
-                              {tweak.recommended && (
-                                <Tooltip content={"Recommended Tweak"} delay={0.3} side="right">
-                                  <div className="p-1.5 bg-green-500/50 rounded-lg hover:bg-green-500/80 transition-colors">
-                                    <Star className="w-4 h-4 text-white fill-white" />
-                                  </div>
-                                </Tooltip>
-                              )}
-                              {tweak.addedversion &&
-                                isNewInCurrentVersion(tweak.addedversion, CURRENT_VERSION) && (
-                                  <Tooltip
-                                    content={`New in Sparkle ${tweak.addedversion}`}
-                                    delay={0.3}
-                                    side="right"
-                                  >
-                                    <div className="p-1.5 bg-pink-500/50 rounded-lg hover:bg-pink-500/80 transition-colors">
-                                      <Plus className="w-4 h-4 text-white" />
-                                    </div>
-                                  </Tooltip>
-                                )}
-                              {tweak.updatedversion &&
-                                isUpdatedInCurrentVersion(
-                                  tweak.updatedversion,
-                                  CURRENT_VERSION,
-                                ) && (
-                                  <Tooltip
-                                    content={`Updated in Sparkle ${tweak.updatedversion}`}
-                                    delay={0.3}
-                                    side="right"
-                                  >
-                                    <div className="p-1.5 bg-blue-500/50 rounded-lg hover:bg-blue-500/80 transition-colors">
-                                      <RefreshCw className="w-4 h-4 text-white" />
-                                    </div>
-                                  </Tooltip>
-                                )}
-                              {(Array.isArray(tweak.category)
-                                ? tweak.category
-                                : [tweak.category]
-                              ).map((cat) => (
+                              {tweak.reversible == null || tweak.reversible == true ? (
                                 <Tooltip
-                                  key={cat}
-                                  content={`${cat} Optimization`}
-                                  delay={0.3}
-                                  side="right"
+                                  content={!compatibility.compatible ? compatibility.reason : null}
                                 >
-                                  <div className="p-1.5 bg-sparkle-accent rounded-lg hover:bg-sparkle-bg transition-colors text-sparkle-text">
-                                    {categoryIcons[cat] || categoryIcons["General"]}
-                                  </div>
+                                  <Toggle
+                                    checked={toggleStates[tweak.name] || false}
+                                    onChange={() => handleToggle(originalIndex)}
+                                    disabled={!compatibility.compatible}
+                                  />
                                 </Tooltip>
-                              ))}
-                              {tweak.risk && (
+                              ) : (
                                 <Tooltip
-                                  content={
-                                    tweak.risk === "safe" ? "Safe to use" : "Use with caution"
-                                  }
-                                  delay={0.3}
-                                  side="right"
+                                  content={!compatibility.compatible ? compatibility.reason : null}
                                 >
-                                  <div className="p-1.5 bg-sparkle-accent rounded-lg hover:bg-sparkle-bg transition-colors text-sparkle-text">
-                                    {tweak.risk === "safe" && (
-                                      <div className="flex gap-2">
-                                        <ShieldCheck className="w-4 h-4 text-green-500" />{" "}
-                                        <p className="text-xs">Safe</p>
-                                      </div>
-                                    )}
-                                    {tweak.risk === "risky" && (
-                                      <div className="flex gap-2">
-                                        <AlertTriangle className="w-4 h-4 text-red-500" />{" "}
-                                        <p className="text-xs">Risky</p>
-                                      </div>
-                                    )}
-                                    {tweak.risk === "caution" && (
-                                      <div className="flex gap-2">
-                                        <AlertTriangle className="w-4 h-4 text-yellow-500" />{" "}
-                                        <p className="text-xs">Caution</p>
-                                      </div>
-                                    )}
-                                  </div>
+                                  <Button
+                                    onClick={() => handleButtonClick(originalIndex)}
+                                    disabled={!compatibility.compatible}
+                                  >
+                                    Apply
+                                  </Button>
                                 </Tooltip>
                               )}
                             </>
-                          </div>
-                        )}
-
-                        <div className="flex items-center m-0 gap-2">
+                          )
+                        })()}
+                      </div>
+                    </div>
+                    <div className="flex items-start mb-3">
+                      <h2 className="font-semibold text-sparkle-text text-base">{tweak.title}</h2>
+                    </div>
+                    <div className="flex flex-col flex-1 overflow-hidden">
+                      <p className="text-sparkle-text-secondary text-sm flex-1 overflow-y-auto custom-scrollbar pr-1">
+                        {tweak.description}
+                        {toggleStates[tweak.name] && isAltHeld && tweak.reversible !== false && (
                           <Button
-                            variant="secondary"
-                            className="px-2! py-1! text-xs flex items-center gap-1"
-                            title="Open Docs"
+                            variant="primary"
+                            className="px-2! py-1! text-xs flex items-center gap-1 fixed mt-2"
+                            title="Force reapply tweak"
                             onClick={(e) => {
                               e.preventDefault()
                               e.stopPropagation()
-
-                              const url = `https://docs.getsparkle.net/tweaks/${tweak.name}`
-                              window.open(url, "_blank")
+                              forceReapplyTweak(tweak)
                             }}
                           >
-                            <ExternalLink className="w-3 h-3" /> Docs
+                            <RefreshCw className="w-3 h-3" /> Reapply
                           </Button>
-
-                          {(() => {
-                            const compatibility = isTweakCompatible(tweak)
-                            return (
-                              <>
-                                {!compatibility.compatible && (
-                                  <Tooltip content={compatibility.reason} delay={0.3} side="right">
-                                    <div className="p-1.5 bg-orange-500/50 rounded-lg hover:bg-orange-500/80 transition-colors">
-                                      <Monitor className="w-4 h-4 text-orange-300" />
-                                    </div>
-                                  </Tooltip>
-                                )}
-                                {tweak.reversible == null || tweak.reversible == true ? (
-                                  <Tooltip
-                                    content={
-                                      !compatibility.compatible ? compatibility.reason : null
-                                    }
-                                  >
-                                    <Toggle
-                                      checked={toggleStates[tweak.name] || false}
-                                      onChange={() => handleToggle(originalIndex)}
-                                      disabled={!compatibility.compatible}
-                                    />
-                                  </Tooltip>
-                                ) : (
-                                  <Tooltip
-                                    content={
-                                      !compatibility.compatible ? compatibility.reason : null
-                                    }
-                                  >
-                                    <Button
-                                      onClick={() => handleButtonClick(originalIndex)}
-                                      disabled={!compatibility.compatible}
-                                    >
-                                      Apply
-                                    </Button>
-                                  </Tooltip>
-                                )}
-                              </>
-                            )
-                          })()}
-                        </div>
-                      </div>
-                      <div className="flex items-start mb-3">
-                        <h2 className="font-semibold text-sparkle-text text-base">{tweak.title}</h2>
-                      </div>
-                      <div className="flex flex-col flex-1 overflow-hidden">
-                        <p className="text-sparkle-text-secondary text-sm flex-1 overflow-y-auto custom-scrollbar pr-1">
-                          {tweak.description}
-                          {toggleStates[tweak.name] && isAltHeld && tweak.reversible !== false && (
-                            <Button
-                              variant="primary"
-                              className="px-2! py-1! text-xs flex items-center gap-1 fixed mt-2"
-                              title="Force reapply tweak"
-                              onClick={(e) => {
-                                e.preventDefault()
-                                e.stopPropagation()
-                                forceReapplyTweak(tweak)
-                              }}
-                            >
-                              <RefreshCw className="w-3 h-3" /> Reapply
-                            </Button>
-                          )}
-                        </p>
-                      </div>
+                        )}
+                      </p>
                     </div>
+                  </div>
+                )
+                return tweak.name === "debloat-windows" ? (
+                  <div
+                    key={originalIndex}
+                    className="animate-border-spin rounded-xl p-[1px]"
+                    style={{
+                      background:
+                        "conic-gradient(from var(--angle), #3b82f6, #8b5cf6, #ec4899, #f59e0b, #3b82f6)",
+                    }}
+                  >
+                    <Card className="border-0 p-0 h-52">{cardBody}</Card>
+                  </div>
+                ) : (
+                  <Card key={originalIndex} className=" p-0 h-52">
+                    {cardBody}
                   </Card>
                 )
               })

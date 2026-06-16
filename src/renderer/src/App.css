@@ -5,6 +5,12 @@ layer(base);
 @import "tw-animate-css";
 @custom-variant dark (&:is(.dark *));
 
+@property --angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
 @theme {
   --color-sparkle-old-primary: #01e5ff;
   --color-sparkle-primary: var(--color-primary);
@@ -18,6 +24,16 @@ layer(base);
   --color-sparkle-accent: var(--color-accent);
   --color-sparkle-border-secondary: var(--color-border-secondary);
   --color-sparkle-old-secondary: #005fff;
+  --animate-border-spin: border-spin 3s linear infinite;
+
+  @keyframes border-spin {
+    from {
+      --angle: 0deg;
+    }
+    to {
+      --angle: 360deg;
+    }
+  }
 }
 
 /*

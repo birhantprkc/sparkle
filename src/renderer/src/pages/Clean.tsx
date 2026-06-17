@@ -3,7 +3,17 @@ import Toggle from "@/components/ui/Toggle"
 import { useState, useEffect } from "react"
 import { invoke } from "@/lib/electron"
 import RootDiv from "@/components/rootdiv"
-import { RefreshCw, Icon, FileX, Gauge, Trash2, Download, Image, Bug } from "lucide-react"
+import {
+  RotateCw,
+  Icon,
+  FileX,
+  Gauge,
+  Trash2,
+  Download,
+  Image,
+  Bug,
+  LoaderCircle,
+} from "lucide-react"
 import { broom } from "@lucide/lab"
 import { toast } from "react-toastify"
 import log from "electron-log/renderer"
@@ -328,7 +338,7 @@ function Clean() {
             >
               {isCleaning ? (
                 <>
-                  <RefreshCw className="animate-spin" size={18} />
+                  <LoaderCircle className="animate-spin" size={18} />
                   <span>Cleaning...</span>
                 </>
               ) : (
@@ -397,7 +407,7 @@ function Clean() {
                 {loadingQueue.includes(id) && (
                   <div className="absolute inset-0 flex items-center justify-center z-10 rounded-xl">
                     <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-sparkle-border border border-sparkle-border-secondary">
-                      <RefreshCw className="animate-spin text-teal-500" size={18} />
+                      <LoaderCircle className="animate-spin text-teal-500" size={18} />
                       <span className="text-sm font-medium text-teal-600">Cleaning...</span>
                     </div>
                   </div>

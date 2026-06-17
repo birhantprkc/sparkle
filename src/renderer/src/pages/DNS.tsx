@@ -4,7 +4,7 @@ import RootDiv from "@/components/rootdiv"
 import Button from "@/components/ui/button"
 import Modal from "@/components/ui/modal"
 import { toast } from "react-toastify"
-import { Globe, Shield, Settings, RefreshCw, AlertCircle, Info } from "lucide-react"
+import { Globe, Shield, Settings, RotateCw, AlertCircle, Info, LoaderCircle } from "lucide-react"
 import { Cloud } from "lucide-react"
 import log from "electron-log/renderer"
 import { Check, X } from "lucide-react"
@@ -270,7 +270,7 @@ export default function DNSPage() {
             <div className="flex items-center gap-3 mb-3">
               <h2 className="font-semibold">Current DNS Settings</h2>
               <Button onClick={getCurrentDNS} variant="" size="sm" className="ml-auto">
-                <RefreshCw className="w-5 h-5" />
+                <RotateCw className="w-5 h-5" />
               </Button>
             </div>
 
@@ -304,7 +304,7 @@ export default function DNSPage() {
               >
                 {pingLoading ? (
                   <>
-                    <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                    <LoaderCircle className="w-4 h-4 mr-2 animate-spin" />
                     Testing Please Wait...
                   </>
                 ) : (

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import {
-  RefreshCw,
+  RotateCw,
   PlusCircle,
   Shield,
   RotateCcw,
@@ -172,7 +172,7 @@ function RestorePointsTab() {
               className="flex items-center gap-2"
               disabled={loading || processing}
             >
-              <RefreshCw size={16} /> Refresh
+              <RotateCw size={16} /> Refresh
             </Button>
             <Button
               variant="primary"
@@ -519,7 +519,7 @@ function AppliedTweaksTab() {
               className="flex items-center gap-2"
               disabled={loading || processing}
             >
-              <RefreshCw size={16} /> Refresh
+              <RotateCw size={16} /> Refresh
             </Button>
             <Button
               variant="danger"

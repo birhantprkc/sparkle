@@ -24,7 +24,7 @@ import Toggle from "@/components/ui/Toggle"
 import Checkbox from "@/components/ui/Checkbox"
 import log from "electron-log/renderer"
 import Card from "@/components/ui/Card"
-import { Gpu, Plus, RefreshCw } from "lucide-react"
+import { Gpu, Plus, RotateCw } from "lucide-react"
 import { LargeInput } from "@/components/ui/input"
 import { isNewInCurrentVersion, isUpdatedInCurrentVersion, CURRENT_VERSION } from "@/lib/version"
 import { Star } from "lucide-react"
@@ -641,7 +641,7 @@ function Tweaks() {
                                   side="right"
                                 >
                                   <div className="p-1.5 bg-blue-500/50 rounded-lg hover:bg-blue-500/80 transition-colors">
-                                    <RefreshCw className="w-4 h-4 text-white" />
+                                    <RotateCw className="w-4 h-4 text-white" />
                                   </div>
                                 </Tooltip>
                               )}
@@ -763,7 +763,7 @@ function Tweaks() {
                               forceReapplyTweak(tweak)
                             }}
                           >
-                            <RefreshCw className="w-3 h-3" /> Reapply
+                            <RotateCw className="w-3 h-3" /> Reapply
                           </Button>
                         )}
                       </p>

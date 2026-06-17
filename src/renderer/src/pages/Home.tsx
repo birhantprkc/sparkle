@@ -183,11 +183,11 @@ function Home() {
             items={
               systemInfo?.hasGPU
                 ? [
-                    { label: "Model", value: systemInfo?.gpu_model || "Unknown" },
-                    { label: "VRAM", value: systemInfo?.vram || "Unknown" },
+                    { label: "Model", value: systemInfo?.gpu_model || "Loading..." },
+                    { label: "VRAM", value: systemInfo?.vram || "Loading..." },
                   ]
                 : [
-                    { label: "Model", value: systemInfo?.integrated_gpu || "Unknown" },
+                    { label: "Model", value: systemInfo?.integrated_gpu || "Loading..." },
                     { label: "Type", value: "Integrated" },
                   ]
             }
@@ -224,8 +224,8 @@ function Home() {
             title="Storage"
             subtitle="Disk Information"
             items={[
-              { label: "Primary Disk", value: systemInfo?.disk_model || "Unknown" },
-              { label: "Total Space", value: systemInfo?.disk_size || "Unknown" },
+              { label: "Primary Disk", value: systemInfo?.disk_model || "Loading..." },
+              { label: "Total Space", value: systemInfo?.disk_size || "Loading..." },
             ]}
           />
 

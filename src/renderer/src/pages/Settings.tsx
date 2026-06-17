@@ -462,6 +462,25 @@ function Settings() {
                 </div>
                 <div className="flex items-center justify-between mt-4">
                   <div className="flex-1">
+                    <h3 className="text-base font-medium text-sparkle-text mb-1">
+                      Clear System Info Cache
+                    </h3>
+                    <p className="text-sm text-sparkle-text-secondary">
+                      Clear the cached system information.
+                    </p>
+                  </div>
+                  <Button
+                    variant="secondary"
+                    onClick={() => {
+                      localStorage.removeItem("sparkle:systemInfo")
+                      toast.success("System info cache cleared")
+                    }}
+                  >
+                    Clear Cache
+                  </Button>
+                </div>
+                <div className="flex items-center justify-between mt-4">
+                  <div className="flex-1">
                     <h3 className="text-base font-medium text-sparkle-text mb-1">Open Devtools</h3>
                     <p className="text-sm text-sparkle-text-secondary">
                       Open the developer tools for debugging. Not recommended for regular users.

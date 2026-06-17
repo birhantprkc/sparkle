@@ -138,19 +138,23 @@ function Home() {
   if (loading) {
     return (
       <RootDiv>
-        <div className="flex items-center justify-center h-64 flex-col gap-5">
-          <div className="">
+        <div className="flex items-center justify-center h-64 flex-col gap-4">
+          <div className="relative w-10 h-10">
+            <div className="absolute inset-0 border-[3px] border-sparkle-border rounded-full"></div>
             <div
-              className="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-sparkle-primary rounded-full ml-3"
+              className="absolute inset-0 border-[3px] border-transparent border-t-sparkle-primary rounded-full animate-spin"
               role="status"
               aria-label="loading"
             ></div>
           </div>
-          <div className="text-sparkle-text-secondary">
-            Loading system information... This may take a while depending on your system.
+          <div className="flex flex-col items-center gap-1.5 text-center">
+            <p className="text-sparkle-text-dark font-medium">Loading system information</p>
+            <p className="text-sparkle-text-muted text-sm">
+              This may take a while depending on your system
+            </p>
           </div>
-          <p className="text-sm text-sparkle-primary">
-            You may use other parts of sparkle while this loads
+          <p className="text-xs text-sparkle-secondary bg-sparkle-accent px-3 py-1.5 rounded-full mt-1">
+            You can use other parts of Sparkle while this loads
           </p>
         </div>
       </RootDiv>

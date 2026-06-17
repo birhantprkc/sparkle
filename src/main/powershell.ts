@@ -3,7 +3,7 @@ import path from "path"
 import util from "util"
 import { exec } from "child_process"
 import { app, ipcMain } from "electron"
-import { mainWindow } from "@main/index"
+import { mainWindow } from "@main/windowState"
 import fs from "fs"
 import log from "electron-log"
 const execPromise = util.promisify(exec)

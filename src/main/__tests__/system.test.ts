@@ -5,28 +5,16 @@ vi.mock("electron-log", () => ({
   log: vi.fn(), error: vi.fn(), warn: vi.fn(),
 }))
 
-vi.mock("systeminformation", () => ({
-  default: { graphics: vi.fn() },
-}))
-
-vi.mock("@main/powershell", () => ({
-  executePowerShell: vi.fn(),
-  checkChocolatey: vi.fn(),
-}))
-
-vi.mock("@main/gpu", () => ({
-  detectGPU: vi.fn(),
+vi.mock("electron", () => ({
+  app: { getPath: vi.fn(() => ""), getAppPath: vi.fn(() => "") },
+  shell: { openPath: vi.fn(), openExternal: vi.fn() },
+  ipcMain: { handle: vi.fn(), removeHandler: vi.fn() },
 }))
 
 const mockExecFile = vi.fn()
 vi.mock("child_process", () => ({
   execFile: mockExecFile,
   exec: vi.fn(),
-}))
-
-vi.mock("electron", () => ({
-  ipcMain: { handle: vi.fn(), removeHandler: vi.fn() },
-  shell: { openPath: vi.fn(), openExternal: vi.fn() },
 }))
 
 const { checkWinget } = await import("@main/system")
@@ -37,9 +25,8 @@ beforeEach(() => {
 
 describe("checkWinget", () => {
   it("returns installed=true when winget command succeeds", async () => {
-    mockExecFile.mockImplementation((...args) => {
-      const callback = args[args.length - 1]
-      callback(null, { stdout: "v1.2.3" })
+    mockExecFile.mockImplementation((_cmd, _args, callback) => {
+      callback(null, "v1.2.3", "")
     })
 
     const result = await checkWinget()
@@ -49,8 +36,7 @@ describe("checkWinget", () => {
   })
 
   it("returns installed=false when winget command fails", async () => {
-    mockExecFile.mockImplementation((...args) => {
-      const callback = args[args.length - 1]
+    mockExecFile.mockImplementation((_cmd, _args, callback) => {
       callback(new Error("not found"))
     })
 
@@ -60,9 +46,8 @@ describe("checkWinget", () => {
   })
 
   it("calls execFile with correct arguments", async () => {
-    mockExecFile.mockImplementation((...args) => {
-      const callback = args[args.length - 1]
-      callback(null, { stdout: "v1.2.3" })
+    mockExecFile.mockImplementation((_cmd, _args, callback) => {
+      callback(null, "v1.2.3", "")
     })
 
     await checkWinget()

@@ -9,13 +9,13 @@ import { setupTweaksHandlers } from "@main/tweakHandler"
 import { setupDNSHandlers } from "@main/dnsHandler"
 import { setupBackupHandlers } from "@main/backup"
 import { initAutoUpdater } from "@main/updates"
+import { setMainWindow } from "@main/windowState"
 import Store from "electron-store"
 
 console.log = log.log
 console.error = log.error
 console.warn = log.warn
 
-export const logo = "[Sparkle]:"
 log.initialize()
 
 const store = new Store()
@@ -58,7 +58,7 @@ if (!gotTheLock) {
   })
 }
 
-export let mainWindow: BrowserWindow | null = null
+let mainWindow: BrowserWindow | null = null
 
 function createWindow(): void {
   console.log("[Sparkle]: createWindow called")
@@ -88,6 +88,7 @@ function createWindow(): void {
       },
     })
     console.log("[Sparkle]: BrowserWindow created")
+    setMainWindow(mainWindow)
   } catch (err: any) {
     console.error("[Sparkle]: BrowserWindow creation failed:", err)
     throw err

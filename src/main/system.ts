@@ -9,7 +9,7 @@ import log from "electron-log"
 import { shell } from "electron"
 import { executePowerShell } from "@main/powershell"
 import { detectGPU } from "@main/gpu"
-import { mainWindow } from "@main/index"
+import { mainWindow } from "@main/windowState"
 import type { SystemInfo } from "../types"
 
 const execFilePromise = util.promisify(execFile)

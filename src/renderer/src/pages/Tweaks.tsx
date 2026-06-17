@@ -28,6 +28,8 @@ import { Gpu, Plus, RefreshCw } from "lucide-react"
 import { LargeInput } from "@/components/ui/input"
 import { isNewInCurrentVersion, isUpdatedInCurrentVersion, CURRENT_VERSION } from "@/lib/version"
 import { Star } from "lucide-react"
+import ReactMarkdown from "react-markdown"
+import remarkGfm from "remark-gfm"
 import { Tweak } from "@/types/index"
 
 function Tweaks() {
@@ -488,8 +490,8 @@ function Tweaks() {
       >
         <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-4 shadow-xl max-w-lg w-full mx-4">
           <h3 className="text-xl font-semibold text-sparkle-text mb-3">{selectedTweak?.title}</h3>
-          <div className="text-sparkle-text-secondary text-sm leading-6 whitespace-pre-wrap max-h-64 overflow-y-auto custom-scrollbar mb-6">
-            {modalContent}
+          <div className="text-sparkle-text-secondary text-sm leading-6 max-h-64 overflow-y-auto custom-scrollbar mb-6 prose prose-green marker:text-sparkle-secondary">
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>{String(modalContent)}</ReactMarkdown>
           </div>
           <div className="flex justify-end gap-3">
             <Button

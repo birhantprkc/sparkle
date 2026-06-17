@@ -65,8 +65,11 @@ function Home() {
 
       invoke({ channel: "get-system-info" })
         .then((info) => {
-          setSystemInfo(info)
-          localStorage.setItem("sparkle:systemInfo", JSON.stringify(info))
+          useSystemStore.setState((state) => {
+            const merged = { ...state.systemInfo, ...info }
+            localStorage.setItem("sparkle:systemInfo", JSON.stringify(merged))
+            return { systemInfo: merged }
+          })
           setUsingCache(false)
           log.info("Fetched system info")
         })
@@ -110,6 +113,21 @@ function Home() {
     })
 
     return () => cancelIdleCallback(idleHandle)
+  }, [])
+
+  useEffect(() => {
+    const handleExtraInfo = (_event: any, extra: Record<string, any>) => {
+      useSystemStore.setState((state) => {
+        const merged = { ...state.systemInfo, ...extra }
+        localStorage.setItem("sparkle:systemInfo", JSON.stringify(merged))
+        return { systemInfo: merged }
+      })
+    }
+
+    window.electron.ipcRenderer.on("system-info-extra", handleExtraInfo)
+    return () => {
+      window.electron.ipcRenderer.removeListener("system-info-extra", handleExtraInfo)
+    }
   }, [])
 
   const formatBytes = (bytes) => {

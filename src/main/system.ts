@@ -9,6 +9,7 @@ import log from "electron-log"
 import { shell } from "electron"
 import { executePowerShell } from "@main/powershell"
 import { detectGPU } from "@main/gpu"
+import { mainWindow } from "@main/index"
 import type { SystemInfo } from "../types"
 
 const execFilePromise = util.promisify(execFile)
@@ -30,37 +31,14 @@ interface ClearCacheResult {
 
 async function getSystemInfo(): Promise<SystemInfo> {
   try {
-    const [cpuData, osInfo, memLayout, diskLayout, fsSize, blockDevices] =
-      await Promise.all([
-        si.cpu(),
-        si.osInfo(),
-        si.memLayout(),
-        si.diskLayout(),
-        si.fsSize(),
-        si.blockDevices(),
-      ])
+    const [cpuData, osInfo, memLayout] = await Promise.all([
+      si.cpu(),
+      si.osInfo(),
+      si.memLayout(),
+    ])
 
-    let totalMemory = os.totalmem()
+    const totalMemory = os.totalmem()
     const memoryType = (memLayout as any).length > 0 ? (memLayout as any)[0].type : "Unknown"
-    const cDrive = (fsSize as any).find((d: any) => d.mount.toUpperCase().startsWith("C:"))
-
-    let primaryDisk: any = null
-    if (cDrive) {
-      const cBlock = (blockDevices as any).find(
-        (b: any) => b.mount && b.mount.toUpperCase().startsWith("C:"),
-      )
-
-      if (cBlock) {
-        primaryDisk =
-          (diskLayout as any).find(
-            (disk: any) =>
-              disk.device?.toLowerCase() === cBlock.device?.toLowerCase() ||
-              disk.name?.toLowerCase().includes(cBlock.name?.toLowerCase()),
-          ) || null
-      }
-    }
-
-    const gpuInfo = await detectGPU()
 
     const versionScript = `(Get-ItemProperty -Path "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion").DisplayVersion`
     const versionPsResult = await executePowerShell(null, {
@@ -69,29 +47,70 @@ async function getSystemInfo(): Promise<SystemInfo> {
     })
     const windowsVersion = versionPsResult.success ? versionPsResult.output!.trim() : "Unknown"
 
-    return {
+    const result: SystemInfo = {
       cpu_model: (cpuData as any).brand,
       cpu_cores: (cpuData as any).physicalCores,
       cpu_threads: (cpuData as any).threads || (cpuData as any).physicalCores,
-
-      gpu_model: gpuInfo.model,
-      vram: gpuInfo.vram,
-      hasGPU: gpuInfo.hasGPU,
-      isNvidia: gpuInfo.isNvidia,
-      integrated_gpu: gpuInfo.integratedModel,
-      hasIntegratedGPU: gpuInfo.hasIntegratedGPU,
-
       memory_total: totalMemory,
       memory_type: memoryType,
-
       os: osInfo.distro || "Windows",
       os_version: windowsVersion || "Unknown",
-
-      disk_model: primaryDisk?.name || primaryDisk?.device || "Unknown Storage",
-      disk_size: cDrive?.size
-        ? `${Math.round(cDrive.size / 1024 / 1024 / 1024).toFixed(1)} GB`
-        : "Unknown",
     }
+
+    setImmediate(async () => {
+      detectGPU()
+        .then((gpuInfo) => {
+          mainWindow?.webContents.send("system-info-extra", {
+            gpu_model: gpuInfo.model,
+            vram: gpuInfo.vram,
+            hasGPU: gpuInfo.hasGPU,
+            isNvidia: gpuInfo.isNvidia,
+            integrated_gpu: gpuInfo.integratedModel,
+            hasIntegratedGPU: gpuInfo.hasIntegratedGPU,
+          })
+        })
+        .catch((error) => {
+          console.error("Failed to detect GPU:", error)
+        })
+
+      try {
+        const [diskLayout, fsSize, blockDevices] = await Promise.all([
+          si.diskLayout(),
+          si.fsSize(),
+          si.blockDevices(),
+        ])
+
+        const cDrive = (fsSize as any).find((d: any) =>
+          d.mount.toUpperCase().startsWith("C:"),
+        )
+
+        let primaryDisk: any = null
+        if (cDrive) {
+          const cBlock = (blockDevices as any).find(
+            (b: any) => b.mount && b.mount.toUpperCase().startsWith("C:"),
+          )
+          if (cBlock) {
+            primaryDisk =
+              (diskLayout as any).find(
+                (disk: any) =>
+                  disk.device?.toLowerCase() === cBlock.device?.toLowerCase() ||
+                  disk.name?.toLowerCase().includes(cBlock.name?.toLowerCase()),
+              ) || null
+          }
+        }
+
+        mainWindow?.webContents.send("system-info-extra", {
+          disk_model: primaryDisk?.name || primaryDisk?.device || "Unknown Storage",
+          disk_size: cDrive?.size
+            ? `${Math.round(cDrive.size / 1024 / 1024 / 1024).toFixed(1)} GB`
+            : "Unknown",
+        })
+      } catch (error) {
+        console.error("Failed to fetch disk info:", error)
+      }
+    })
+
+    return result
   } catch (error) {
     console.error("Failed to get system info:", error)
     throw error

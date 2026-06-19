@@ -48,7 +48,7 @@ function App() {
 
     return () => {
       Object.keys(listeners).forEach((channel) => {
-        window.electron.ipcRenderer.removeAllListeners(channel)
+        window.electron.ipcRenderer.removeListener(channel, listeners[channel])
       })
     }
   }, [setAppStatus, clearApps])

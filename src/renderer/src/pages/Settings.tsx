@@ -20,6 +20,9 @@ const themes = [
 
 function Settings() {
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "system")
+  const [animationDirection, setAnimationDirection] = useState<"up" | "left" | "off">(
+    (localStorage.getItem("pageAnimation") as "up" | "left" | "off") || "up",
+  )
   const [checking, setChecking] = useState(false)
   const [trayEnabled, setTrayEnabled] = useState(true)
   const [trayLoading, setTrayLoading] = useState(false)
@@ -177,6 +180,26 @@ function Settings() {
                       </label>
                     ))}
                   </div>
+                </div>
+              </SettingCard>
+              <SettingCard>
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <h3 className="text-base font-medium text-sparkle-text mb-1">
+                      Animation Direction
+                    </h3>
+                    <p className="text-sm text-sparkle-text-secondary">
+                      Choose the page transition animation direction
+                    </p>
+                  </div>
+                  <Dropdown
+                    value={animationDirection}
+                    options={["up", "left", "off"]}
+                    onChange={(value) => {
+                      setAnimationDirection(value as "up" | "left" | "off")
+                      localStorage.setItem("pageAnimation", value)
+                    }}
+                  />
                 </div>
               </SettingCard>
             </SettingSection>

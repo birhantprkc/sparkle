@@ -13,12 +13,12 @@ const useOnlineStore = create<OnlineState>((set) => ({
     try {
       const controller = new AbortController()
       const timeout = setTimeout(() => controller.abort(), 3000)
-      const response = await fetch("https://jsonplaceholder.typicode.com/todos/1", {
+      await fetch("https://jsonplaceholder.typicode.com/todos/1", {
         method: "GET",
         signal: controller.signal,
       })
       clearTimeout(timeout)
-      set({ online: response.ok })
+      set({ online: true })
     } catch {
       set({ online: false })
     }

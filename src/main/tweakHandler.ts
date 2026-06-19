@@ -177,7 +177,7 @@ export const setupTweaksHandlers = (): void => {
 
     if (name === "optimize-nvidia-settings") {
       console.log(logo, "Running Nvidia settings optimization...")
-      NvidiaProfileInspector()
+      await NvidiaProfileInspector()
     } else {
       return executePowerShell(null, { script: tweak.psapply, name })
     }

@@ -1,6 +1,5 @@
 import { app, shell, BrowserWindow, ipcMain, Tray } from "electron"
 import path, { join } from "path"
-import { electronApp, optimizer, is } from "@electron-toolkit/utils"
 import log from "electron-log"
 import { createTray } from "@main/tray"
 import { setupPowerShellHandlers } from "@main/powershell"
@@ -11,6 +10,7 @@ import { setupBackupHandlers } from "@main/backup"
 import { initAutoUpdater } from "@main/updates"
 import { setMainWindow } from "@main/windowState"
 import Store from "electron-store"
+import { is } from "@main/utils"
 
 console.log = log.log
 console.error = log.error
@@ -147,12 +147,6 @@ app
     setupDNSHandlers()
     setupBackupHandlers()
     console.log("[Sparkle]: Handlers setup complete")
-
-    electronApp.setAppUserModelId("com.parcoil.sparkle")
-
-    app.on("browser-window-created", (_, window: BrowserWindow) => {
-      optimizer.watchWindowShortcuts(window)
-    })
 
     ipcMain.on("window-minimize", () => {
       if (mainWindow) mainWindow.minimize()

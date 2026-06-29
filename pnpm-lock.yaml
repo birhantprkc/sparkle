@@ -11,9 +11,6 @@ importers:
       '@electron-toolkit/preload':
         specifier: ^3.0.2
         version: 3.0.2(electron@42.4.1)
-      '@electron-toolkit/utils':
-        specifier: ^4.0.0
-        version: 4.0.0(electron@42.4.1)
       '@lucide/lab':
         specifier: ^0.1.2
         version: 0.1.2
@@ -244,11 +241,6 @@ packages:
     resolution: {integrity: sha512-M0Mol3odspvtCuheyujLNAW7bXq7KFNYVMRtpjFa4ZfES4MuklXBC7Nli/omvc+PRKlrklgAGx3l4VakjNo8jg==}
     peerDependencies:
       '@types/node': '*'
-
-  '@electron-toolkit/utils@4.0.0':
-    resolution: {integrity: sha512-qXSntwEzluSzKl4z5yFNBknmPGjPa3zFhE4mp9+h0cgokY5ornAeP+CJQDBhKsL1S58aOQfcwkD3NwLZCl+64g==}
-    peerDependencies:
-      electron: '>=13.0.0'
 
   '@electron/asar@3.4.1':
     resolution: {integrity: sha512-i4/rNPRS84t0vSRa2HorerGRXWyF4vThfHesw0dmcWHp+cspK743UanA0suA5Q5y8kzY2y6YKrvbIUn69BCAiA==}
@@ -3266,10 +3258,6 @@ snapshots:
   '@electron-toolkit/tsconfig@1.0.1(@types/node@25.5.0)':
     dependencies:
       '@types/node': 25.5.0
-
-  '@electron-toolkit/utils@4.0.0(electron@42.4.1)':
-    dependencies:
-      electron: 42.4.1
 
   '@electron/asar@3.4.1':
     dependencies:

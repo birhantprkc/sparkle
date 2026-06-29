@@ -8,9 +8,12 @@ import path from "path"
 import log from "electron-log"
 import { shell } from "electron"
 import { executePowerShell } from "@main/powershell"
-import { detectGPU } from "@main/gpu"
+import { detectGPU, clearGpuCache } from "@main/gpu"
 import { mainWindow } from "@main/windowState"
+import { TtlCache } from "@main/cache"
 import type { SystemInfo } from "../types"
+
+const systemInfoCache = new TtlCache<SystemInfo>(5 * 60 * 1000)
 
 const execFilePromise = util.promisify(execFile)
 
@@ -30,6 +33,9 @@ interface ClearCacheResult {
 }
 
 async function getSystemInfo(): Promise<SystemInfo> {
+  const cached = systemInfoCache.get("systemInfo")
+  if (cached) return cached
+
   try {
     const [cpuData, osInfo, memLayout] = await Promise.all([
       si.cpu(),
@@ -110,6 +116,7 @@ async function getSystemInfo(): Promise<SystemInfo> {
       }
     })
 
+    systemInfoCache.set("systemInfo", result)
     return result
   } catch (error) {
     console.error("Failed to get system info:", error)
@@ -142,6 +149,8 @@ function getUserName(): string {
 }
 
 function clearSparkleCache(): ClearCacheResult {
+  systemInfoCache.clear()
+  clearGpuCache()
   try {
     const appDataPath = process.env.APPDATA || path.join(os.homedir(), "AppData", "Roaming")
     const scriptsPath = path.join(appDataPath, "sparkle", "scripts")

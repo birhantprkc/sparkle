@@ -1,9 +1,12 @@
 import si from "systeminformation"
 import log from "electron-log"
+import { TtlCache } from "@main/cache"
 
 console.log = log.log
 console.error = log.error
 console.warn = log.warn
+
+const gpuCache = new TtlCache<GPUInfo>(5 * 60 * 1000)
 
 export interface GPUInfo {
   model: string
@@ -42,6 +45,9 @@ function isDedicatedController(model: string): boolean {
 }
 
 export async function detectGPU(): Promise<GPUInfo> {
+  const cached = gpuCache.get("gpu")
+  if (cached) return cached
+
   const defaults: GPUInfo = {
     model: "GPU not found",
     vram: "N/A",
@@ -54,6 +60,7 @@ export async function detectGPU(): Promise<GPUInfo> {
   try {
     const graphicsData = await si.graphics()
     if (!graphicsData.controllers || graphicsData.controllers.length === 0) {
+      gpuCache.set("gpu", defaults)
       return defaults
     }
 
@@ -89,9 +96,15 @@ export async function detectGPU(): Promise<GPUInfo> {
       result.isNvidia = dedicatedGPU.model.toLowerCase().includes("nvidia")
     }
 
+    gpuCache.set("gpu", result)
     return result
   } catch (error) {
     console.error("Error detecting GPU:", error)
+    gpuCache.set("gpu", defaults)
     return defaults
   }
+}
+
+export function clearGpuCache(): void {
+  gpuCache.clear()
 }

@@ -1,5 +1,16 @@
 import { describe, it, expect, vi, beforeEach } from "vitest"
 
+vi.mock("@main/cache", () => ({
+  TtlCache: vi.fn(function () {
+    return {
+      get: vi.fn(),
+      set: vi.fn(),
+      delete: vi.fn(),
+      clear: vi.fn(),
+    }
+  }),
+}))
+
 vi.mock("electron-log", () => ({
   default: {
     log: vi.fn(),

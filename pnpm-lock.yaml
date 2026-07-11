@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@electron-toolkit/preload':
         specifier: ^3.0.2
-        version: 3.0.2(electron@42.4.1)
+        version: 3.0.2(electron@43.1.0)
       '@lucide/lab':
         specifier: ^0.1.2
         version: 0.1.2
@@ -79,8 +79,8 @@ importers:
         specifier: ^4.7.0
         version: 4.7.0(vite@7.3.2(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.32.0))
       electron:
-        specifier: ^42.4.1
-        version: 42.4.1
+        specifier: ^43.1.0
+        version: 43.1.0
       electron-builder:
         specifier: 26.15.3
         version: 26.15.3(electron-builder-squirrel-windows@26.8.1)
@@ -1598,8 +1598,8 @@ packages:
     resolution: {integrity: sha512-bO3y10YikuUwUuDUQRM4KfwNkKhnpVO7IPdbsrejwN9/AABJzzTQ4GeHwyzNSrVO+tEH3/Np255a3sVZpZDjvg==}
     engines: {node: '>=8.0.0'}
 
-  electron@42.4.1:
-    resolution: {integrity: sha512-8CYHJP5O4wFO+ycoJR98yy907MmPeo+vWXrzjxmGGgRNKqv8pOjjm+wphO0CCgQJnBU7+QUPSJS4QXhbKrO50w==}
+  electron@43.1.0:
+    resolution: {integrity: sha512-DPfxpQLd4NL3BJ8DBxYAfmLUKKesF5Rx9dQx5FyczAP8bhOPScjHE48GArVeXu68LlAainuwkmQTQvdZwpIIAQ==}
     engines: {node: '>= 22.12.0'}
     hasBin: true
 
@@ -3251,9 +3251,9 @@ snapshots:
       eslint: 10.1.0(jiti@2.6.1)
       globals: 16.5.0
 
-  '@electron-toolkit/preload@3.0.2(electron@42.4.1)':
+  '@electron-toolkit/preload@3.0.2(electron@43.1.0)':
     dependencies:
-      electron: 42.4.1
+      electron: 43.1.0
 
   '@electron-toolkit/tsconfig@1.0.1(@types/node@25.5.0)':
     dependencies:
@@ -4586,7 +4586,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  electron@42.4.1:
+  electron@43.1.0:
     dependencies:
       '@electron-internal/extract-zip': 1.0.3
       '@electron/get': 5.0.0

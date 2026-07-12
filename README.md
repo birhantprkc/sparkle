@@ -7,10 +7,11 @@
   <p>A Windows app to debloat and optimize your PC</p>
 
   <p>
-    <img alt="React" src="https://img.shields.io/badge/React-000000?style=for-the-badge&logo=react&labelColor=0c121f&color=0c121f">
-   <a href="#-what-if-im-allergic-to-electron"> <img alt="Electron" src="https://img.shields.io/badge/Electron-000000?style=for-the-badge&logo=electron&labelColor=0c121f&color=0c121f"></a>
-    <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-000000?style=for-the-badge&logo=typescript&labelColor=0c121f&color=0c121f">
-    <img alt="PowerShell" src="https://img.shields.io/badge/PowerShell-000000?style=for-the-badge&logo=gnometerminal&labelColor=0c121f&color=0c121f">
+<picture><source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/React.svg?variant=secondary&amp;logo=react&amp;mode=dark"><img alt="badge" src="https://shieldcn.dev/badge/React.svg?variant=secondary&amp;logo=react&amp;mode=light"></picture>
+   <a href="#-what-if-im-allergic-to-electron"> <picture><source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/Electron.svg?variant=secondary&amp;logo=electron&amp;mode=dark"><img alt="badge" src="https://shieldcn.dev/badge/Electron.svg?variant=secondary&amp;logo=electron&amp;mode=light"></picture></a>
+<picture><source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/Typescript.svg?variant=secondary&amp;logo=typescript&amp;mode=dark"><img alt="badge" src="https://shieldcn.dev/badge/Typescript.svg?variant=secondary&amp;logo=typescript&amp;mode=light"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/Powershell.svg?variant=secondary&amp;logo=ri%3ATbBrandPowershell&amp;mode=dark"><img alt="badge" src="https://shieldcn.dev/badge/Powershell.svg?variant=secondary&amp;logo=ri%3ATbBrandPowershell&amp;mode=light"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="https://www.shieldcn.dev/github/stars/parcoil/sparkle.svg?variant=secondary&amp;size=sm&amp;mode=dark"><img alt="GitHub Stars" src="https://www.shieldcn.dev/github/stars/parcoil/sparkle.svg?variant=secondary&amp;size=sm&amp;mode=light"></picture>
   </p>
 
 ## Quick Start
@@ -46,7 +47,6 @@ irm https://raw.githubusercontent.com/Parcoil/Sparkle/v2/get.ps1 | iex
 | Backup & Revert | Create and restore Windows restore points, plus undo individual or all applied tweaks via unapply scripts                                                                                                        |
 | System Stats    | Dashboard showing CPU, GPU, RAM, OS version, disk info, and active tweak count                                                                                                                                   |
 
-
 <h3>What is Sparkle?</h3>
 
 The current state of Windows is rough. Broken updates, preinstalled junk, background services, and telemetry that run whether you want them or not.
@@ -72,12 +72,14 @@ Yes. Sparkle is fully open source with the GPL-V3 licence meaning anyone can vie
 Depends. Every tweak and utility has been tested on real hardware. None of the tweaks are AI-generated, blindly added, or untested. None of the tweaks are made up, and there are no fake registry values or anything like that. Performance improvements depend on your hardware any what you apply in Sparkle.
 
 ### Can i undo changes made by Sparkle?
+
 Yes, all tweaks are reversible. You can either use Sparkle's tweak reverse or a system restore point.
 
 ### Why does Sparkle ask for admin permissions?
+
 Admin permissions are required to apply system-level tweaks and optimizations and using/creating restore points.
 
-### Why does Windows Defender/Smartscreen Block Sparkle 
+### Why does Windows Defender/Smartscreen Block Sparkle
 
 Sparkle is not currently signed since it costs a lot for an open source project. When you run an unsigned exe on Windows it automatically assumes it's unsafe and blocks it.
 
@@ -121,7 +123,7 @@ Refer to the <a href="https://docs.getsparkle.net">docs</a> for more info on how
   </ul>
 
   <details>
-  <summary><h3>🤧 What if I’m allergic to Electron?</h3></summary>
+  <summary><h3>What if I’m allergic to Electron?</h3></summary>
 
 That’s totally fine, this project probably isn’t for you.  
  You might want to check out [CTT WinUtil](https://github.com/ChrisTitusTech/winutil),  
@@ -139,8 +141,6 @@ this message is inspired by [this](https://github.com/nukeop/nuclear/blob/legacy
   <li><b>pnpm</b></li>
   <li><b>Windows 10/11</b></li>
 </ul>
-
-
 
 ---
 

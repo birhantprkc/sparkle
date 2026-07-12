@@ -13,6 +13,8 @@
     <img alt="PowerShell" src="https://img.shields.io/badge/PowerShell-000000?style=for-the-badge&logo=gnometerminal&labelColor=0c121f&color=0c121f">
   </p>
 
+## Quick Start
+
 Install with Powershell:
 
 ```powershell
@@ -32,24 +34,61 @@ irm https://raw.githubusercontent.com/Parcoil/Sparkle/v2/get.ps1 | iex
   > [!WARNING]
   > Sparkle is currently in beta. While we've tested it extensively, you may encounter some bugs. Please back up your system before applying tweaks and report any issues you find.
 
-<div align="center">
-  <h3>🚀 Features</h3>
+  <h3 align="left">Features</h3>
 
-  <ul align="left">
-    <li>📈 Apply Tweaks to Debloat/Optimize your system</li>
-    <li>🗑️ Clean All Temp files in one place</li>
-    <li>📦 Run Utilities Such as "cleanmgr", "sfc /scannow", "chkdisk" and more inside a GUI</li>
-    <li>🌐 Change DNS to Cloudflare, Google, OpenDNS Or a custom one with Sparkle dns mananger</li>
-    <li>🎛️ Install apps with the built-in Winget and <a href="https://chocolatey.org/" >Chocolatey</a> integration</li>
-    <li>📁 Backup and Revert changes with GUI Restore Point manager</li>
-    <li>⚙️ View System Stats</li>
-  </ul>
-</div>
+| Feature         | Description                                                                                                                                                                                                      |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Apply Tweaks    | 40 tweaks across 7 categories with reversible toggles, recommended presets, GPU compatibility detection, and a built-in debloater with 2 methods                                                                 |
+| System Cleaner  | Clean 6 categories of junk files: temp files, prefetch, recycle bin, Windows Update cache, thumbnail cache, and error reports with per-category size detection                                                   |
+| Utilities       | 15 system utilities including SFC, DISM, Check Disk, GPU driver restart, network reset, power plan manager, Storage Sense, and more                                                                              |
+| DNS Manager     | Switch DNS with 5 preset providers, custom DNS, a "Find Fastest DNS" ping test, current DNS viewer, and cache flushing                                                                                           |
+| App Installer   | Browse and batch install/uninstall 156 apps across 10 categories with <a href="https://learn.microsoft.com/en-us/windows/package-manager/winget/">Winget</a> or <a href="https://chocolatey.org/">Chocolatey</a> |
+| Backup & Revert | Create and restore Windows restore points, plus undo individual or all applied tweaks via unapply scripts                                                                                                        |
+| System Stats    | Dashboard showing CPU, GPU, RAM, OS version, disk info, and active tweak count                                                                                                                                   |
+
+
+<h3>What is Sparkle?</h3>
+
+The current state of Windows is rough. Broken updates, preinstalled junk, background services, and telemetry that run whether you want them or not.
+
+Sparkle can't fix all of Windows problems, but it can help you debloat your PC, improve performance, and reduce latency.
+
+<h3>Why Should I Optimize Windows?</h3>
+
+A default Windows installation comes with pre installed apps you didn't ask for or that you will never use for such as telemetry running in the background and services eating up resources for features you'll never use.
+
+Optimizing is about cutting that unnecessary overhead so more of your PC's resources gos to what actually matters such as gaming, rendering, or just a snappier desktop experience.
+
+Everything Sparkle does can also be done manually, but that doesn't mean you should have to
+
+# FAQ
+
+### Is Sparkle safe to use?
+
+Yes. Sparkle is fully open source with the GPL-V3 licence meaning anyone can view, edit or build the code themselves. Currently there is no CI/CD yet. If you perfer you can clone the repo and build Sparkle yourself read here: <a href="#building-sparkle">Building Sparkle</a>
+
+### Does Sparkle impove performance?
+
+Depends. Every tweak and utility has been tested on real hardware. None of the tweaks are AI-generated, blindly added, or untested. None of the tweaks are made up, and there are no fake registry values or anything like that. Performance improvements depend on your hardware any what you apply in Sparkle.
+
+### Can i undo changes made by Sparkle?
+Yes, all tweaks are reversible. You can either use Sparkle's tweak reverse or a system restore point.
+
+### Why does Sparkle ask for admin permissions?
+Admin permissions are required to apply system-level tweaks and optimizations and using/creating restore points.
+
+### Why does Windows Defender/Smartscreen Block Sparkle 
+
+Sparkle is not currently signed since it costs a lot for an open source project. When you run an unsigned exe on Windows it automatically assumes it's unsafe and blocks it.
+
+You can get around it by:
+
+Click "More info" → "Run anyway".
 
 <div>
   <h2>📃 Docs</h2>
   <p>You can find the docs <a href="https://docs.getsparkle.net">here</a></p>
-  the docs cover all the tweaks, how they work what they do and all of Sparkle's Pages and tools.
+  The docs cover all the tweaks, how they work what they do and all of Sparkle's Pages and tools.
 </div>
 
 <div>
@@ -81,16 +120,8 @@ Refer to the <a href="https://docs.getsparkle.net">docs</a> for more info on how
     <li>🧪 Improve code quality</li>
   </ul>
 
-<h4>🛠️ Building Sparkle</h4>
-
-<p>To build sparkle you will need the following</p>
-<ul>
-  <li><b>Node.js</b> v22 or higher</li>
-  <li><b>Windows 10/11</b></li>
-</ul>
-
-<details>
-  <summary><h2>🤧 What if I’m allergic to Electron?</h2></summary>
+  <details>
+  <summary><h3>🤧 What if I’m allergic to Electron?</h3></summary>
 
 That’s totally fine, this project probably isn’t for you.  
  You might want to check out [CTT WinUtil](https://github.com/ChrisTitusTech/winutil),  
@@ -99,6 +130,17 @@ That’s totally fine, this project probably isn’t for you.
 this message is inspired by [this](https://github.com/nukeop/nuclear/blob/legacy/electron/docs/electron.md)
 
 </details>
+
+<h2>Building Sparkle</h4>
+
+<p>To build sparkle you will need the following</p>
+<ul>
+  <li><b>Node.js</b> v22 or higher (v24 recommended)</li>
+  <li><b>pnpm</b></li>
+  <li><b>Windows 10/11</b></li>
+</ul>
+
+
 
 ---
 
@@ -126,7 +168,7 @@ cd Sparkle</code></pre>
   <li>
     <b>Build for production:</b>
     <pre><code>pnpm build</code></pre>
-    <i>This will generate optimized production builds.</i>
+    <i>This will compile Sparkle, Builds are located in <code>dist/</code> folder. you may be prompted if you want to update the tweak registry. This is only for production builds</i>
   </li>
 </ol>
  <br/>

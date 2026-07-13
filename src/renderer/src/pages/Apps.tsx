@@ -62,7 +62,7 @@ function Apps() {
   const [chocolateyInstalled, setChocolateyInstalled] = useState<boolean | null>(null)
   const [chocolateyChecking, setChocolateyChecking] = useState<boolean>(false)
   const [chocolateyInstalling, setChocolateyInstalling] = useState<boolean>(false)
-  const [hideAppIcons, setHideAppIcons] = useState<boolean>(
+  const [hideAppIcons, _setHideAppIcons] = useState<boolean>(
     localStorage.getItem("hideAppsPageAppIcons") === "true",
   )
 

@@ -12,7 +12,6 @@ import {
   Settings,
   Wrench,
   WifiOff,
-  FileWarning,
   Bubbles,
 } from "lucide-react"
 import { useEffect, useRef, useState } from "react"

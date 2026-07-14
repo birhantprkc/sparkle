@@ -18,6 +18,7 @@ import useAppInstallStore from "./store/appInstallStore"
 import useOnlineStore from "./store/online"
 
 import { toast } from "react-toastify"
+import Debloat from "./pages/Debloat"
 
 function App() {
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "system")
@@ -122,6 +123,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/tweaks" element={<Tweaks />} />
+            <Route path="/debloat" element={<Debloat />} />
             <Route path="/clean" element={<Clean />} />
             <Route path="/backup" element={<Backup />} />
             <Route path="/utilities" element={<Utilities />} />

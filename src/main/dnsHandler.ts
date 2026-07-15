@@ -258,13 +258,11 @@ export const setupDNSHandlers = (): void => {
           { name: "AdGuard DNS", server: "94.140.14.14" },
         ]
 
-        const results: PingResult[] = []
-
         const pingServer = (
           server: string,
         ): Promise<{ latency: number | null; status: "success" | "timeout" | "error" }> => {
           return new Promise((resolve) => {
-            exec(`ping -n 2 -w 1000 ${server}`, { shell: "cmd.exe" }, (error, stdout) => {
+            exec(`ping -n 1 -w 1000 ${server}`, { shell: "cmd.exe" }, (error, stdout) => {
               if (error) {
                 resolve({ latency: null, status: "error" })
                 return
@@ -283,14 +281,16 @@ export const setupDNSHandlers = (): void => {
           })
         }
 
-        for (const dns of dnsServers) {
-          const pingResult = await pingServer(dns.server)
-          results.push({
-            name: dns.name,
-            server: dns.server,
-            ...pingResult,
-          })
-        }
+        const settled = await Promise.allSettled(
+          dnsServers.map(async (dns) => {
+            const pingResult = await pingServer(dns.server)
+            return { name: dns.name, server: dns.server, ...pingResult }
+          }),
+        )
+
+        const results = settled
+          .filter((r): r is PromiseFulfilledResult<PingResult> => r.status === "fulfilled")
+          .map((r) => r.value)
 
         return { success: true, data: results }
       } catch (error: any) {

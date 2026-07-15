@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Loader2, Menu, Minus, Square, Terminal, X } from "lucide-react"
+import { Loader2, Menu, Minus, Shield, Square, Terminal, X } from "lucide-react"
 import { close, minimize, toggleMaximize } from "../lib/electron"
 import sparkleLogo from "../../../../resources/sparklelogo.png"
 import Card from "./ui/Card"
@@ -9,11 +9,13 @@ import InstallConsoleModal from "./installConsoleModal"
 interface TitleBarProps {
   onToggleSidebar: () => void
   sidebarCollapsed: boolean
+  adminStatus: boolean | null
 }
 
 function TitleBar({
   onToggleSidebar,
   sidebarCollapsed: _sidebarCollapsed,
+  adminStatus,
 }: TitleBarProps): React.ReactElement {
   const { apps, action } = useAppInstallStore()
   const [consoleOpen, setConsoleOpen] = useState(false)
@@ -61,22 +63,33 @@ function TitleBar({
             </Card>
           )}
         </div>
+
         <div className="flex" style={{ WebkitAppRegion: "no-drag" } as any}>
+          <div
+            className="h-12.5 w-12 inline-flex items-center justify-center text-sparkle-text-secondary hover:bg-sparkle-accent transition-colors"
+            title={adminStatus ? "Running as Administrator" : "Not running as Administrator"}
+          >
+            {adminStatus ? (
+              <Shield className="w-5 h-5 text-sparkle-primary" />
+            ) : (
+              <Shield className="w-5 h-5 text-red-600" />
+            )}
+          </div>
           <button
             onClick={minimize}
-            className="h-[50px] w-12 inline-flex items-center justify-center text-sparkle-text-secondary hover:bg-sparkle-accent transition-colors"
+            className="h-12.5 w-12 inline-flex items-center justify-center text-sparkle-text-secondary hover:bg-sparkle-accent transition-colors"
           >
             <Minus size={16} />
           </button>
           <button
             onClick={toggleMaximize}
-            className="h-[50px] w-12 inline-flex items-center justify-center text-sparkle-text-secondary hover:bg-sparkle-accent transition-colors"
+            className="h-12.5 w-12 inline-flex items-center justify-center text-sparkle-text-secondary hover:bg-sparkle-accent transition-colors"
           >
             <Square size={14} />
           </button>
           <button
             onClick={close}
-            className="h-[50px] w-12 inline-flex items-center justify-center text-sparkle-text-secondary hover:bg-red-600 hover:text-white transition-colors"
+            className="h-12.5 w-12 inline-flex items-center justify-center text-sparkle-text-secondary hover:bg-red-600 hover:text-white transition-colors"
           >
             <X size={16} />
           </button>

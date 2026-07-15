@@ -19,12 +19,14 @@ import useOnlineStore from "./store/online"
 
 import { toast } from "react-toastify"
 import Debloat from "./pages/Debloat"
+import NoAdmin from "./components/noAdmin"
 
 function App() {
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "system")
   const [sidebarCollapsed, setSidebarCollapsed] = useState(
     localStorage.getItem("sidebarCollapsed") === "true",
   )
+  const [adminStatus, setAdminStatus] = useState<boolean | null>(null)
   const { setAppStatus, clearApps } = useAppInstallStore()
   const { setOnline } = useOnlineStore()
 
@@ -111,10 +113,21 @@ function App() {
     }
   }, [setOnline])
 
+  useEffect(() => {
+    window.electron.ipcRenderer.invoke("get-admin-status").then((isAdmin: boolean) => {
+      setAdminStatus(isAdmin)
+    })
+  }, [])
+
   return (
     <div className="flex flex-col h-screen bg-sparkle-bg text-sparkle-text overflow-hidden">
       <FirstTime />
-      <TitleBar onToggleSidebar={toggleSidebar} sidebarCollapsed={sidebarCollapsed} />
+      <NoAdmin open={adminStatus === false} onClose={() => setAdminStatus(true)} />
+      <TitleBar
+        onToggleSidebar={toggleSidebar}
+        sidebarCollapsed={sidebarCollapsed}
+        adminStatus={adminStatus}
+      />
       <Nav collapsed={sidebarCollapsed} />
       <div className="flex flex-1 pt-[50px] relative">
         <main

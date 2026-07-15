@@ -148,6 +148,18 @@ function getUserName(): string {
   return os.userInfo().username
 }
 
+export async function getAdminStatus(): Promise<boolean> {
+  console.log("[Sparkle]: Checking admin status...")
+  try {
+    const { execSync } = await import("child_process")
+    execSync("net session", { stdio: "pipe" })
+    console.log("[Sparkle]: Admin status: true")
+    return true
+  } catch (error) {
+    console.log("[Sparkle]: Not running as admin")
+    return false
+  }
+}
 function clearSparkleCache(): ClearCacheResult {
   systemInfoCache.clear()
   clearGpuCache()
@@ -493,6 +505,7 @@ export const setupSystemHandlers = (): void => {
   ipcMain.handle("get-user-name", getUserName)
   ipcMain.handle("restart-explorer", restartExplorer)
   ipcMain.handle("check-winget", async () => checkWinget())
+  ipcMain.handle("get-admin-status", async () => getAdminStatus())
   ipcMain.handle("install-winget", ensureWinget)
   console.log("[Sparkle main/system.ts]: System handlers setup complete")
 }

@@ -11,7 +11,7 @@
 
 ## Details
 
-- Enables detailed technical information on the Blue Screen of Death by setting DisplayParameters to 1 in the CrashControl registry.
+- Enables detailed technical information on the Blue Screen of Death by setting DisplayParameters to 1 and DisableEmoticon to 1 in the CrashControl registry.
 
 
 
@@ -20,13 +20,15 @@
 ## Apply
 
 ```powershell { .no-copy }  
-Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\CrashControl" -Name "Value" -Type DWord -Value 1
+Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\CrashControl" -Name "DisplayParameters" -Type DWord -Value 1
+Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\CrashControl" -Name "DisableEmoticon" -Type DWord -Value 1
 
 ```
 
 ## Unapply
 
 ```powershell
-Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\CrashControl" -Name "Value" -Type DWord -Value 0
+Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\CrashControl" -Name "DisplayParameters" -Type DWord -Value 0
+Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\CrashControl" -Name "DisableEmoticon" -Type DWord -Value 0
 
 ```

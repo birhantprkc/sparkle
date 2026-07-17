@@ -4,6 +4,7 @@ import jsonData from "../../../../package.json"
 import { invoke } from "@/lib/electron"
 import Button from "@/components/ui/button"
 import Modal from "@/components/ui/modal"
+import ChangelogModal from "@/components/changelogModal"
 import Toggle from "@/components/ui/Toggle"
 import { toast } from "react-toastify"
 import Card from "@/components/ui/Card"
@@ -30,6 +31,7 @@ function Settings() {
     return localStorage.getItem("posthogDisabled") === "true"
   })
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+  const [changelogOpen, setChangelogOpen] = useState(false)
   const [forceLocalApps, setForceLocalApps] = useState(() => {
     return localStorage.getItem("forceLocalApps") === "true"
   })
@@ -153,6 +155,10 @@ function Settings() {
           </div>
         </div>
       </Modal>
+      <ChangelogModal
+        open={changelogOpen}
+        onClose={() => setChangelogOpen(false)}
+      />
       <RootDiv>
         <div className="min-h-screen w-full pb-16 overflow-y-auto">
           <div className="space-y-8 ">
@@ -449,10 +455,15 @@ function Settings() {
                       Version {jsonData.version}
                     </p>
                   </div>
-                  <div className="text-right">
-                    <p className="text-sm text-sparkle-text-secondary">
-                      © {new Date().getFullYear()} Parcoil
-                    </p>
+                  <div className="flex items-center gap-3">
+                    <Button variant="secondary" onClick={() => setChangelogOpen(true)}>
+                      View Changelog
+                    </Button>
+                    <div className="text-right">
+                      <p className="text-sm text-sparkle-text-secondary">
+                        © {new Date().getFullYear()} Parcoil
+                      </p>
+                    </div>
                   </div>
                 </div>
               </SettingCard>

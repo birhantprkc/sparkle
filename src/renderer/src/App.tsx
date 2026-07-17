@@ -14,8 +14,10 @@ import Settings from "./pages/Settings"
 import Backup from "./pages/Backup"
 import FirstTime from "./components/firsttime"
 import UpdateManager from "./components/updatemanager"
+import ChangelogModal from "./components/changelogModal"
 import useAppInstallStore from "./store/appInstallStore"
 import useOnlineStore from "./store/online"
+import { CURRENT_VERSION } from "./lib/version"
 
 import { toast } from "react-toastify"
 import Debloat from "./pages/Debloat"
@@ -113,6 +115,17 @@ function App() {
     }
   }, [setOnline])
 
+  const [changelogOpen, setChangelogOpen] = useState(false)
+
+  useEffect(() => {
+    const lastSeen = localStorage.getItem("sparkle:changelogSeenVersion")
+    if (lastSeen !== CURRENT_VERSION) {
+      const timer = setTimeout(() => setChangelogOpen(true), 500)
+      return () => clearTimeout(timer)
+    }
+    return undefined
+  }, [])
+
   useEffect(() => {
     window.electron.ipcRenderer.invoke("get-admin-status").then((isAdmin: boolean) => {
       setAdminStatus(isAdmin)
@@ -122,6 +135,13 @@ function App() {
   return (
     <div className="flex flex-col h-screen bg-sparkle-bg text-sparkle-text overflow-hidden">
       <FirstTime />
+      <ChangelogModal
+        open={changelogOpen}
+        onClose={() => {
+          localStorage.setItem("sparkle:changelogSeenVersion", CURRENT_VERSION)
+          setChangelogOpen(false)
+        }}
+      />
       <NoAdmin open={adminStatus === false} onClose={() => setAdminStatus(true)} />
       <TitleBar
         onToggleSidebar={toggleSidebar}

@@ -7,6 +7,16 @@ console.log = log.log
 console.error = log.error
 console.warn = log.warn
 
+function sanitizeIP(ip: string): string {
+  const valid =
+    /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
+  return valid.test(ip) ? ip : ""
+}
+
+function sanitizeHostname(hostname: string): string {
+  return hostname.replace(/[^a-zA-Z0-9.-]/g, "")
+}
+
 interface DNSConfig {
   primary: string
   secondary: string
@@ -149,10 +159,12 @@ export const setupDNSHandlers = (): void => {
 
         let config: DNSConfig
         if (normalizedType === "custom") {
-          if (!primaryDNS) {
-            return { success: false, error: "Primary DNS is required for custom DNS" }
+          const safePrimary = sanitizeIP(primaryDNS)
+          if (!safePrimary) {
+            return { success: false, error: "Invalid primary DNS server address" }
           }
-          config = { primary: primaryDNS, secondary: secondaryDNS, name: "Custom" }
+          const safeSecondary = sanitizeIP(secondaryDNS)
+          config = { primary: safePrimary, secondary: safeSecondary, name: "Custom" }
         } else {
           config = DNS_CONFIGS[normalizedType]
         }
@@ -229,10 +241,11 @@ export const setupDNSHandlers = (): void => {
     async (_event: IpcMainInvokeEvent, props: TestDNSProps): Promise<any> => {
       try {
         const { hostname = "google.com" } = props
+        const safeHostname = sanitizeHostname(hostname) || "google.com"
         const script = `
         try {
-          $result = nslookup ${hostname} 2>&1
-          Write-Host "DNS Test Results for ${hostname}:"
+          $result = nslookup ${safeHostname} 2>&1
+          Write-Host "DNS Test Results for ${safeHostname}:"
           Write-Host $result
         } catch {
           Write-Host "Error testing DNS: $($_.Exception.Message)"

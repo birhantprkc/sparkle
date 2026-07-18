@@ -18,10 +18,10 @@
 
 ## Quick Start
 
-Install with Powershell:
+Install with Powershell (non admin) :
 
 ```powershell
-irm https://raw.githubusercontent.com/Parcoil/Sparkle/v2/get.ps1 | iex
+irm https://getsparkle.net/get | iex
 ```
 
 <a href="https://github.com/Parcoil/Sparkle/releases/latest">Download Installer/Portable</a>

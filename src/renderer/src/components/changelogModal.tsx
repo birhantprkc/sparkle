@@ -19,11 +19,25 @@ type CodeProps = ComponentProps<"code"> & { inline?: boolean }
 
 function ChangelogContent({ body }: { body: string }) {
   return (
-    <div className="prose prose-sm prose-green marker:text-sparkle-secondary max-w-none text-sparkle-text prose-headings:text-sparkle-text prose-a:text-blue-400 prose-code:bg-sparkle-primary prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:text-sm prose-code:font-normal prose-pre:bg-sparkle-card prose-pre:border prose-pre:border-sparkle-border prose-img:rounded-lg prose-img:border prose-img:border-sparkle-border">
+    <div className="prose prose-sm prose-green marker:text-sparkle-secondary max-w-none text-sparkle-text prose-headings:text-sparkle-text prose-a:text-blue-400 prose-code:bg-sparkle-secondary prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:text-sm prose-code:font-normal prose-pre:bg-sparkle-card prose-pre:border prose-pre:border-sparkle-border prose-img:rounded-lg prose-img:border prose-img:border-sparkle-border">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeRaw]}
         components={{
+          a: ({ href, children, ...props }) => (
+            <a
+              {...props}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => {
+                e.preventDefault()
+                window.open(href, "_blank")
+              }}
+            >
+              {children}
+            </a>
+          ),
           img: ({ ...props }) => (
             <img
               {...props}

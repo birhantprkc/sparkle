@@ -5,6 +5,8 @@
 
   <h3>Sparkle</h3>
   <p>A Windows app to debloat and optimize your PC</p>
+  
+<a href="https://trendshift.io/repositories/22090?utm_source=repository-badge&amp;utm_medium=badge&amp;utm_campaign=badge-repository-22090" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/repositories/22090" alt="thedogecraft%2Fsparkle | Trendshift" width="250" height="55"/></a>
 
   <p>
 <picture><source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/React.svg?variant=secondary&amp;logo=react&amp;size=xs&amp;mode=dark"><img alt="badge" src="https://shieldcn.dev/badge/React.svg?variant=secondary&amp;logo=react&amp;size=xs&amp;mode=light"></picture>

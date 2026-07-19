@@ -17,6 +17,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      discord-rpc-new:
+        specifier: ^1.4.1
+        version: 1.4.1(typescript@5.9.3)
       electron-log:
         specifier: ^5.4.3
         version: 5.4.3
@@ -1605,6 +1608,12 @@ packages:
 
   dir-compare@4.2.0:
     resolution: {integrity: sha512-2xMCmOoMrdQIPHdsTawECdNPwlVFB9zGcz3kuhmBO6U3oU+UQjsue0i8ayLKpgBcm+hcXPMVSGUN9d+pvJ6+VQ==}
+
+  discord-rpc-new@1.4.1:
+    resolution: {integrity: sha512-XKH/wrC1lXbP8u5hP4IMWn939+3dkBDjHoMjocoIi3IrEzc4nvoLkPTFkVItzuozRnlG50/naRZUHzyhtyS/Xg==}
+    engines: {node: '>=12.0.0'}
+    peerDependencies:
+      typescript: ^5.9.3
 
   dmg-builder@26.15.3:
     resolution: {integrity: sha512-O3zJUFUYHJKgzPqioHxfxzBzlSC1eXCSr79gMSBKBP5AgjjpmrydMsMLotEg9fAJF36vdUncb+4ndRNxoPdlSQ==}
@@ -4672,7 +4681,7 @@ snapshots:
       hosted-git-info: 4.1.0
       isbinaryfile: 5.0.7
       jiti: 2.6.1
-      js-yaml: 4.1.1
+      js-yaml: 4.3.0
       json5: 2.2.3
       lazy-val: 1.0.5
       minimatch: 10.2.5
@@ -4855,7 +4864,7 @@ snapshots:
       fs-extra: 10.1.0
       http-proxy-agent: 7.0.2
       https-proxy-agent: 7.0.6
-      js-yaml: 4.1.1
+      js-yaml: 4.3.0
       sanitize-filename: 1.6.4
       source-map-support: 0.5.21
       stat-mode: 1.0.0
@@ -5060,6 +5069,10 @@ snapshots:
     dependencies:
       minimatch: 3.1.5
       p-limit: 3.1.0
+
+  discord-rpc-new@1.4.1(typescript@5.9.3):
+    dependencies:
+      typescript: 5.9.3
 
   dmg-builder@26.15.3(electron-builder-squirrel-windows@26.8.1):
     dependencies:

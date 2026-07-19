@@ -12,6 +12,7 @@ import { initAutoUpdater } from "@main/updates"
 import { setMainWindow } from "@main/windowState"
 import Store from "electron-store"
 import { is } from "@main/utils"
+import { startDiscordRPC } from "@main/rpc"
 
 console.log = log.log
 console.error = log.error
@@ -148,6 +149,7 @@ app
     setupDNSHandlers()
     setupBackupHandlers()
     setupDebloatHandlers()
+    startDiscordRPC()
     console.log("[Sparkle]: Handlers setup complete")
 
     ipcMain.on("window-minimize", () => {

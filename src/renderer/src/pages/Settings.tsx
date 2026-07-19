@@ -41,6 +41,8 @@ function Settings() {
   const [hideAppIcons, setHideAppIcons] = useState<boolean>(
     localStorage.getItem("hideAppsPageAppIcons") === "true",
   )
+  const [rpcEnabled, setRpcEnabled] = useState(true)
+  const [rpcLoading, setRpcLoading] = useState(false)
   const checkForUpdates = async () => {
     try {
       setChecking(true)
@@ -77,6 +79,10 @@ function Settings() {
   }, [])
 
   useEffect(() => {
+    invoke({ channel: "rpc-enabled:get" }).then((status) => setRpcEnabled(status))
+  }, [])
+
+  useEffect(() => {
     if (posthogDisabled) {
       document.body.classList.add("ph-no-capture")
     } else {
@@ -98,6 +104,15 @@ function Settings() {
     await invoke({ channel: "tray:set", payload: newStatus })
     setTrayEnabled(newStatus)
     setTrayLoading(false)
+  }
+
+  const handleToggleRpc = async () => {
+    setRpcLoading(true)
+    const newStatus = !rpcEnabled
+    await invoke({ channel: "rpc-enabled:set", payload: newStatus })
+    setRpcEnabled(newStatus)
+    setRpcLoading(false)
+    toast.success("Discord RPC " + (newStatus ? "Enabled" : "Disabled"))
   }
 
   const handleRestartExplorer = async () => {
@@ -422,6 +437,32 @@ function Settings() {
                       }`}
                     >
                       {trayEnabled ? "Enabled" : "Disabled"}
+                    </span>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between mt-4">
+                  <div className="flex-1">
+                    <h3 className="text-base font-medium text-sparkle-text mb-1">
+                      Discord Rich Presence
+                    </h3>
+                    <p className="text-sm text-sparkle-text-secondary">
+                      Show your current Sparkle activity on Discord.
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Toggle
+                      checked={rpcEnabled}
+                      onChange={handleToggleRpc}
+                      disabled={rpcLoading}
+                    />
+                    <span
+                      className={`text-xs font-medium px-2 py-1 rounded-full ${
+                        rpcEnabled
+                          ? "text-green-400 bg-green-400/10"
+                          : "text-sparkle-text-secondary bg-sparkle-border-secondary/20"
+                      }`}
+                    >
+                      {rpcEnabled ? "Enabled" : "Disabled"}
                     </span>
                   </div>
                 </div>

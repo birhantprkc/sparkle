@@ -2,6 +2,9 @@ import { ipcMain } from "electron"
 import { Client, PresenceBuilder, ActivityType } from "discord-rpc-new"
 import jsonData from "../../package.json"
 import log from "electron-log"
+import Store from "electron-store"
+
+const store = new Store()
 
 const clientId = "1188686354490609754"
 let rpcClient: Client | null = null
@@ -104,6 +107,20 @@ ipcMain.handle("start-discord-rpc", () => {
 
 ipcMain.handle("stop-discord-rpc", () => {
   return stopDiscordRPC()
+})
+
+ipcMain.handle("rpc-enabled:get", () => {
+  return store.get("rpcEnabled") !== false
+})
+
+ipcMain.handle("rpc-enabled:set", (_event, value: boolean) => {
+  store.set("rpcEnabled", value)
+  if (value) {
+    startDiscordRPC()
+  } else {
+    stopDiscordRPC()
+  }
+  return value
 })
 
 export { startDiscordRPC, stopDiscordRPC }

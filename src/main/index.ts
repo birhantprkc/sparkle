@@ -149,7 +149,9 @@ app
     setupDNSHandlers()
     setupBackupHandlers()
     setupDebloatHandlers()
-    startDiscordRPC()
+    if (store.get("rpcEnabled") !== false) {
+      startDiscordRPC()
+    }
     console.log("[Sparkle]: Handlers setup complete")
 
     ipcMain.on("window-minimize", () => {

@@ -12,6 +12,10 @@ console.log = log.log
 console.error = log.error
 console.warn = log.warn
 
+function isSafeId(id: string): boolean {
+  return /^[a-zA-Z0-9._-]+$/.test(id)
+}
+
 function ensureDirectoryExists(dirPath) {
   if (!fs.existsSync(dirPath)) {
     fs.mkdirSync(dirPath, { recursive: true })
@@ -178,6 +182,11 @@ export const setupPowerShellHandlers = (): void => {
     switch (action) {
       case "install":
         for (const appId of apps) {
+          if (!isSafeId(appId)) {
+            console.error(`Rejected unsafe app ID: ${appId}`)
+            sendToRenderer("install-app-error", { appId })
+            continue
+          }
           let command
           if (source === "Chocolatey") {
             command = `choco install ${appId} -y`
@@ -230,6 +239,11 @@ export const setupPowerShellHandlers = (): void => {
 
       case "uninstall":
         for (const appId of apps) {
+          if (!isSafeId(appId)) {
+            console.error(`Rejected unsafe app ID: ${appId}`)
+            sendToRenderer("install-app-error", { appId })
+            continue
+          }
           let command
           if (source === "Chocolatey") {
             command = `choco uninstall ${appId} -y`

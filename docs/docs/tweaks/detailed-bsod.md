@@ -7,11 +7,13 @@
 
 
 
-
+!!! note 
+    This tweak was last updated in 2.21.1
+  
 
 ## Details
 
-- Enables detailed technical information on the Blue Screen of Death by setting DisplayParameters to 1 and DisableEmoticon to 1 in the CrashControl registry.
+- Enables detailed technical information on the Blue Screen of Death by setting DisplayParameters to 1 in the CrashControl registry.
 
 
 

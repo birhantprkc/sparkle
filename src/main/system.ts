@@ -1,5 +1,5 @@
 import os from "os"
-import { ipcMain } from "electron"
+import { app, ipcMain } from "electron"
 import si from "systeminformation"
 import { exec, execFile } from "child_process"
 import util from "util"
@@ -164,9 +164,9 @@ function clearSparkleCache(): ClearCacheResult {
   systemInfoCache.clear()
   clearGpuCache()
   try {
-    const appDataPath = process.env.APPDATA || path.join(os.homedir(), "AppData", "Roaming")
-    const scriptsPath = path.join(appDataPath, "sparkle", "scripts")
-    const logsPath = path.join(appDataPath, "sparkle", "logs")
+    const userDataPath = app.getPath("userData")
+    const scriptsPath = path.join(userDataPath, "scripts")
+    const logsPath = path.join(userDataPath, "logs")
 
     let scriptsCleared = false
     let logsCleared = false
@@ -226,11 +226,7 @@ function clearSparkleCache(): ClearCacheResult {
 }
 
 function openLogFolder(): { success: boolean; error?: string } {
-  const logPath = path.join(
-    process.env.APPDATA || path.join(os.homedir(), "AppData", "Roaming"),
-    "sparkle",
-    "logs",
-  )
+  const logPath = path.join(app.getPath("userData"), "logs")
   if (fs.existsSync(logPath)) {
     shell.openPath(logPath)
     return { success: true }

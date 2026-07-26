@@ -164,7 +164,11 @@
       "artifactName": "${name}-${version}-setup.${ext}",
       "shortcutName": "${productName}",
       "uninstallDisplayName": "${productName}",
-      "createDesktopShortcut": "always"
+      "createDesktopShortcut": "always",
+      "oneClick": false,
+      "installerSidebar": "build/sparkleinstallerleftsidebar.bmp",
+      "uninstallerSidebar": "build/sparkleinstallerleftsidebar.bmp",
+      "installerHeader": "build/sparkleinstallerheader.bmp"
     },
     "npmRebuild": false
   },

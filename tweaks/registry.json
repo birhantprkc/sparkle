@@ -1,5 +1,5 @@
 {
-  "version": "2026-07-18T02:58:43.082Z",
+  "version": "2026-07-28T01:01:47.918Z",
   "tweaks": [
     {
       "id": "24-hour-clock",
@@ -235,6 +235,20 @@
       "source": "https://github.com/Parcoil/Sparkle/blob/v2/tweaks/disable-recall/meta.json"
     },
     {
+      "id": "disable-taskbar-seach",
+      "title": "Disable Taskbar Search",
+      "description": "Hides the search box from the taskbar.",
+      "category": [
+        "General",
+        "Appearance"
+      ],
+      "recommended": false,
+      "reversible": true,
+      "addedversion": "2.22.0",
+      "docsurl": "https://docs.getsparkle.net/tweaks/disable-taskbar-seach",
+      "source": "https://github.com/Parcoil/Sparkle/blob/v2/tweaks/disable-taskbar-seach/meta.json"
+    },
+    {
       "id": "disable-telemetry",
       "title": "Disable Telemetry",
       "description": "Disables Windows telemetry and data collection for improved privacy and performance.",
@@ -383,6 +397,20 @@
       "reversible": false,
       "docsurl": "https://docs.getsparkle.net/tweaks/optimize-nvidia-settings",
       "source": "https://github.com/Parcoil/Sparkle/blob/v2/tweaks/optimize-nvidia-settings/meta.json"
+    },
+    {
+      "id": "remove-edge",
+      "title": "Remove Microsoft Edge",
+      "description": "Removes Microsoft Edge from Windows.",
+      "category": [
+        "System",
+        "Privacy"
+      ],
+      "recommended": true,
+      "reversible": true,
+      "addedversion": "2.22.0",
+      "docsurl": "https://docs.getsparkle.net/tweaks/remove-edge",
+      "source": "https://github.com/Parcoil/Sparkle/blob/v2/tweaks/remove-edge/meta.json"
     },
     {
       "id": "remove-gaming-apps",

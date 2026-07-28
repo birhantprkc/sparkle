@@ -1,5 +1,5 @@
 {
-  "version": "2026-07-18T02:58:43.082Z",
+  "version": "2026-07-28T01:01:47.918Z",
   "tweaks": [
     {
       "id": "24-hour-clock",
@@ -66,8 +66,8 @@
       "docsurl": "https://docs.getsparkle.net/tweaks/detailed-bsod",
       "source": "https://github.com/Parcoil/Sparkle/blob/v2/tweaks/detailed-bsod/meta.json",
       "scripts": {
-        "apply": "Set-ItemProperty -Path \"HKLM:\\System\\CurrentControlSet\\Control\\CrashControl\" -Name \"DisplayParameters\" -Type DWord -Value 1\nSet-ItemProperty -Path \"HKLM:\\System\\CurrentControlSet\\Control\\CrashControl\" -Name \"DisableEmoticon\" -Type DWord -Value 1\n",
-        "unapply": "Set-ItemProperty -Path \"HKLM:\\System\\CurrentControlSet\\Control\\CrashControl\" -Name \"DisplayParameters\" -Type DWord -Value 0\nSet-ItemProperty -Path \"HKLM:\\System\\CurrentControlSet\\Control\\CrashControl\" -Name \"DisableEmoticon\" -Type DWord -Value 0\n"
+        "apply": "Set-ItemProperty -Path \"HKLM:\\System\\CurrentControlSet\\Control\\CrashControl\" -Name \"DisplayParameters\" -Type DWord -Value 1\r\nSet-ItemProperty -Path \"HKLM:\\System\\CurrentControlSet\\Control\\CrashControl\" -Name \"DisableEmoticon\" -Type DWord -Value 1\r\n",
+        "unapply": "Set-ItemProperty -Path \"HKLM:\\System\\CurrentControlSet\\Control\\CrashControl\" -Name \"DisplayParameters\" -Type DWord -Value 0\r\nSet-ItemProperty -Path \"HKLM:\\System\\CurrentControlSet\\Control\\CrashControl\" -Name \"DisableEmoticon\" -Type DWord -Value 0\r\n"
       }
     },
     {
@@ -307,6 +307,24 @@
       }
     },
     {
+      "id": "disable-taskbar-seach",
+      "title": "Disable Taskbar Search",
+      "description": "Hides the search box from the taskbar.",
+      "category": [
+        "General",
+        "Appearance"
+      ],
+      "recommended": false,
+      "reversible": true,
+      "addedversion": "2.22.0",
+      "docsurl": "https://docs.getsparkle.net/tweaks/disable-taskbar-seach",
+      "source": "https://github.com/Parcoil/Sparkle/blob/v2/tweaks/disable-taskbar-seach/meta.json",
+      "scripts": {
+        "apply": "$path = \"HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Search\"\r\n\r\nif (-not (Test-Path $path)) {\r\n    New-Item -Path $path -Force | Out-Null\r\n}\r\n\r\nNew-ItemProperty -Path $path -Name \"SearchboxTaskbarMode\" -PropertyType DWord -Value 0 -Force | Out-Null\r\n\r\nStop-Process -Name explorer -Force\r\nStart-Process explorer.exe",
+        "unapply": "$path = \"HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Search\"\r\n\r\nif (-not (Test-Path $path)) {\r\n    New-Item -Path $path -Force | Out-Null\r\n}\r\n\r\nNew-ItemProperty -Path $path -Name \"SearchboxTaskbarMode\" -PropertyType DWord -Value 2 -Force | Out-Null\r\n\r\nStop-Process -Name explorer -Force\r\nStart-Process explorer.exe"
+      }
+    },
+    {
       "id": "disable-telemetry",
       "title": "Disable Telemetry",
       "description": "Disables Windows telemetry and data collection for improved privacy and performance.",
@@ -498,6 +516,24 @@
       "scripts": {
         "apply": null,
         "unapply": null
+      }
+    },
+    {
+      "id": "remove-edge",
+      "title": "Remove Microsoft Edge",
+      "description": "Removes Microsoft Edge from Windows.",
+      "category": [
+        "System",
+        "Privacy"
+      ],
+      "recommended": true,
+      "reversible": true,
+      "addedversion": "2.22.0",
+      "docsurl": "https://docs.getsparkle.net/tweaks/remove-edge",
+      "source": "https://github.com/Parcoil/Sparkle/blob/v2/tweaks/remove-edge/meta.json",
+      "scripts": {
+        "apply": "try {\r\n  New-Item -Path \"$Env:SystemRoot\\SystemApps\\Microsoft.MicrosoftEdge_8wekyb3d8bbwe\\MicrosoftEdge.exe\" -Force\r\n  $Path = Resolve-Path -Path \"$Env:ProgramFiles (x86)\\Microsoft\\Edge\\Application\\*\\Installer\\setup.exe\" | Select-Object -Last 1\r\n  Start-Process -FilePath $Path -ArgumentList '--uninstall --system-level --force-uninstall --delete-profile' -Wait\r\n  Write-Host \"Microsoft Edge was removed\" -ForegroundColor Green\r\n}\r\ncatch {\r\n    Write-Host \"Failed to remove Microsoft Edge: $_\" -ForegroundColor Red\r\n}",
+        "unapply": "Write-Host 'Installing Microsoft Edge With Winget.'\r\nwinget install Microsoft.Edge --source winget"
       }
     },
     {

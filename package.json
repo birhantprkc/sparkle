@@ -120,6 +120,7 @@
       "!build.js",
       "!jsconfig.json",
       "!LICENSE",
+      "!scripts/**",
       "!bucket/**",
       "!pnpm-workspace.yaml",
       "!vitest.config.ts",
@@ -149,7 +150,10 @@
       "!node_modules/prop-types/**",
       "!node_modules/react-is/**",
       "!node_modules/scheduler/**",
-      "!node_modules/uuid/**"
+      "!node_modules/uuid/**",
+      "!node_modules/react-markdow/**",
+      "!node_modules/rehype-raw/**",
+      "!node_modules/remark-gfm/**"
     ],
     "win": {
       "executableName": "sparkle",

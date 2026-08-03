@@ -55,9 +55,7 @@ function Apps() {
     (localStorage.getItem("defaultPackageManager") as "Chocolatey" | "Winget") || "Winget",
   )
   const [showSelectedAppsModal, setShowSelectedAppsModal] = useState(false)
-  const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(
-    !localStorage.getItem("hasSeenAppsWelcomeModal"),
-  )
+  const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(false)
 
   const [chocolateyInstalled, setChocolateyInstalled] = useState<boolean | null>(null)
   const [chocolateyChecking, setChocolateyChecking] = useState<boolean>(false)
@@ -284,6 +282,13 @@ function Apps() {
       checkChocolatey()
     }
   }, [source])
+
+  useEffect(() => {
+    const hasSeenWelcomeModal = localStorage.getItem("hasSeenAppsWelcomeModal") === "true"
+    if (!hasSeenWelcomeModal) {
+      setShowWelcomeModal(true)
+    }
+  }, [])
 
   const handleAppAction = async (type: string, appsToUse = selectedApps) => {
     if (appsToUse.length === 0) return

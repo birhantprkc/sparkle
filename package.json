@@ -15,7 +15,7 @@
     "build:electron": "pnpm run build:vite && electron-builder",
     "build:vite": "electron-vite build",
     "postinstall": "electron-builder install-app-deps",
-    "build:unpack": "pnpm run build && electron-builder --dir",
+    "build:unpack": "pnpm run build:vite && electron-builder --dir",
     "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
     "typecheck:web": "tsc --noEmit -p tsconfig.web.json --composite false",
     "test": "vitest run  --reporter=verbose",
@@ -88,6 +88,7 @@
         "to": ".",
         "filter": [
           "*.exe",
+          "*.ico",
           "*.nip",
           "*.pow"
         ]

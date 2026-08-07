@@ -1398,6 +1398,22 @@
       "info": "A AI Powered code editor.",
       "link": "https://cursor.sh/?ref=sparkle",
       "icon": "https://cursor.sh/favicon.ico"
+    },
+    {
+      "name": "Claude Desktop",
+      "chocolatey": "claude",
+      "category": "development",
+      "info": "Chat with claude AI on your desktop.",
+      "link": "https://claude.com/download",
+      "icon": "https://claude.com/favicon.ico"
+    },
+    {
+      "name": "Claude Code",
+      "chocolatey": "claudecode",
+      "category": "development",
+      "info": "Chat with claude AI on your desktop.",
+      "link": "https://claude.com/download",
+      "icon": "https://claude.com/favicon.ico"
     }
   ]
 }

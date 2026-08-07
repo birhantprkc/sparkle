@@ -1390,6 +1390,14 @@
       "info": "A platform for indie games and game development.",
       "link": "https://itch.io/?ref=sparkle",
       "icon": "https://itch.io/static/images/itchio-square-144.png"
+    },
+    {
+      "name": "Cursor",
+      "chocolatey": "cursoride",
+      "category": "development",
+      "info": "A AI Powered code editor.",
+      "link": "https://cursor.sh/?ref=sparkle",
+      "icon": "https://cursor.sh/favicon.ico"
     }
   ]
 }

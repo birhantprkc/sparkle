@@ -1,4 +1,4 @@
-import { useState, useMemo, Suspense } from "react"
+import { useState, useMemo, useRef, useEffect } from "react"
 import data from "../assets/apps.json"
 import RootDiv from "@/components/rootdiv"
 import { Search, X } from "lucide-react"
@@ -10,7 +10,6 @@ import { Download } from "lucide-react"
 import { Trash } from "lucide-react"
 import { ExternalLink } from "lucide-react"
 import { toast } from "react-toastify"
-import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import log from "electron-log/renderer"
 import { Upload } from "lucide-react"
@@ -39,6 +38,49 @@ interface InvokeResult {
   success: boolean
   installed?: boolean
   error?: string
+}
+
+function LazyApp({ delay, children }: { delay: number; children: React.ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setVisible(true)
+          observer.disconnect()
+        }
+      },
+      { rootMargin: "300px" },
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  return (
+    <div
+      ref={ref}
+      style={{ animationDelay: `${delay}ms` }}
+      className={visible ? "animate-in fade-in duration-500" : ""}
+    >
+      {visible ? (
+        children
+      ) : (
+        <Card className="p-4 animate-pulse border-sparkle-border">
+          <div className="flex items-center gap-4">
+            <div className="w-8 h-8 rounded-lg bg-sparkle-accent" />
+            <div className="space-y-2 flex-1">
+              <div className="h-3 w-1/2 rounded bg-sparkle-accent" />
+              <div className="h-2 w-3/4 rounded bg-sparkle-accent/60" />
+            </div>
+          </div>
+        </Card>
+      )}
+    </div>
+  )
 }
 
 function Apps() {
@@ -636,79 +678,77 @@ function Apps() {
             />
           </div>
         </div>
-        <div className="space-y-10 mb-10">
-          <Suspense
-            fallback={<div className="text-center text-sparkle-text-secondary">Loading...</div>}
-          >
-            {Object.entries(appsByCategory).map(([category, apps]) => (
+<div className="space-y-10 mb-10">
+          {Object.entries(appsByCategory).map(([category, apps]) => (
               <div key={category} className="space-y-4">
                 <h2 className="text-2xl text-sparkle-primary font-bold capitalize">{category}</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-4 mr-4">
                   {apps.map((app) => {
                     const appId = getAppIdForSource(app)
                     return (
-                      <Card key={appId} onClick={() => toggleApp(appId)} className="p-4">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-4">
-                            <div onClick={(e) => e.stopPropagation()}>
-                              <Checkbox
-                                checked={selectedApps.includes(appId)}
-                                onChange={() => toggleApp(appId)}
-                              />
-                            </div>
-                            {hideAppIcons !== true && (
-                              <div className="min-w-10 max-w-10 max--h-10 min-h-10 rounded-lg overflow-hidden bg-sparkle-accent flex items-center justify-center">
-                                {app.icon ? (
-                                  <img
-                                    src={app.icon}
-                                    alt={app.name}
-                                    onError={(e) => (e.currentTarget.src = logo)}
-                                    className="w-8 h-8 object-contain rounded-md"
-                                  />
-                                ) : (
-                                  <img src="" alt="" className="w-6 h-6 opacity-50" />
+                      <LazyApp key={appId} delay={0}>
+                        <Card onClick={() => toggleApp(appId)} className="p-4">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-4">
+                              <div onClick={(e) => e.stopPropagation()}>
+                                <Checkbox
+                                  checked={selectedApps.includes(appId)}
+                                  onChange={() => toggleApp(appId)}
+                                />
+                              </div>
+                              {hideAppIcons !== true && (
+                                <div className="min-w-10 max-w-10 max--h-10 min-h-10 rounded-lg overflow-hidden bg-sparkle-accent flex items-center justify-center">
+                                  {app.icon ? (
+                                    <img
+                                      src={app.icon}
+                                      alt={app.name}
+                                      onError={(e) => (e.currentTarget.src = logo)}
+                                      className="w-8 h-8 object-contain rounded-md"
+                                    />
+                                  ) : (
+                                    <img src="" alt="" className="w-6 h-6 opacity-50" />
+                                  )}
+                                </div>
+                              )}
+                              <div>
+                                <h3 className="text-sparkle-text font-medium group-hover:text-sparkle-primary transition">
+                                  {app.name}
+                                </h3>
+                                {app.info && (
+                                  <p className="text-sm text-sparkle-text-secondary line-clamp-1 font-semibold">
+                                    {app.info}
+                                  </p>
                                 )}
+                                <p className="text-xs text-sparkle-text-secondary">ID: {appId}</p>
+                              </div>
+                            </div>
+                            {app.link && (
+                              <div onClick={(e) => e.stopPropagation()}>
+                                <button
+                                  type="button"
+                                  aria-label={`Open ${app.name} website`}
+                                  className="ml-3 text-sparkle-primary hover:text-sparkle-text-secondary transition-opacity"
+                                  onClick={(e) => {
+                                    e.stopPropagation()
+                                    try {
+                                      window.open(app.link, "_blank")
+                                    } catch (err) {
+                                      console.error("Failed to open external link", err)
+                                    }
+                                  }}
+                                >
+                                  <ExternalLink className="w-4 h-4" />
+                                </button>
                               </div>
                             )}
-                            <div>
-                              <h3 className="text-sparkle-text font-medium group-hover:text-sparkle-primary transition">
-                                {app.name}
-                              </h3>
-                              {app.info && (
-                                <p className="text-sm text-sparkle-text-secondary line-clamp-1 font-semibold">
-                                  {app.info}
-                                </p>
-                              )}
-                              <p className="text-xs text-sparkle-text-secondary">ID: {appId}</p>
-                            </div>
                           </div>
-                          {app.link && (
-                            <div onClick={(e) => e.stopPropagation()}>
-                              <button
-                                type="button"
-                                aria-label={`Open ${app.name} website`}
-                                className="ml-3 text-sparkle-primary hover:text-sparkle-text-secondary transition-opacity"
-                                onClick={(e) => {
-                                  e.stopPropagation()
-                                  try {
-                                    window.open(app.link, "_blank")
-                                  } catch (err) {
-                                    console.error("Failed to open external link", err)
-                                  }
-                                }}
-                              >
-                                <ExternalLink className="w-4 h-4" />
-                              </button>
-                            </div>
-                          )}
-                        </div>
-                      </Card>
+                        </Card>
+                      </LazyApp>
                     )
                   })}
                 </div>
               </div>
             ))}
-          </Suspense>
           <p className="text-center text-sparkle-text-muted">
             Request more apps or make a pull request on{" "}
             <a

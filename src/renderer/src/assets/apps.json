@@ -1414,6 +1414,15 @@
       "info": "Chat with claude AI on your desktop.",
       "link": "https://claude.com/download",
       "icon": "https://claude.com/favicon.ico"
+    },
+    {
+      "name": "VSCodium",
+      "id": "VSCodium.VSCodium",
+      "chocolatey": "vscodium",
+      "category": "development",
+      "info": "A free and open-source code editor.",
+      "link": "https://vscodium.com/?ref=sparkle",
+      "icon": "https://vscodium.com/img/codium_cnl.svg"
     }
   ]
 }

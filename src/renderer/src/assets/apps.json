@@ -1381,6 +1381,15 @@
       "info": "A simple and private file sharing app for Windows.",
       "link": "https://localsend.org/?ref=sparkle",
       "icon": "https://avatars.githubusercontent.com/u/120677616?s=200&v=4"
+    },
+    {
+      "name": "Itch.io",
+      "id": "ItchIo.Itch",
+      "chocolatey": "itch.io",
+      "category": "games",
+      "info": "A platform for indie games and game development.",
+      "link": "https://itch.io/?ref=sparkle",
+      "icon": "https://itch.io/static/images/itchio-square-144.png"
     }
   ]
 }

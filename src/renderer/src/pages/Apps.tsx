@@ -40,6 +40,45 @@ interface InvokeResult {
   error?: string
 }
 
+const APPS_CACHE_KEY = "sparkle.apps.json"
+const APPS_CACHE_TTL_MS = 1000 * 60 * 60 * 1 // this is 1 hour
+
+const APPS_URL =
+  "https://raw.githubusercontent.com/parcoil/sparkle/refs/heads/v2/src/renderer/src/assets/apps.json"
+
+interface CachedApps {
+  timestamp: number
+  apps: AppData[]
+}
+
+async function fetchRemoteApps(): Promise<AppData[]> {
+  const response = await fetch(APPS_URL)
+  if (!response.ok) throw new Error(`Failed to fetch apps list (${response.status})`)
+  const appsData = await response.json()
+  return appsData.apps || []
+}
+
+function loadCachedApps(): CachedApps | null {
+  try {
+    const raw = localStorage.getItem(APPS_CACHE_KEY)
+    if (!raw) return null
+    const cached = JSON.parse(raw) as CachedApps
+    if (!Array.isArray(cached.apps)) return null
+    return cached
+  } catch {
+    localStorage.removeItem(APPS_CACHE_KEY)
+    return null
+  }
+}
+
+function saveAppsCache(apps: AppData[]): void {
+  const cached: CachedApps = { timestamp: Date.now(), apps }
+  localStorage.setItem(APPS_CACHE_KEY, JSON.stringify(cached))
+}
+
+const isCacheFresh = (cached: CachedApps): boolean =>
+  Date.now() - cached.timestamp < APPS_CACHE_TTL_MS
+
 function LazyApp({ delay, children }: { delay: number; children: React.ReactNode }) {
   const ref = useRef<HTMLDivElement>(null)
   const [visible, setVisible] = useState(false)
@@ -253,21 +292,32 @@ function Apps() {
 
   useEffect(() => {
     const loadApps = async () => {
-      try {
-        let appsData: { apps: AppData[] }
-        if (import.meta.env.DEV || localStorage.getItem("forceLocalApps") === "true") {
-          appsData = data as { apps: AppData[] }
-        } else {
-          const response = await fetch(
-            "https://raw.githubusercontent.com/parcoil/sparkle/refs/heads/v2/src/renderer/src/assets/apps.json",
-          )
-          appsData = await response.json()
-        }
-        setAppsList(appsData.apps || [])
-      } catch (error) {
-        console.error("Failed to load apps list", error)
-        toast.error("Failed to fetch apps list (Using local apps.json)")
+      if (import.meta.env.DEV || localStorage.getItem("forceLocalApps") === "true") {
         setAppsList((data as { apps: AppData[] }).apps || [])
+        return
+      }
+
+      const cached = loadCachedApps()
+
+      if (cached && isCacheFresh(cached)) {
+        // Serve fresh cache immediately without a network request
+        setAppsList(cached.apps)
+        return
+      }
+
+      // Serve any cached data right away, refresh in the background if stale
+      if (cached) setAppsList(cached.apps)
+
+      try {
+        const apps = await fetchRemoteApps()
+        setAppsList(apps)
+        saveAppsCache(apps)
+      } catch (error) {
+        console.error("Failed to refresh apps list", error)
+        if (!cached) {
+          toast.error("Failed to fetch apps list (Using local apps.json)")
+          setAppsList((data as { apps: AppData[] }).apps || [])
+        }
       }
     }
 
@@ -678,77 +728,77 @@ function Apps() {
             />
           </div>
         </div>
-<div className="space-y-10 mb-10">
+        <div className="space-y-10 mb-10">
           {Object.entries(appsByCategory).map(([category, apps]) => (
-              <div key={category} className="space-y-4">
-                <h2 className="text-2xl text-sparkle-primary font-bold capitalize">{category}</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-4 mr-4">
-                  {apps.map((app) => {
-                    const appId = getAppIdForSource(app)
-                    return (
-                      <LazyApp key={appId} delay={0}>
-                        <Card onClick={() => toggleApp(appId)} className="p-4">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-4">
-                              <div onClick={(e) => e.stopPropagation()}>
-                                <Checkbox
-                                  checked={selectedApps.includes(appId)}
-                                  onChange={() => toggleApp(appId)}
-                                />
-                              </div>
-                              {hideAppIcons !== true && (
-                                <div className="min-w-10 max-w-10 max--h-10 min-h-10 rounded-lg overflow-hidden bg-sparkle-accent flex items-center justify-center">
-                                  {app.icon ? (
-                                    <img
-                                      src={app.icon}
-                                      alt={app.name}
-                                      onError={(e) => (e.currentTarget.src = logo)}
-                                      className="w-8 h-8 object-contain rounded-md"
-                                    />
-                                  ) : (
-                                    <img src="" alt="" className="w-6 h-6 opacity-50" />
-                                  )}
-                                </div>
-                              )}
-                              <div>
-                                <h3 className="text-sparkle-text font-medium group-hover:text-sparkle-primary transition">
-                                  {app.name}
-                                </h3>
-                                {app.info && (
-                                  <p className="text-sm text-sparkle-text-secondary line-clamp-1 font-semibold">
-                                    {app.info}
-                                  </p>
-                                )}
-                                <p className="text-xs text-sparkle-text-secondary">ID: {appId}</p>
-                              </div>
+            <div key={category} className="space-y-4">
+              <h2 className="text-2xl text-sparkle-primary font-bold capitalize">{category}</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-4 mr-4">
+                {apps.map((app) => {
+                  const appId = getAppIdForSource(app)
+                  return (
+                    <LazyApp key={appId} delay={0}>
+                      <Card onClick={() => toggleApp(appId)} className="p-4">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-4">
+                            <div onClick={(e) => e.stopPropagation()}>
+                              <Checkbox
+                                checked={selectedApps.includes(appId)}
+                                onChange={() => toggleApp(appId)}
+                              />
                             </div>
-                            {app.link && (
-                              <div onClick={(e) => e.stopPropagation()}>
-                                <button
-                                  type="button"
-                                  aria-label={`Open ${app.name} website`}
-                                  className="ml-3 text-sparkle-primary hover:text-sparkle-text-secondary transition-opacity"
-                                  onClick={(e) => {
-                                    e.stopPropagation()
-                                    try {
-                                      window.open(app.link, "_blank")
-                                    } catch (err) {
-                                      console.error("Failed to open external link", err)
-                                    }
-                                  }}
-                                >
-                                  <ExternalLink className="w-4 h-4" />
-                                </button>
+                            {hideAppIcons !== true && (
+                              <div className="min-w-10 max-w-10 max--h-10 min-h-10 rounded-lg overflow-hidden bg-sparkle-accent flex items-center justify-center">
+                                {app.icon ? (
+                                  <img
+                                    src={app.icon}
+                                    alt={app.name}
+                                    onError={(e) => (e.currentTarget.src = logo)}
+                                    className="w-8 h-8 object-contain rounded-md"
+                                  />
+                                ) : (
+                                  <img src="" alt="" className="w-6 h-6 opacity-50" />
+                                )}
                               </div>
                             )}
+                            <div>
+                              <h3 className="text-sparkle-text font-medium group-hover:text-sparkle-primary transition">
+                                {app.name}
+                              </h3>
+                              {app.info && (
+                                <p className="text-sm text-sparkle-text-secondary line-clamp-1 font-semibold">
+                                  {app.info}
+                                </p>
+                              )}
+                              <p className="text-xs text-sparkle-text-secondary">ID: {appId}</p>
+                            </div>
                           </div>
-                        </Card>
-                      </LazyApp>
-                    )
-                  })}
-                </div>
+                          {app.link && (
+                            <div onClick={(e) => e.stopPropagation()}>
+                              <button
+                                type="button"
+                                aria-label={`Open ${app.name} website`}
+                                className="ml-3 text-sparkle-primary hover:text-sparkle-text-secondary transition-opacity"
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  try {
+                                    window.open(app.link, "_blank")
+                                  } catch (err) {
+                                    console.error("Failed to open external link", err)
+                                  }
+                                }}
+                              >
+                                <ExternalLink className="w-4 h-4" />
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      </Card>
+                    </LazyApp>
+                  )
+                })}
               </div>
-            ))}
+            </div>
+          ))}
           <p className="text-center text-sparkle-text-muted">
             Request more apps or make a pull request on{" "}
             <a

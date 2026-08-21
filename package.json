@@ -14,7 +14,7 @@
     "build:registry": "pnpm run build -- --registry",
     "build:electron": "pnpm run build:vite && electron-builder",
     "build:vite": "electron-vite build",
-    "postinstall": "electron-builder install-app-deps",
+    "postinstall": "electron-builder install-app-deps && npx install-electron",
     "build:unpack": "pnpm run build:vite && electron-builder --dir",
     "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
     "typecheck:web": "tsc --noEmit -p tsconfig.web.json --composite false",

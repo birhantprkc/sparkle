@@ -23,7 +23,7 @@ function ensureDirectoryExists(dirPath) {
 }
 
 export async function executePowerShell(_, props) {
-  const { script, name = "script" } = props
+  const { script, name = "script", output = true } = props
 
   try {
     const tempDir = path.join(app.getPath("userData"), "scripts")
@@ -42,7 +42,9 @@ export async function executePowerShell(_, props) {
       console.warn(`PowerShell stderr [${name}]:`, stderr)
     }
 
-    console.log(`PowerShell stdout [${name}]:`, stdout)
+    if (output == true) {
+      console.log(`PowerShell stdout [${name}]:`, stdout)
+    }
 
     return { success: true, output: stdout }
   } catch (error: any) {
@@ -68,7 +70,7 @@ function sendOutput(appId: string, text: string) {
 
 export function executePowerShellStreaming(
   _,
-  { script, name = "script", appId }: { script: string; name: string; appId: string }
+  { script, name = "script", appId }: { script: string; name: string; appId: string },
 ): Promise<{ success: boolean; output?: string; error?: string }> {
   return new Promise(async (resolve) => {
     const tempDir = path.join(app.getPath("userData"), "scripts")

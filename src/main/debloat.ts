@@ -143,6 +143,7 @@ async function getInstalledApps(): Promise<InstalledApp[]> {
     const result = await executePowerShell(null, {
       script: getInstalledAppsScript,
       name: "Get-InstalledApps",
+      output: false,
     })
 
     if (!result.success) {

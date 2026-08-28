@@ -140,7 +140,7 @@ async function getInstalledApps(): Promise<InstalledApp[]> {
   if (cache) return cache
 
   try {
-    const result = await executePowerShell(null, {
+    const result = await executePowerShell({
       script: getInstalledAppsScript,
       name: "Get-InstalledApps",
       output: false,
@@ -208,7 +208,7 @@ async function uninstallApps(
     try {
       if (isStoreApp) {
         const script = `Remove-AppxPackage "${packageName}"`
-        const result = await executePowerShell(null, { script, name: `Uninstall-${name}` })
+        const result = await executePowerShell({ script, name: `Uninstall-${name}` })
         const success = result.success
         console.log(`Uninstall Store app ${name}: ${success ? "success" : "failed"}`)
         results.push({ name, success, error: success ? undefined : result.error })
@@ -233,7 +233,7 @@ async function uninstallApps(
         const exeArgs = exeMatch[2].trim()
         const script = `$p = Start-Process '${exePath.replace(/'/g, "''")}' -ArgumentList '${exeArgs || "/S"}' -PassThru; $p.WaitForExit(); Start-Sleep -Seconds 2; $p.ExitCode`
 
-        const result = await executePowerShell(null, { script, name: `Uninstall-${name}` })
+        const result = await executePowerShell({ script, name: `Uninstall-${name}` })
         const exitCode = parseInt(result.output?.trim() ?? "1", 10)
         const success = result.success && (exitCode === 0 || exitCode === 3010)
         console.log(`Uninstall ${name}: exit ${exitCode}`)
@@ -243,7 +243,7 @@ async function uninstallApps(
 
       const script = `$p = Start-Process msiexec.exe -ArgumentList '${msiMatch[1].trim()} /quiet /norestart' -PassThru; $p.WaitForExit(); $p.ExitCode`
 
-      const result = await executePowerShell(null, {
+      const result = await executePowerShell({
         script,
         name: `Uninstall-${name}`,
       })

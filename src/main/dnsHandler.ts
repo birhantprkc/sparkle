@@ -122,7 +122,7 @@ export const setupDNSHandlers = (): void => {
       }
       `
 
-      const result = await executePowerShell(null, { script, name: "Get-DNS" })
+      const result = await executePowerShell({ script, name: "Get-DNS" })
 
       if (result.success) {
         const lines = result
@@ -251,7 +251,7 @@ export const setupDNSHandlers = (): void => {
           Write-Host "Error testing DNS: $($_.Exception.Message)"
         }
       `
-        const result = await executePowerShell(null, { script, name: "Test-DNS" })
+        const result = await executePowerShell({ script, name: "Test-DNS" })
         return result
       } catch (error: any) {
         return { success: false, error: error.message }
@@ -319,7 +319,7 @@ export const setupDNSHandlers = (): void => {
           Write-Host "$($_.Name)|$($_.InterfaceDescription)|$($_.Status)"
         }
       `
-      const result = await executePowerShell(null, { script, name: "Get-Adapters" })
+      const result = await executePowerShell({ script, name: "Get-Adapters" })
 
       if (result.success) {
         const lines = result
@@ -346,7 +346,7 @@ export const setupDNSHandlers = (): void => {
         ipconfig /flushdns
         Write-Host "DNS cache flushed successfully!"
       `
-      const result = await executePowerShell(null, { script, name: "Flush-DNS" })
+      const result = await executePowerShell({ script, name: "Flush-DNS" })
       return result
     } catch (error: any) {
       return { success: false, error: error.message }

@@ -8,6 +8,7 @@ import path from "path"
 import log from "electron-log"
 import { shell } from "electron"
 import { executePowerShell } from "@main/powershell"
+import type { PowerShellResult } from "@main/powershell"
 import { detectGPU, clearGpuCache } from "@main/gpu"
 import { mainWindow } from "@main/windowState"
 import { TtlCache } from "@main/cache"
@@ -20,12 +21,6 @@ const execFilePromise = util.promisify(execFile)
 console.log = log.log
 console.error = log.error
 console.warn = log.warn
-
-interface PowerShellResult {
-  success: boolean
-  output?: string
-  error?: string
-}
 
 interface ClearCacheResult {
   success: boolean
@@ -47,7 +42,7 @@ async function getSystemInfo(): Promise<SystemInfo> {
     const memoryType = (memLayout as any).length > 0 ? (memLayout as any)[0].type : "Unknown"
 
     const versionScript = `(Get-ItemProperty -Path "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion").DisplayVersion`
-    const versionPsResult = await executePowerShell(null, {
+    const versionPsResult = await executePowerShell({
       script: versionScript,
       name: "GetWindowsVersion",
     })
@@ -473,11 +468,10 @@ if ($TestMode -or -not (Check-Winget)) {
 export { ensureWingetScript }
 
 function ensureWinget(): Promise<PowerShellResult> {
-  const result = executePowerShell(null, {
+  return executePowerShell({
     script: ensureWingetScript,
     name: "Ensure-Winget",
   })
-  return result
 }
 
 export { ensureWinget }

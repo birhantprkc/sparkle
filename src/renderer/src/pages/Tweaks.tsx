@@ -765,15 +765,36 @@ function Tweaks() {
                                 </Tooltip>
                               )}
                               {tweak.reversible == null || tweak.reversible == true ? (
-                                <Tooltip
-                                  content={!compatibility.compatible ? compatibility.reason : null}
-                                >
-                                  <Toggle
-                                    checked={toggleStates[tweak.name] || false}
-                                    onChange={() => handleToggle(originalIndex)}
-                                    disabled={!compatibility.compatible}
-                                  />
-                                </Tooltip>
+                                toggleStates[tweak.name] && isAltHeld ? (
+                                  <Tooltip
+                                    content={
+                                      !compatibility.compatible
+                                        ? compatibility.reason
+                                        : "Force reapply"
+                                    }
+                                  >
+                                    <Button
+                                      variant="outline"
+                                      className="px-2! py-1! text-xs flex items-center gap-1"
+                                      onClick={() => forceReapplyTweak(tweak)}
+                                      disabled={!compatibility.compatible}
+                                    >
+                                      <RotateCw className="w-3 h-3" /> Reapply
+                                    </Button>
+                                  </Tooltip>
+                                ) : (
+                                  <Tooltip
+                                    content={
+                                      !compatibility.compatible ? compatibility.reason : null
+                                    }
+                                  >
+                                    <Toggle
+                                      checked={toggleStates[tweak.name] || false}
+                                      onChange={() => handleToggle(originalIndex)}
+                                      disabled={!compatibility.compatible}
+                                    />
+                                  </Tooltip>
+                                )
                               ) : (
                                 <Tooltip
                                   content={!compatibility.compatible ? compatibility.reason : null}
@@ -797,20 +818,6 @@ function Tweaks() {
                     <div className="flex flex-col flex-1 overflow-hidden">
                       <p className="text-sparkle-text-secondary text-sm flex-1 overflow-y-auto custom-scrollbar pr-1">
                         {tweak.description}
-                        {toggleStates[tweak.name] && isAltHeld && tweak.reversible !== false && (
-                          <Button
-                            variant="primary"
-                            className="px-2! py-1! text-xs flex items-center gap-1 fixed mt-2"
-                            title="Force reapply tweak"
-                            onClick={(e) => {
-                              e.preventDefault()
-                              e.stopPropagation()
-                              forceReapplyTweak(tweak)
-                            }}
-                          >
-                            <RotateCw className="w-3 h-3" /> Reapply
-                          </Button>
-                        )}
                       </p>
                     </div>
                   </div>

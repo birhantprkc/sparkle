@@ -17,9 +17,17 @@ interface Release {
 
 type CodeProps = ComponentProps<"code"> & { inline?: boolean }
 
+function trimChecksums(body: string): string {
+  const marker = /^#{1,6}\s*checksums\b/im
+  const match = marker.exec(body)
+  if (!match) return body
+  return body.slice(0, match.index).trimEnd()
+}
+
 function ChangelogContent({ body }: { body: string }) {
+  const trimmedBody = trimChecksums(body)
   return (
-    <div className="prose prose-sm prose-green marker:text-sparkle-secondary max-w-none text-sparkle-text prose-headings:text-sparkle-text prose-a:text-blue-400 prose-code:bg-sparkle-secondary prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:text-sm prose-code:font-normal prose-pre:bg-sparkle-card prose-pre:border prose-pre:border-sparkle-border prose-img:rounded-lg prose-img:border prose-img:border-sparkle-border">
+    <div className="prose prose-sm prose-green marker:text-sparkle-secondary max-w-none text-sparkle-text prose-headings:text-sparkle-text prose-a:text-blue-400 prose-code:bg-sparkle-border prose-code:text-sparkle-text prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:text-sm prose-code:font-normal prose-code:before:content-none prose-code:after:content-none prose-pre:bg-sparkle-card prose-pre:border prose-pre:border-sparkle-border prose-img:rounded-lg prose-img:border prose-img:border-sparkle-border">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeRaw]}
@@ -64,7 +72,7 @@ function ChangelogContent({ body }: { body: string }) {
           },
         }}
       >
-        {body}
+        {trimmedBody}
       </ReactMarkdown>
     </div>
   )
@@ -121,7 +129,7 @@ export default function ChangelogModal({ open, onClose }: { open: boolean; onClo
                 className="border-b border-sparkle-border pb-4 last:border-b-0 last:pb-0"
               >
                 <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-lg font-medium text-sparkle-text">
+                  <h3 className="text-2xl font-semibold text-sparkle-text">
                     {release.name || release.tag_name}
                   </h3>
                   <span className="text-sm text-sparkle-text-secondary">

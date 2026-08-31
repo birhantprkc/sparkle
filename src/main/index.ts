@@ -1,3 +1,5 @@
+process.env.UV_THREADPOOL_SIZE = "32"
+
 import { app, shell, BrowserWindow, ipcMain, Tray } from "electron"
 import { join } from "path"
 import log from "electron-log"
@@ -8,6 +10,7 @@ import { setupTweaksHandlers } from "@main/tweakHandler"
 import { setupDNSHandlers } from "@main/dnsHandler"
 import { setupBackupHandlers } from "@main/backup"
 import { setupDebloatHandlers } from "@main/debloat"
+import { setupCleanerHandlers } from "@main/cleaner"
 import { initAutoUpdater } from "@main/updates"
 import { setMainWindow } from "@main/windowState"
 import Store from "electron-store"
@@ -149,6 +152,7 @@ app
     setupDNSHandlers()
     setupBackupHandlers()
     setupDebloatHandlers()
+    setupCleanerHandlers()
     if (store.get("rpcEnabled") !== false) {
       startDiscordRPC()
     }

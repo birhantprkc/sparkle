@@ -612,12 +612,12 @@ function AppliedTweaksTab() {
       <Modal open={confirmUndoAll} onClose={() => !processing && setConfirmUndoAll(false)}>
         <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-4 shadow-xl max-w-lg w-full mx-4 pb-0">
           <h3 className="text-lg font-medium text-sparkle-text">Undo All Tweaks</h3>
-          <div className="p-4 pr-0">
-            <p className="text-sparkle-text-secondary mb-4">
-              Are you sure you want to undo all {appliedTweakFiltered.length} applied tweak
-              {appliedTweakFiltered.length !== 1 ? "s" : ""}? This will run the unapply script for
-              each tweak and may require a restart.
-            </p>
+          <p className="text-red-400 mb-4 pl-0">
+            Are you sure you want to undo all {appliedTweakFiltered.length} applied tweak
+            {appliedTweakFiltered.length !== 1 ? "s" : ""}? This will run the unapply script for
+            each tweak and may require a system restart.
+          </p>
+          <div className="p-4 pt-0 pr-0">
             <div className="flex justify-end gap-3">
               <Button
                 variant="secondary"
@@ -682,12 +682,25 @@ function AppliedTweaksTab() {
 }
 
 export default function RestorePointManager() {
-  const [activeTab, setActiveTab] = useState<"restore" | "history">("restore")
+  const [activeTab, setActiveTab] = useState<"restore" | "history">("history")
 
   return (
     <RootDiv>
       <div className="h-full max-w-full space-y-4 overflow-hidden">
         <div className="flex gap-1 bg-sparkle-card border border-sparkle-border rounded-lg p-1 w-fit">
+          <button
+            onClick={() => setActiveTab("history")}
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-all active:scale-95 ${
+              activeTab === "history"
+                ? "bg-sparkle-primary text-white shadow"
+                : "text-sparkle-text-secondary hover:text-sparkle-text"
+            }`}
+          >
+            <span className="flex items-center gap-2">
+              <Wrench size={16} />
+              Revert Applied Tweaks
+            </span>
+          </button>
           <button
             onClick={() => setActiveTab("restore")}
             className={`px-4 py-2 rounded-md text-sm font-medium transition-all active:scale-95 ${
@@ -699,19 +712,6 @@ export default function RestorePointManager() {
             <span className="flex items-center gap-2">
               <Shield size={16} />
               Restore Points
-            </span>
-          </button>
-          <button
-            onClick={() => setActiveTab("history")}
-            className={`px-4 py-2 rounded-md text-sm font-medium transition-all active:scale-95 ${
-              activeTab === "history"
-                ? "bg-sparkle-primary text-white shadow"
-                : "text-sparkle-text-secondary hover:text-sparkle-text"
-            }`}
-          >
-            <span className="flex items-center gap-2">
-              <Wrench size={16} />
-              Revert Applied Tweaks (NEW)
             </span>
           </button>
         </div>

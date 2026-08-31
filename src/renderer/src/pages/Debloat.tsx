@@ -166,7 +166,7 @@ function Debloat() {
 
       <RootDiv className="flex flex-col w-full h-full overflow-hidden">
         <Modal open={showConfirm} onClose={() => setShowConfirm(false)}>
-          <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-6 shadow-xl max-w-md w-full mx-4">
+          <div className="bg-sparkle-card border border-sparkle-border rounded-2xl p-4 shadow-xl max-w-md w-full mx-4">
             <div className="flex items-center gap-3 mb-4">
               <div className="p-2 rounded-full bg-red-500/20">
                 <TriangleAlert className="w-6 h-6 text-red-500" />

@@ -11,6 +11,7 @@ import {
   Paintbrush,
   ExternalLink,
   ShieldCheck,
+  Sparkles,
 } from "lucide-react"
 import { toast } from "react-toastify"
 import RootDiv from "@/components/rootdiv"
@@ -425,6 +426,7 @@ function Tweaks() {
     Appearance: <Paintbrush className="w-4 h-4 text-sparkle-primary" />,
     Gaming: <Gamepad className="w-4 h-4 text-teal-500" />,
     General: <Wrench className="w-4 h-4 text-blue-500" />,
+    AI: <Sparkles className="w-4 h-4 text-purple-500" />,
   }
 
   const presets = [
@@ -609,14 +611,14 @@ function Tweaks() {
                 {categories.map((category) => (
                   <button
                     key={category}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 active:scale-95  ${
+                    className={`px-4 py-2 rounded-lg text-xs font-medium transition-all duration-200 active:scale-95 flex gap-2 items-center  ${
                       activeCategory === category
-                        ? "bg-sparkle-primary text-white shadow-lg border border-sparkle-border"
+                        ? "bg-sparkle-accent text-white shadow-lg border border-sparkle-border"
                         : "bg-sparkle-card/50 text-sparkle-text-secondary  hover:bg-sparkle-border border border-sparkle-border-secondary"
                     }`}
                     onClick={() => setActiveCategory(category)}
                   >
-                    {category}
+                    {categoryIcons[category]} {category}
                   </button>
                 ))}
                 <p className="text-sm text-sparkle-text-secondary ml-auto mr-2">

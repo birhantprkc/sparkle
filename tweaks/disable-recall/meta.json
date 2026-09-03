@@ -3,7 +3,7 @@
   "title": "Disable Windows Recall",
   "risk": "safe",
   "description": "Disables the Windows Recall feature for better privacy.",
-  "category": ["Privacy"],
+  "category": ["Privacy", "AI"],
   "reversible": true,
   "restart": true,
   "deepDescription": "This tweak sets AllowRecallEnablement to 0 under HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsAI, disabling Windows Recall at the system level.",

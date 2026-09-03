@@ -67,6 +67,7 @@ Tweaks can be grouped into these categories:
 - **Gaming** — Optimizations for FPS, game services, or GPU settings.
 - **Network** — Adjusts network settings.
 - **GPU** — Modifies GPU-related settings.
+- **AI** - Disables a Windows AI feature.
 
 ---
 

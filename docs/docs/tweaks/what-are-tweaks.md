@@ -56,10 +56,10 @@ Every tweak has a risk level so you know what to expect:
 
 Sparkle provides several safeguards when using tweaks:
 
-- **System Restore Points** — Always create a restore point before applying tweaks. Sparkle supports this on the home page.
-- **Reversible Changes** — Most tweaks can be toggled off to undo the change.
-- **Modal Warnings** — Some tweaks show a confirmation dialog before applying, explaining what will change.
-- **Warning Icons** — Tweaks with known side effects display a warning icon in the UI.
+- **System Restore Points** - Always create a restore point before applying tweaks. Sparkle supports this on the home page.
+- **Reversible Changes** - Most tweaks can be toggled off to undo the change.
+- **Modal Warnings** - Some tweaks show a confirmation dialog before applying, explaining what will change.
+- **Warning Icons** - Tweaks with known side effects display a warning icon in the UI.
 
 ---
 
@@ -79,8 +79,8 @@ This is useful if you've modified system settings manually and want the tweak to
 
 You can explore all available tweaks in two ways:
 
-- **In the app** — Open the Tweaks page to browse, search, and filter by category.
-- **In the docs** — See the [All Tweaks](/tweaks) page for a full list with detailed descriptions and related links.
+- **In the app** - Open the Tweaks page to browse, search, and filter by category.
+- **In the docs** - See the [All Tweaks](/tweaks) page for a full list with detailed descriptions and related links.
 
 !!! tip
 

@@ -60,13 +60,13 @@ Each tweak **must** have a `meta.json`. The available properties are:
 
 Tweaks can be grouped into these categories:
 
-- **General** — General purpose tweaks.
-- **Appearance** — Changes Windows appearance.
-- **Performance** — Improves system or gaming performance.
-- **Privacy** — Enhances user privacy.
-- **Gaming** — Optimizations for FPS, game services, or GPU settings.
-- **Network** — Adjusts network settings.
-- **GPU** — Modifies GPU-related settings.
+- **General** - General purpose tweaks.
+- **Appearance** - Changes Windows appearance.
+- **Performance** - Improves system or gaming performance.
+- **Privacy** - Enhances user privacy.
+- **Gaming** - Optimizations for FPS, game services, or GPU settings.
+- **Network** - Adjusts network settings.
+- **GPU** - Modifies GPU-related settings.
 - **AI** - Disables a Windows AI feature.
 
 ---

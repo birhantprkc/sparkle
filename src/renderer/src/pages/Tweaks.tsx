@@ -621,9 +621,6 @@ function Tweaks() {
                     {categoryIcons[category]} {category}
                   </button>
                 ))}
-                <p className="text-sm text-sparkle-text-secondary ml-auto mr-2">
-                  Showing {sortedTweaks.length} of {tweaks.length} tweaks
-                </p>
               </div>
               <div className="flex gap-5 items-center">
                 {presets.length > 0 && tweaks.some((t) => presets[0].tweaks.includes(t.name)) && (
@@ -639,6 +636,9 @@ function Tweaks() {
                   Tip: Hold{" "}
                   <kbd className="p-1 pt-0.5 pb-0.5 rounded-lg bg-sparkle-border">Alt</kbd> and
                   click "Reapply" to force reapply it.
+                </p>
+                <p className="text-xs text-sparkle-text-secondary ml-auto mr-2">
+                  Showing {sortedTweaks.length} of {tweaks.length} tweaks
                 </p>
               </div>
             </div>

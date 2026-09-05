@@ -613,7 +613,7 @@ function Tweaks() {
                     key={category}
                     className={`px-4 py-2 rounded-lg text-xs font-medium transition-all duration-200 active:scale-95 flex gap-2 items-center  ${
                       activeCategory === category
-                        ? "bg-sparkle-accent text-white shadow-lg border border-sparkle-border"
+                        ? "dark:bg-sparkle-accent bg-sparkle-text-muted text-sparkle-text shadow-lg border border-sparkle-border"
                         : "bg-sparkle-card/50 text-sparkle-text-secondary  hover:bg-sparkle-border border border-sparkle-border-secondary"
                     }`}
                     onClick={() => setActiveCategory(category)}

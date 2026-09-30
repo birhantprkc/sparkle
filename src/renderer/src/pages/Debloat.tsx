@@ -5,7 +5,7 @@ import Checkbox from "@/components/ui/Checkbox"
 import Button from "@/components/ui/button"
 import Modal from "@/components/ui/modal"
 import { invoke } from "@/lib/electron"
-import {  RotateCw, Search, ShieldAlert, Trash2, TriangleAlert } from "lucide-react"
+import {   RotateCw, Search, ShieldAlert, Star, Trash2, TriangleAlert } from "lucide-react"
 import { toast } from "react-toastify"
 import { LargeInput } from "@/components/ui/input"
 import sparkleLogo from "../../../../resources/sparklelogo.png"
@@ -298,6 +298,13 @@ function Debloat() {
                         <img src={sparkleLogo} alt={app.name} className="w-5 h-5" />
                       )}
                       <span className="select-text">{app.name}</span>
+                      {app.publisher.includes("parcoil") || app.publisher.includes("Parcoil") ? (
+                        <div className="flex items-center gap-1 backdrop:blur-sm bg-purple-500/20 rounded-md px-1 py-1">
+                          <Tooltip content="This is a Parcoil app.  " side="top" delay={0}>
+                            <Star className="w-5 h-5 text-purple-500" />
+                          </Tooltip>
+                        </div>
+                      ) : null}
                     </div>
                   </td>
                   <td className="p-4 align-middle text-sparkle-text select-text">{app.publisher}</td>

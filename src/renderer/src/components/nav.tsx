@@ -23,6 +23,7 @@ import GithubIcon from "./githubicon"
 import Button from "./ui/button"
 import Modal from "./ui/modal"
 import useOnlineStore from "../store/online"
+import Tooltip from "./ui/tooltip"
 
 const tabIcons = {
   home: <Home size={20} />,
@@ -121,6 +122,7 @@ function Nav({ collapsed }) {
         {Object.entries(tabs).map(([id, { label, path }]) => {
           const isDisabled = !online && disabledTabs.includes(id)
           return (
+            <Tooltip  content={!collapsed ? "" : label} side="right" delay={0} key={id}>
             <Button
               variant=""
               key={id}
@@ -154,6 +156,7 @@ function Nav({ collapsed }) {
                 </div>
               )}
             </Button>
+            </Tooltip>
           )
         })}
       </div>

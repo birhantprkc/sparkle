@@ -285,6 +285,13 @@ function Debloat() {
                       </Tooltip>
                      </div>
                       </>}
+                           {app.name.startsWith("sparkle") && <>
+                     <div className="flex items-center gap-1 backdrop:blur-sm bg-cyan-500/20 rounded-md px-1 py-1">
+                       <Tooltip content="Do not uninstall sparkle this way. Close Sparkle and uninstall it another way." side="top" delay={0}>
+                        <ShieldAlert className="w-5 h-5 text-cyan-500" />
+                      </Tooltip>
+                     </div>
+                      </>}
                       {app.icon ? (
                         <img src={app.icon} alt={app.name} className="w-5 h-5" />
                       ) : (
